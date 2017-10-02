@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<form action="@Url.Action("Person","WorkingWithData")">
+    <input type="hidden" name="StudentId" id="StudentId" value="11102" /> 
+    <label for="fullname">Name</label>
+    <input type="text" name="fullname" id="fullname" /><br />
+    <label for="birthdate">Birth date</label>
+    <input type="text" name="birthdate" id="birthdate" />
+    <label for="msg">Message</label>
+    <textarea name="msg" id="msg" cols=" 80" rows="5"></textarea>
+
+    <img src="@Url.Content("~/Content/geo-bs-swatch/img/test/yahooweek.gif")" />
+
+   <br />
+    <label for="gender">Projects</label>
+    @Html.DropDownList("Project",ViewBag.projectDropdown as List<SelectListItem>, "")
+
+    @Url.Encode("/bernard/gabs")
+
+    <br />
+    <input type="checkbox" name="rememberme" id="rememberme" />
+    <label for="rememberme">Remember Me</label>
+
+
+    <button type="submit">Click to Submi 2</button>
+
+    @{ 
+        var age = 10;
+    }
+    @if(age >= 18)
+    {
+        @Html.Raw("<> You are an adult.")
+    }
+    else
+    {
+        @Html.Raw("Ypu're still young.")
+    }
+
+ </form>

@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="@MyAspNetMvcApp.AppSettings.AppTitle" />
+    <meta property="og:url" content="@MyAspNetMvcApp.AppSettings.AppDomainName" />
+    <meta property="og:description" content="@MyAspNetMvcApp.AppSettings.AppDescription" />
+    <title>@ViewBag.Title - @MyAspNetMvcApp.AppSettings.AppTitle</title>
+    
+@if(TempData["MessageAlert"] != null)
+{
+    <script>
+        alert('@TempData["MessageAlert"]')
+    </script>
+}
+@if(ViewBag.MessageAlert != null)
+{
+    <script>
+        alert('@ViewBag.MessageAlert')
+    </script>
+}
+
+@if (HttpContext.Current.Request.IsLocal)
+{
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/font-awesome.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/bootstrap-dialog.css")" rel = "stylesheet" />
+    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
+    <script src="@Url.Content("~/Scripts/modernizr-2.8.3.js")"></script>
+}
+else
+{
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet">
+    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" integrity="sha256-0rguYS0qgS6L4qVzANq4kjxPLtvnp5nn2nB5G1lWRv4=" crossorigin="anonymous"></script>
+}
+
+    @RenderSection("Head", required: false)
+
+    @*@{ Html.RenderPartial("_GoogleAnalytics"); }*@
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top hidden-print">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink(MyAspNetMvcApp.AppSettings.AppTitle, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown hidden">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Home <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Facebook Groups <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="https://www.facebook.com/groups/aspnetmvcgabs/" target="_blank">Advance Web Development</a></li>
+                            <li><a href="https://www.facebook.com/groups/multimediaitphinmacoc/" target="_blank">Multiemedia-IT</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Under construction</li>
+                            <li><a href="#">Desktop Publishing</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">WebApps <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="http://poordooytify.azurewebsites.net" target="_blank">Poordooytify</a></li>
+                            <li><a href="https://github.com/hubert17/AspNetMvcGabs" target="_blank">Github Repository</a></li>
+                            <li><a href="@Url.Action("Livedemo", "Home")">Controller / Actions</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Advance Web-1</li>
+                            <li><a href="#">Hello</a></li>
+                            <li><a href="#">Madam Kapalaran</a></li>
+                            <li><a href="#">Next Activity</a></li>
+                            <li><a href="@Url.Action("Index", "Geocities", new { firstname = "Bernard", age = 12 })">A very modern website. Haha!</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Advance Web-2</li>
+                            <li><a href="#">Coming soon</a></li>
+                            <li><a href="#">More apps</a></li>
+                        </ul>
+                    </li>
+                    @if (Request.IsAuthenticated && (User.IsInRole("admin") || (User.Identity.Name == "owner")))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("CreateProject","Project")">Create</a></li>
+                                <li><a href="@Url.Action("Index","Project")">Submit</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Submit Project <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="http://bernardgabon.azurewebsites.net/Project">via Azure [Fast]</a></li>
+                                <li><a href="@Url.Action("Index","Project")">with Somee [This]</a></li>
+                            </ul>
+                        </li>
+                    }
+
+                    @if (Request.IsAuthenticated && (User.IsInRole("admin") || (User.Identity.Name == "owner") ))
+                    {
+                        <li>@Html.ActionLink("User Roles", "Index", "Roles")</li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @if (TempData["MessagePanel"] != null)
+        {
+            <div class="alert alert-info alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                @TempData["MessagePanel"]
+            </div>
+        } 
+        @if (ViewBag.MessagePanel != null)
+        {
+            <div class="alert alert-info alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                @ViewBag.MessagePanel
+            </div>
+        }        
+
+        @RenderBody()
+    </div>
+
+    <footer id="footer" class="footer text-center navbar-inverse hidden-print">
+        <small class="text-muted">&copy; @DateTime.Now.Year - <a href="mailto:@MyAspNetMvcApp.AppSettings.AppDevEmail" class="text-muted">@MyAspNetMvcApp.AppSettings.AppDeveloper</a></small>
+    </footer>
+
+
+@if (HttpContext.Current.Request.IsLocal)
+{
+    <script src="@Url.Content("~/Scripts/jquery-3.1.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-dialog.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/respond.min.js")"></script>
+}
+else
+{
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/respond/1.4.2/respond.min.js"></script>   
+}
+    <script src="@Url.Content("~/Scripts/Site.js")"></script>
+
+@if (ViewBag.MessageBox != null)
+{
+    <script>
+          BootstrapDialog.show({
+              title: '@MyAspNetMvcApp.AppSettings.AppTitle',
+              message: '@ViewBag.MessageBox'
+          });
+    </script>
+}
+@if (TempData["MessageBox"] != null)
+{
+    <script>
+          BootstrapDialog.show({
+              title: '@MyAspNetMvcApp.AppSettings.AppTitle',
+              message: '@TempData["MessageBox"]'
+          });
+    </script>
+}
+
+@RenderSection("scripts", required: false)
+
+    @* This is to remove the overlay ad in Somee.com *@
+    <script>
+        $(document).ready(function () {
+            $('#nextAll').nextAll().remove();
+        });
+    </script>
+    <hr id="nextAll" style="display:none;" />
+</body>
+</html>
+

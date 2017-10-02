@@ -1,0 +1,31 @@
+﻿@using MyAspNetMvcApp.Models
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+        @if (Session["userId"] != null)
+        {
+            <p>Logged in as @Session["userId"].ToString()</p>
+            <p>There are currently @ViewBag.usercount person logged in</p>
+        }
+        else
+        {
+            <p>As Guest</p>
+        }
+
+        <form action="/datashare/CreateUser" method="post">
+            <input type="text" name="username" placeholder="Enter your username" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

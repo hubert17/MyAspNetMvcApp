@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Welcome to ChatMVC!</h2>
+
+@if(Session["username"] == null)
+{
+    <form action="/chatmvc/join" method="post">
+        <input type="text" name="username" placeholder="Enter your username" />
+        <button type="submit">Join</button>
+    </form>
+}
+else
+{
+    <iframe name="msg" src="/chatmvc/messages"></iframe>
+    <form action="/chatmvc/send" method="post">
+        <label id="user" for="message">@Session["username"]</label>
+        <input type="text" name="message" id="message" placeholder="message" />
+        <button type="button">Send</button>
+    </form>
+
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-database.js"></script>
+    @*<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase-messaging.js"></script>*@
+    <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBe_0wEI_7VfI1l4C5uBWn9kTFdkkGbfKg",
+    authDomain: "poordooytify-a96c0.firebaseapp.com",
+    databaseURL: "https://poordooytify-a96c0.firebaseio.com",
+    projectId: "poordooytify-a96c0",
+    storageBucket: "poordooytify-a96c0.appspot.com",
+    messagingSenderId: "643272361649"
+  };
+    firebase.initializeApp(config);
+
+    firebase.auth().signInAnonymously().catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+    });
+
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            console.log("User is signed in.");
+            var isAnonymous = user.isAnonymous;
+            var uid = user.uid;
+            // ...
+        } else {
+            console.log("User is signed out.");
+            // ...
+        }
+        // ...
+    });
+
+    var database = firebase.database();
+
+    </script>
+
+    @section Scripts {
+        <script>
+            function generateUID() {
+                // I generate the UID from two parts here 
+                // to ensure the random number provide enough bits.
+                var firstPart = (Math.random() * 46656) | 0;
+                var secondPart = (Math.random() * 46656) | 0;
+                firstPart = ("000" + firstPart.toString(36)).slice(-3);
+                secondPart = ("000" + secondPart.toString(36)).slice(-3);
+                return firstPart + secondPart;
+            }
+        </script>
+        <script>
+            function writeUserData(username, message, senddate) {
+                var messageId = new Date().valueOf() + '_' + username;
+            firebase.database().ref('messages/' + messageId).set({
+                User: username,
+                Msg: message,
+                Date: senddate
+            });
+        }
+
+        //var submit = document.getElementsByTagName('button')[0];
+        $('button').click(function (e) {
+            e.preventDefault();
+            var user = $('#user').text();
+            var message = $('#message').val();
+            var senddate = Date();
+            writeUserData(user, message, senddate);
+        });
+
+        </script>
+
+
+            @* Chat page *@
+            <iframe name="msg" src="/chatmvc/messages"></iframe>
+            //form input box here...
+            <script>
+                (function () {
+                    setInterval(function () {
+                        window.open("/chatmvc/messages#Bottom", "msg");
+                    }, 3000);
+                })();
+            </script>
+
+            @* Add this at the bottom of your Messages page *@
+            <div id="Bottom"></div>
+
+    }
+
+}
+
+

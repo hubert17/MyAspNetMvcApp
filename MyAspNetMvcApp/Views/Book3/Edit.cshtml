@@ -1,0 +1,17 @@
+﻿@model MyAspNetMvcApp.Models.Book
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h2>Edit</h2>
+<form action="/book3/edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="@nameof(Model.Id)" value="@Model.Id" />
+    <input type="Text" name="@nameof(Model.Title)" placeholder="Title" value="@Model.Title" />
+    <input type="Text" name="@nameof(Model.Author)" placeholder="Author" value="@Model.Author" />
+    <input type="Text" name="@nameof(Model.ISBN)" placeholder="ISBN" value="@Model.ISBN" />
+    <input type="Text" name="@nameof(Model.PublishYear)" placeholder="Publihs Year" value="@Model.PublishYear" />
+
+    <button type="submit">Save</button>
+</form>

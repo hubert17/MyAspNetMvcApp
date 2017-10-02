@@ -1,0 +1,44 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Average</title>
+</head>
+<body>
+    <div> 
+        <h1>Your grade</h1>
+        <table>
+            <tr>
+                <th>Subject</th>
+                <th>Grade</th>                
+            </tr>
+            <tr>
+                <td>Filipino</td>
+                <td>@ViewBag.fil</td>
+            </tr>
+            <tr>
+                <td>English</td>
+                <td>@ViewBag.eng</td>
+            </tr>
+            <tr>
+                <td>Math</td>
+                <td>@ViewBag.mat</td>
+            </tr>
+            <tr>
+                <td>Science</td>
+                <td>@ViewBag.sci</td>
+            </tr>
+            <tr>
+                <td>Average</td>
+                <td>@ViewBag.average</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

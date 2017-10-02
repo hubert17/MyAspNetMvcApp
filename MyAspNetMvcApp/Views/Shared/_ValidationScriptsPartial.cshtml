@@ -1,0 +1,15 @@
+﻿
+@if (HttpContext.Current.Request.IsLocal)
+{
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+}
+else
+{
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js "></script>
+    <script src="//ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+}
+
+
+
+

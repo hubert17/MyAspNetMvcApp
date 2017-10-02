@@ -1,0 +1,199 @@
+﻿@model MyAspNetMvcApp.Areas.Account.ViewModels.RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Register";
+}
+
+@section Head {
+@if (HttpContext.Current.Request.IsLocal)
+{
+    <link href="@Url.Content("~/Content/intlTelInput.css")" rel="stylesheet" />
+    <style>
+        .iti-flag {
+            background-image: url("/images/flags.png");
+        }
+
+        @@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+            .iti-flag {
+                background-image: url("/images/flags@2x.png");
+            }
+        }
+    </style>
+}
+else
+{
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.2/css/intlTelInput.css" integrity="sha256-Q35kn/SM+AW5mosKvh9cdofWZ2XZQECPFULVWv4LB6U=" crossorigin="anonymous" />
+    <style>
+        .iti-flag {
+            background-image: url("//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.2/img/flags.png");
+        }
+
+        @@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+            .iti-flag {
+                background-image: url("//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.2/img/flags@2x.png");
+            }
+        }
+    </style>
+}
+
+
+
+    <style>
+        .body-content {
+            padding-top: 50px;
+        }
+
+        input {
+            max-width: 100%;
+        }
+
+        /*// workaround*/
+        .intl-tel-input {
+            display: table-cell;
+        }
+        .intl-tel-input .flag-container {
+            z-index: 4;
+        }
+
+        .input-group .intl-tel-input .form-control {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 0;
+        }
+
+        .intl-tel-input {
+            width: 768px;
+        }
+    </style>
+}
+
+<div class="row">
+    <div id="signupbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">Register a new account</div>
+                <div style="float:right; font-size: 80%; position: relative; top:-15px"><a id="signinlink" href="@Url.Action("Login","Account")">Log in</a></div>
+            </div>
+            <div class="panel-body">
+                <form action="@Url.Action("Register", "Account", new { area = "Account" })" method="post" id="signupform" class="form-horizontal" role="form">
+                    @Html.AntiForgeryToken()
+
+                    @if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count > 0)
+                    {
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            @Html.ValidationSummary(true)
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.UserName, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                            <span class="help-block">
+                                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            <span class="help-block">
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                            <span class="help-block">
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-4 control-label" })
+                        @Html.HiddenFor(m => m.CountyCode)
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                            <span class="help-block">
+                                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.LastName, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                            <span class="help-block">
+                                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                            <span class="help-block">
+                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                            </span>
+                        </div>
+                    </div>
+
+                    @Html.Partial("~/Views/Shared/_Register.cshtml")
+
+                    <div class="form-group">
+                        <!-- Button -->
+                        <div class="col-md-offset-4 col-md-8">
+                            <button type="submit" class="btn btn-primary"><i class="icon-hand-right"></i>Sign Up</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        Html.RenderPartial("_ValidationScriptsPartial");
+    }
+
+@if (HttpContext.Current.Request.IsLocal)
+{
+    <script src="@Url.Content("~/Scripts/intlTelInput.min.js")"></script>
+}
+else
+{
+    <script src="//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.0.2/js/intlTelInput.min.js" integrity="sha256-GcG+mdyVITEoEK5V4P3bpy9MEF4Cz4Dl6Lu7JGrvVuw=" crossorigin="anonymous"></script>
+}
+    <script>
+        $(document).ready(function () {
+            $("#@nameof(Model.CountyCode)").val(63);
+            $("#@nameof(Model.PhoneNumber)").intlTelInput({
+                 initialCountry: "ph",
+                 placeholderNumberType: "MOBILE",
+                 preferredCountries: ['ph', 'us'],
+                 separateDialCode: true
+                }
+            );
+        });
+
+        $("#@nameof(Model.PhoneNumber)").on("countrychange", function (e, countryData) {
+            $("#@nameof(Model.CountyCode)").val(countryData.dialCode);
+        });
+    </script>
+
+    <script src="@Url.Content("~/Scripts/jquery.dotanimation.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dotanimation.custom.js")"></script>
+
+}

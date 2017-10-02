@@ -1,0 +1,98 @@
+﻿@model List<MyAspNetMvcApp.Models.Book>
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Book List</h2>
+<a href="/signalrsample/create" class="btn btn-success">Add Books</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>TITLE</th>
+            <th>AUTHOR</th>
+            <th>ISBN</th>
+            <th>PUBLISH YEAR</th>
+            <th>ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr id="bookId-@book.Id">
+                <td>@book.Id</td>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.ISBN</td>
+                <td>@book.PublishYear</td>
+                <td>
+                    <a href="/SignalrSample/edit/@book.Id">Edit</a> |
+                    <a href="/SignalrSample/delete/@book.Id" onclick="return confirm('Delete @book.Title by @book.Author? Pag sure ja!');">Delete</a>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+
+@section Scripts{
+    <script src="@Url.Content("~/Scripts/jquery.signalR-2.2.2.min.js")"></script>
+    <script src="@Url.Content("/signalr/hubs")"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            // Create a proxy to signalr hub on web server. It reference the hub.
+            var notificationFromHub = $.connection.signalRHub;
+
+            // Connect to signalr hub
+            $.connection.hub.start().done(function () {
+                //FetchBooks();
+            });
+
+            // Notify to client with the recent updates
+            notificationFromHub.client.BooksAddedNotif = function (Id) {
+                FetchNewBook(Id);
+            };
+
+            notificationFromHub.client.BooksUpdatedNotif = function (Id) {
+                FetchUpdatedBook(Id); 
+            };
+
+            notificationFromHub.client.BooksDeletedNotif = function (Id) {
+                DeleteBook(Id);
+            };
+
+        });
+
+        function FetchNewBook(bookId) {
+            $.ajax({
+                url: '@Url.Action("GetBook", "SignalrSample")',
+                contentType: 'application/html ; charset:utf-8',
+                type: 'GET',
+                dataType: 'html',
+                data: { Id: bookId }
+            })
+            .done(function (result) {
+                $('tbody').append(result);
+            })
+        }
+
+        function FetchUpdatedBook(bookId) {
+            $.ajax({
+                url: '@Url.Action("GetBook", "SignalrSample")',
+                contentType: 'application/html ; charset:utf-8',
+                type: 'GET',
+                dataType: 'html',
+                data: { Id: bookId }
+            })
+            .done(function (result) {
+                $('#bookId-' + bookId).replaceWith(result);
+            })
+        }
+
+        function DeleteBook(bookId) {
+            $('#bookId-' + bookId).remove();
+        }
+
+    </script>
+}

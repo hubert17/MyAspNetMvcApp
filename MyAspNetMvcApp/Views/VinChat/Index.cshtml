@@ -1,0 +1,39 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    
+    @if (ViewBag.username == string.Empty)
+    {
+        <div>
+            <form action="/vinchat/login" method="post">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="username" />
+                <button type="submit">Join</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div>
+            <iframe src="/vinchat/Messages" name="msg"></iframe>
+            <form action="/Vinchat/Send" method="post">
+                <label>@ViewBag.username</label>
+                <input type="text" name="txtmsg" />
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    }
+
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div> 
+        <form action="/Progbasic3w1/grade" method="post">
+            <label>Name: </label>
+            <input type="text" name="Fullname" id="Fullname"/>
+            <input type="text" name="FirstGrade" placeholder="First Grade" />
+            <input type="text" name="SecondGrade" placeholder="Second Grade" />
+            <input type="text" name="ThirdGrade" placeholder="Third Grade" />
+            <button type="submit">Submit</button>
+        </form>
+
+
+        @for(int i=0;i<=5;i++)
+        {
+            for(int j=0; j<=i;j++)
+            {
+                @Html.Raw("*");
+            }
+            <br />
+        }
+
+        hewbertgabon@yahoo.com
+
+    </div>
+</body>
+</html>

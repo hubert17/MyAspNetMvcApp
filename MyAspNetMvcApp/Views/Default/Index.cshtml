@@ -1,0 +1,61 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+    <style>
+        td {
+            border: 1px solid;
+        }
+    </style>
+</head>
+<body>
+    <div> 
+        <ol>
+            @foreach (var name in ViewBag.souls as List<string>)
+            {
+                <li>Ang kalag ni @name</li>
+            }
+        </ol>
+
+        <h1>List of students</h1>
+        <table>
+            <tr>
+                <th>Lastname</th><th>Firstname</th><th>Course</th>
+            </tr>
+            @foreach (var stud in ViewBag.studs as List<MyAspNetMvcApp.Models.Student>)
+            {
+                <tr>
+                    <td>@stud.LastName</td>
+                    <td>@stud.FirstName</td>
+                    <td>@stud.Course</td>
+                </tr>
+            }
+        </table>
+
+        <form action="/default/phonebook" method="post">
+            <input type="text" name="contactname" placeholder="contact name" />
+            <input type="text" name="username" placeholder="username" />
+            <button type="submit">search</button>
+        </form>
+
+        @if(ViewBag.contactno != null)
+        {
+            <p>The contact number of @ViewBag.contactname is @ViewBag.contactno</p>
+        }
+
+        @if(Session["user"] != null)
+        {
+          <p>Your username is Session Session["user"]</p>
+        }
+
+    </div>
+</body>
+</html>

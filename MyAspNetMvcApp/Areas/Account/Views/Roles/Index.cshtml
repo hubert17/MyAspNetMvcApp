@@ -1,0 +1,190 @@
+﻿@*//model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityUser>*@
+@model IEnumerable<MyAspNetMvcApp.Areas.Account.Models.ApplicationUser>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "User Roles";
+    var userRoles = ViewBag.userRoles as Dictionary<string, List<string>>;
+}
+
+<style>
+    body {
+        min-height: 1080px;
+        color:dimgray;
+    }
+</style>
+
+<h2>User Roles Manager </h2>
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="panel panel-info">
+            <div class="panel-heading"><strong>Roles</strong></div>
+            <div class="panel-body">
+                @foreach (var role in ViewBag.roles as IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>)
+                {
+                    <form action="/Roles/Edit/" method="post">
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        <input type="hidden" name="Id" value="@role.Id" />
+                        <table width="100%">
+                            <tr>
+                                @{ 
+                                    var _readonly = "";
+                                    var _disabled = "";
+                                    if (role.Name == "admin")
+                                    {
+                                        _readonly = "readonly";
+                                        _disabled = "disabled";
+                                    }
+                                }
+                                <td><input type="text" name="name" value="@role.Name" class="form-control" @_readonly /></td>
+                                <td><button type="submit" class="btn btn-primary" title="Save" @_disabled ><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
+                                <td><a href="/Roles/Delete?RoleName=@role.Name" class="btn btn-danger" @_disabled onclick="return confirm('Are you sure to delete?')" title="Delete"><span class="glyphicon glyphicon-remove"></span></a></td>
+                            </tr>
+                        </table>
+                        <hr />
+                    </form>
+                }
+                <form action="/Roles/Create/" method="post">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <table width="100%">
+                        <tr>
+                            <td><input type="text" name="RoleName"  class="form-control" placeholder="Add Role" /></td>
+                            <td><button type="submit" class="btn btn-primary" title="Add"><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
+                            <td><button type="reset" class="btn btn-default" title="Cancel"><span class="glyphicon glyphicon-remove"></span></button></td>
+                        </tr>
+                    </table>
+                    <hr />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-5">
+        <div class="panel panel-info">
+            <div class="panel-heading"><strong>Users</strong></div>
+            <div class="panel-body">
+                @foreach (var user in Model)
+                {
+                        <table width="100%">
+                            <tr>
+                                <td width="80%"><input type="text" name="name" value="@user.UserName" class="form-control" readonly form="formSaveUser" /></td>
+                                <td><button type="button" class="btn btn-info" data-toggle="collapse" data-target=".user-@user.Id"><span class="glyphicon glyphicon-user"></span></button></td>
+                                @{ 
+                                    var _disabled = user.UserName == User.Identity.Name ? "disabled" : string.Empty;
+                                    var _btnLabel = "Deactivate this user?";
+                                    var _btnIcon = "glyphicon-bookmark";
+                                    var _btnAction = "LockUser";
+                                    if (!user.UserProfile.IsActive)
+                                    {
+                                        _btnLabel = "Activate this user?";
+                                        _btnIcon = "glyphicon-ban-circle";
+                                        _btnAction = "UnlockUser";
+                                    }
+                                }
+                                <td><a href="/Roles/@_btnAction?UserName=@user.UserName" class="btn btn-danger @_disabled" title="@_btnLabel" @_disabled><span class="glyphicon @_btnIcon"></span></a></td>
+                            </tr>
+                        </table>
+                        <div class="row">
+                            @{ 
+                                var c_in = string.Empty;
+                                if ((string)TempData["UserName"] == user.UserName)
+                                {
+                                    c_in = "in";
+                                }
+                            }                            
+                            <div class="user-@user.Id collapse @c_in col-md-6">
+                                Belongs to role
+                                <ul>
+                                    @foreach (var roles in userRoles[user.Id])
+                                    {
+                                        string warning = string.Empty;
+                                        <li>
+                                            <form action="/roles/DeleteRoleForUser/" method="post">
+                                                @Html.AntiForgeryToken()
+                                                @Html.ValidationSummary(true)
+                                                <input type="hidden" name="UserName" id="UserName" value="@user.UserName" />
+                                                <input type="hidden" name="RoleName" id="RoleName" value="@roles" />
+                                                @if (user.UserName == System.Configuration.ConfigurationManager.AppSettings["AdminUsername"])
+                                                {
+                                                    @roles <button type="button" class="btn btn-danger btn-xs disabled" disabled><span class="glyphicon glyphicon-remove"></span></button>
+                                                }
+                                                else if (roles == "admin" && user.UserName == User.Identity.Name)
+                                                {
+                                                    @roles <button type="submit" class="btn btn-danger btn-xs" onClick="return confirm('Warning: You are about to remove yourself from the admin group. Continue?')"><span class="glyphicon glyphicon-remove"></span></button>
+                                                }
+                                                else
+                                                {
+                                                    @roles <button type="submit" class="btn btn-danger btn-xs" ><span class="glyphicon glyphicon-remove" ></span></button>
+                                                }
+                                            </form>
+                                        </li>
+                                    }
+                                    <li>
+                                        <form action="/roles/RoleAddToUser/" method="post">
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary(true)
+                                            <input type="hidden" name="UserName" id="UserName" value="@user.UserName" />
+                                            <select name="RoleName" id="RoleName">
+                                                <option value="">Add Role</option>
+                                                @foreach (var r in ViewBag.roles as IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>)
+                                                {
+                                                    if (!userRoles[user.Id].Contains(r.Name))
+                                                    {
+                                                        <option>@r.Name</option>
+                                                    }
+                                                }
+                                            </select>
+                                            <button type="submit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+                                        </form>
+                                    </li>
+                                </ul>
+
+
+                            </div>
+
+                            <div class="user-@user.Id collapse @c_in col-md-6">
+                                Profile
+                                <dl>
+                                    <dt>Name</dt>
+                                    <dd>@user.UserProfile.FirstName @user.UserProfile.LastName</dd>
+                                    <dt>Registration Date</dt>
+                                    <dd>@user.UserProfile.RegistrationDate</dd>
+                                    <dt>Active</dt>
+                                    <dd>@((bool) user.UserProfile.IsActive ? "Yes" : "No") </dd>
+                                    <dt>Last Login</dt>
+                                    <dd>@user.UserProfile.LastLogin</dd>
+                                </dl>
+                            </div>
+
+                        </div>
+                        <hr />
+                    
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="panel panel-info">
+            <div class="panel-heading"><strong>Actvity</strong></div>
+            <div class="panel-body" style="padding:5px;">
+                @foreach(var user in Model.OrderByDescending(o=>o.UserProfile.LastLogin).Take(20))
+                {
+                    <span style="font-size:xx-small;color:gray;">@user.UserName logged in last @user.UserProfile.LastLogin</span>
+                    <hr style="margin-top:0;margin-bottom:0;" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

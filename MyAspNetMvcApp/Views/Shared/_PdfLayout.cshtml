@@ -1,0 +1,110 @@
+﻿@{
+    Layout = null;     
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - @AppSettings.AppTitle</title>
+
+    @if (HttpContext.Current.Request.IsLocal)
+    {
+        <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+        <link href="@Url.Content("~/Content/font-awesome.min.css")" rel="stylesheet">
+        <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
+    }
+    else
+    {
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
+    }
+    <link href="@Url.Content("~/Content/bootstrap-print-fix.css")" rel="stylesheet">
+
+    <style>
+        @@media print {
+         /* All your print styles go here */
+            header, #header, .header, footer, #footer, .footer, nav, #nav, .nav, .navbar, .btn { display: none !important; }
+            .no-print, .no-print * {
+                display: none !important;
+            }
+        }
+    </style>
+
+    <style>
+        .collabel {
+            width: 30%;
+        }
+    </style>
+
+    <style>
+        body {            
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 16px;
+            line-height: 1.42857143;
+            color: #333;
+            background-color: #fff; 
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        header h2{
+            font-family: "Felix Titling", "Perpetua Titling MT", serif;
+        }
+        h1{
+            font-family:Haettenschweiler,"Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+        h2 {
+            text-align:center;
+            font-variant:small-caps;
+        }
+
+        /*From Bootstrap 3*/
+        .container {
+          width: 970px;
+          padding-right: 50px;
+          padding-left: 50px;
+          margin-right: auto;
+          margin-left: auto;   
+          padding-top: 5px;                
+        }
+        .row {
+          margin-right: -15px;
+          margin-left: -15px;
+        }
+        .col-sm-6 {
+          float:left;
+          width: 50%;
+        }
+        .table {
+          width: 100%;
+          max-width: 100%;
+          margin-bottom: 20px;
+          border-top: none;
+        }
+        .table>tbody>tr>td, .table>tbody>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+          padding: 8px;
+          line-height: 1.42857143;
+          vertical-align: top;
+          border-top: none;
+          border-bottom: 1px solid #ddd;
+        }
+        .tbl-header {
+            background-color:gray;
+            color:white;
+        }
+        .table .no-border {
+            border: none !important;
+        }
+
+
+    </style>
+    @RenderSection("Head", required: false)
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>

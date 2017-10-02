@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Print";
+    Layout = "~/Views/Shared/_PdfLayout.cshtml";
+}
+
+<h2>@AppSettings.AppTitle</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>TITLE</th>
+            <th>AUTHOR</th>
+            <th>ISBN</th>
+            <th>PUBLISH YEAR</th>
+            <th>ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr id="bookId-@book.Id">
+                <td>@book.Id</td>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.ISBN</td>
+                <td>@book.PublishYear</td>
+                <td>
+                    <a href="/SignalrSample/edit/@book.Id">Edit</a> |
+                    <a href="/SignalrSample/delete/@book.Id" onclick="return confirm('Delete @book.Title by @book.Author? Pag sure ja!');">Delete</a>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>

@@ -1,0 +1,55 @@
+﻿
+@using MyAspNetMvcApp.Models
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Kalag</title>
+    <style>
+        td {
+            border-bottom: 1px solid;
+        }
+    </style>
+</head>
+<body>
+    <div> 
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Main Actor</th>
+                    <th>Genre</th>
+                    <th>Director</th>
+                    <th>Release Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var movie in ViewBag.movies as List<Movie>)
+                {
+                    <tr>
+                        <td>@movie.Title</td>
+                        <td>@movie.MainActor</td>
+                        <td>@movie.Genre</td>
+                        <td>@movie.Director</td>
+                        <td>@movie.ReleaseYear</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
+        <ol>
+            @foreach(string n in ViewBag.names as List<string>)
+            {
+                <li>Ang kalag ni @n</li>
+            }
+        </ol>
+    </div>
+</body>
+</html>

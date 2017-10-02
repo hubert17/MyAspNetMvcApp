@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Average Grade";
+}
+
+<h2>Enter your grade</h2>
+
+<form  action="/activity2/average" method="post">
+    <label for="fil">Filipino: </label>
+    <input type="text" name="fil" /><br />
+    <label for="eng">English: </label>
+    <input type="text" name="eng" /><br />
+    <label for="mat">Math: </label>
+    <input type="text" name="mat" /><br />
+    <label for="sci">Science: </label>
+    <input type="text" name="sci" /><br />
+    <button type="submit">Submit</button>
+</form>

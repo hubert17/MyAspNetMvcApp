@@ -1,0 +1,41 @@
+﻿@model MyAspNetMvcApp.ViewModels.OrderViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Shopping Cart</h2>
+
+Order#: @Model.OrderId <br />
+Customer: @Model.CustomerName <br />
+Order Date: @Model.OrderDate <br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price</td>
+                <td>@item.Amount</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" style="text-align:right">
+                @Model.OrderTotal
+            </td>
+        </tr>
+    </tfoot>
+</table>
+

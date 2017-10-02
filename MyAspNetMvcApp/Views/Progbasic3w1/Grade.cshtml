@@ -1,0 +1,40 @@
+﻿
+
+@{
+    ViewBag.Title = "Grade";
+}
+
+<h2>Grade</h2>
+
+
+
+
+
+
+@{ 
+    double fg = ViewBag.finalGrade;
+    string color = string.Empty;
+    bool remarks;
+    if(fg<50)
+    {
+        color = "red";
+        remarks = true;
+    }
+    else
+    {
+        color = "green";
+        remarks = false;
+    }
+}
+
+<p>Hello @(ViewBag.name+"!!!")</p>
+<p>Your final grade is <strong style="color:@color">@ViewBag.finalGrade</strong> </p>
+
+@if (remarks)
+{
+    <p>You failed!</p>
+}
+else
+{
+    <p>You passed!</p>
+}

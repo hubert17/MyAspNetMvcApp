@@ -1,0 +1,49 @@
+﻿@model List<MyAspNetMvcApp.Models.OrderApp.Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<form action="/products1/index">
+    <input type="text" name="keyword" placeholder="Search" />
+    <button type="submit">Search</button>
+</form>
+
+<a href="/products1/index?sort=1">Sort from cheapest price</a>
+<a href="/products1/index?sort=2">Sort by Name</a>
+
+@foreach (var item in Model)
+{
+    <div class="col-md-3">
+        <div class="thumbnail">
+            <a href="/products1/details?id=@item.Id">
+                <img src="data:image/jpg;base64,@Convert.ToBase64String(item.Picture)" class="img-responsive img-rounded" />
+            </a>
+            <div class="caption">
+                <h4 class="pull-right">@item.Price</h4>
+                <h4>
+                    <a href="/products1/details?id=@item.Id">@item.Name</a>
+                </h4>
+            </div>
+            <div class="ratings">
+                <p class="pull-right">15 reviews</p>
+                <p>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+}
+

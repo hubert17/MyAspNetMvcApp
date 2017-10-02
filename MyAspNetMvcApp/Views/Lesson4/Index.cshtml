@@ -1,0 +1,29 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+ 
+
+        <ul>
+            @foreach(var contact in ViewBag.phonebook as Dictionary<string, string>)
+            {
+                <li>@contact.Key  - @contact.Value</li>
+            }
+        </ul>
+
+        @*Total contacts: @phonebook.Count
+        <br /> First: @phonebook.First().Key*@
+ 
+    </div>
+</body>
+</html>

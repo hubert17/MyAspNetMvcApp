@@ -1,0 +1,44 @@
+﻿@model MyAspNetMvcApp.Models.Email
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    input, textarea {
+        min-width: 480px;
+    }
+</style>
+
+@if (TempData["msg"] != null)
+{
+    if ((bool)TempData["msg"] == true)
+    {
+        <div class="alert alert-info">
+            Successfully sent.
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            Sending Failed.
+        </div>
+    }
+}
+
+<h2>Send Email</h2>
+<form action="@Url.Action("Send","Email")" method="post" enctype="multipart/form-data">
+    <input type="text" name="@nameof(Model.MailTo)" placeholder="To" /><br />
+    <input type="text" name="@nameof(Model.Subject)" placeholder="Subject" /><br />
+    <textarea name="@nameof(Model.Message)" rows="3" placeholder="Message"></textarea><br />
+    Attachment: <input type="file" name="Attachment" /><br />
+    <button type="submit">Send</button>
+</form>
+
+
+<h2>Send Email</h2>
+<form action="@Url.Action("SendSMS","Email")" method="post">
+    <input type="text" name="@nameof(Model.MailTo)" placeholder="To" /><br />
+    <textarea name="@nameof(Model.Message)" rows="3" placeholder="Message">
+    @Gabs.Helpers.SMSUtil.GenerateCode(Request.QueryString["m"])</textarea><br />
+    <button type="submit">Send</button>
+</form>

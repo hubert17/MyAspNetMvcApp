@@ -1,0 +1,174 @@
+﻿@model MyAspNetMvcApp.Areas.Account.ViewModels.LoginViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Log in";
+}
+
+@section Head {
+   <style>
+       .body-content {
+           padding-top: 50px;
+       }
+       input {
+           max-width: 100%;
+       }
+       .validation-summary-errors ul {
+           margin-bottom: 0px;
+       }
+       .validation-summary-errors ul li {
+           list-style: none;
+       }
+    </style>
+}
+
+<div class="row">
+    <div id="loginForm" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">Log in</div>
+                <div style="float:right; font-size: 80%; position: relative; top:-15px"><a href="#" onClick="$('#loginForm').hide(); $('#forgotbox').show()">Forgot password?</a></div>
+            </div>
+
+            <div style="padding-top:30px" class="panel-body">
+
+                <div class="col-md-10 col-md-offset-1">
+                    @if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count > 0)
+                    {
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            @Html.ValidationSummary(true)
+                        </div>
+                    }
+
+                    <form action="@Url.Action("Login", "Account", new { @ReturnUrl = ViewBag.ReturnUrl })" method="post" class="form-horizontal" role="form">
+                        @Html.AntiForgeryToken()
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Email or Mobile Number", autofocus = "autofocus" })
+                        </div>
+                        <p>
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        </p>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                        </div>
+                        <p>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </p>
+                        <div class="input-group">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(m => m.RememberMe) Remember me
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:10px" class="form-group">
+                            <!-- Button -->
+                            <div class="col-sm-12 controls">
+                                <input type="submit" value="Log in" class="btn btn-primary submit" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12 control">
+                                <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+                                    Don't have an account? <a href="@Url.Action("Register", "Account", new { Area = "Account" })">Sign up here.</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="forgotbox" style="display:none;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">Forgot password</div>
+                <div style="float:right; font-size: 80%; position: relative; top:-15px"><a id="forgotlink" href="#" onclick="$('#forgotbox').hide(); $('#loginForm').show()">Sign In</a></div>
+            </div>
+            <div class="panel-body">
+                <div id="forgotalert" class="alert alert-warning" style="font-style:italic;">
+                    <p>
+                        Enter your email address and we will send you instructions on how to reset your password.
+                    </p>
+                </div>
+                <div class="col-md-10">
+                    <div id="forgotform" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="email" class="col-md-3 control-label">Email</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="fpemail" name="fpemail" placeholder="Enter your email address">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <!-- Button -->
+                            <div class="col-md-offset-3 col-md-9">
+                                <button id="btn-forgot" type="button" class="btn btn-info"><i class="icon-hand-right"></i>Reset Password</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    @{ Html.RenderPartial("~/Views/Shared/_ValidationScriptsPartial.cshtml"); }
+    @{ Html.RenderPartial("~/Views/Shared/_SubmitAnimationScriptPartial.cshtml"); }
+
+<script>
+        if (window.top !== window.self) {
+            $('.navbar').hide();
+            $('.container').hide();
+
+            var loc = window.top.location.href, index = loc.indexOf('#');
+            if (index > 0)
+                window.top.location.replace('@Url.Action("Login", "Account", new { Area = "Account" })?ReturnUrl=' + loc.substring(0, index));
+            else
+                window.top.location.replace('@Url.Action("Login", "Account", new { Area = "Account" })');
+        }
+
+        $(document).ready(function () {
+            $("#btn-forgot").click(function () {
+                var email = $('#fpemail').val();
+                if (!email) {
+                    return;
+                }
+                $(this).attr('disabled', true);
+                $(this).html('Requesting...');
+                var value;
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ForgotPassword","Account")?email=' + email,
+                    success: function (res) {
+                        $('#forgotform').hide();
+                        if (res == "1") {
+                            //alert('Reset password request for ' + email + ' has been sent. Please check your inbox.');
+                            $('#forgotalert').html('Reset password request for ' + email + ' has been sent. Please check your inbox.');
+                        }
+                        else {
+                            $('#forgotalert').html('Check your inbox.');
+                        }
+                        //$('#forgotalert').removeClass('hidden');
+                    }
+                });
+            });
+        });
+
+</script>
+}

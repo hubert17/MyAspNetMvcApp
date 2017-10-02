@@ -1,0 +1,13 @@
+﻿@model MyAspNetMvcApp.Models.Song
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<form action="/List/Songs" method="post">
+    <input type="text" name="@nameof(Model.Title)" placeholder="@nameof(Model.Title)" />
+    <input type="text" name="@nameof(Model.Artist)" placeholder="@nameof(Model.Artist)" />
+    <input type="text" name="@nameof(Model.Artwork)" placeholder="@nameof(Model.Artwork)" />
+    <button type="submit">Submit</button>
+</form>

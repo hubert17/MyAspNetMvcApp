@@ -1,0 +1,214 @@
+﻿<section id="download-section" class="doc-section">
+    <h2 class="section-title">Download</h2>
+    <div class="section-block">
+        <p>
+            AspNetMvcGabs is an opensource base template project created by Bernard Gabon for ASP.NET MVC 5. Feel free to explore the source code on <a href="https://github.com/hubert17/AspNetMvcGabs" target="_blank">Github</a>. 
+        </p>
+        <a href="https://github.com/hubert17/AspNetMvcGabs/archive/master.zip" class="btn btn-green" target="_blank"><i class="fa fa-download"></i> Download </a>
+    </div>
+</section><!--//doc-section-->
+
+<section id="appsettings-section" class="doc-section">
+    <h2 class="section-title">App Settings</h2>
+    <div class="section-block">
+        <div class="code-block">
+            <h6>Go to web.config and update the VALUE of the following app settings.</h6>
+            <pre class="language-aspnet"><code class=" language-aspnet">
+&lt;appSettings&gt;
+    &lt;add key=&quot;AppTitle&quot; value=&quot;Gabs.com&quot; /&gt; &lt;!-- Max 16 characters recommended. --&gt;
+    &lt;add key=&quot;AppDescription&quot; value=&quot;Gabs portal for PHINMA-COC IT/Multimedia/Web students.&quot; /&gt;
+    &lt;add key=&quot;AppDomainName&quot; value=&quot;http://www.bernardgabon.com&quot; /&gt;
+    &lt;add key=&quot;AppDeveloper&quot; value=&quot;Hubert Gabs&quot; /&gt;
+    &lt;add key=&quot;AppDevEmail&quot; value=&quot;hewbertgabon@gmail.com&quot; /&gt;
+    &lt;!-- Default accounts. Kindly update password or deactivate. --&gt;
+    &lt;add key=&quot;AdminUsername&quot; value=&quot;admin1&quot; /&gt;
+    &lt;add key=&quot;AdminPassword&quot; value=&quot;password1&quot; /&gt;
+    &lt;add key=&quot;TempUsername&quot; value=&quot;user1&quot; /&gt;
+    &lt;add key=&quot;TempPassword&quot; value=&quot;userpass1&quot; /&gt;
+  
+    &lt;add key=&quot;EmailVerificationEnabled&quot; value=&quot;false&quot; /&gt;
+&lt;/appSettings&gt;
+            </code></pre>
+        </div>    
+    </div>
+</section><!--//doc-section-->
+
+<section id="installation-section" class="doc-section">
+    <h2 class="section-title">DO NOT DELETE</h2>
+    <div id="step1" class="section-block">
+        <h3 class="block-title">File and Folder Structure</h3>
+        <p>
+            It is advise to delete samples and unneeded files and folders except the following:
+        </p>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <h6>MyAspNetMvcApp</h6>
+                <ul class="list">
+                    <li>App_Data</li>
+                    <li>App_Start</li>
+                    <li>Areas</li>
+                    <li>Content</li>
+                    <li>
+                        Controller
+                        <ul>
+                            <li>HomeController.cs</li>
+                        </ul>
+                    </li>
+                    <li>fonts</li>
+                    <li>Helpers</li>
+                    <li>Images</li>
+                    <li>Migrations</li>
+                    <li>
+                        Models
+                        <ul>
+                            <li>ApplicationDbContext</li>
+                            <li>Lookup</li>
+                        </ul>
+                    </li>
+                    <li>Rotativa</li>
+                    <li>Scripts</li>
+                    <li>
+                        ViewModels
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </li>
+                    <li>
+                        Views
+                        <ul>
+                            <li>Home</li>
+                            <li>Shared</li>
+                            <li>_ViewStart.cshtml</li>
+                            <li>Web.config</li>
+                        </ul>
+                    </li>
+                    <li>Global.asax</li>
+                    <li>packages.config</li>
+                    <li>SignalRHub.cs</li>
+                    <li>Startup.cs</li>
+                    <li>Web.config</li>
+                </ul>
+            </div>            
+        </div><!--//row-->
+
+    </div><!--//section-block-->
+</section>
+
+<section id="appsettings-section" class="doc-section">
+    <h2 class="section-title">Customizing Account Registration</h2>
+    <div class="section-block">
+        <p>You can ask for additional user information by adding and customizing the account registration. In this example, we are including <strong>BirthDate</strong> as additional input in Registration page.</p>
+        <div class="code-block">
+            <h6>Areas > Account > Models > UserProfile.cs</h6>
+            <pre class=" language-markup"><code class="language-csharp">
+public class UserProfile
+{
+    [Key]
+    public string UserName { get; set; }
+    public string LastName { get; set; }
+    public string FirstName { get; set; }
+    public string MobilePhone { get; set; }
+    public string AltEmail { get; set; }
+    public DateTime? LastLogin { get; set; }
+    public DateTime? RegistrationDate { get; set; }
+    public bool? InActive { get; set; }
+    //Add your custom field here 
+    public DateTime BirthDate { get; set; }
+
+}
+            </code></pre>
+        </div>
+        <div class="code-block">
+            <h6>Areas > Accounts > ViewModels > AccountViewModels.cs</h6>
+            <pre class=" language-markup"><code class="language-csharp">
+public class RegisterViewModel
+{
+    ...
+                
+    [Required]
+    [Display(Name = "Lastname")]
+    public string LastName { get; set; }
+
+    [Required]
+    [Display(Name = "Firstname")]
+    public string FirstName { get; set; }
+    //Add your custom field here 
+    [Required]
+    [Display(Name = "Birth Date")]
+    public DateTime BirthDate { get; set; }
+}
+            </code></pre>
+        </div>
+        <div class="code-block">
+            <h6>Areas > Accounts > Views > Accounts > Register.cshtml</h6>
+            <pre class=" language-markup"><code class="language-aspnet">
+&#x3C;form action=&#x22;@@Url.Action(&#x22;Register&#x22;, &#x22;Account&#x22;, new { area = &#x22;Account&#x22; })&#x22; method=&#x22;post&#x22;&#x3E;
+    ...
+
+    &#x3C;div class=&#x22;form-group&#x22;&#x3E;
+        @@Html.LabelFor(m =&#x3E; m.LastName, new { @@class = &#x22;col-md-4 control-label&#x22; })
+        &#x3C;div class=&#x22;col-md-8&#x22;&#x3E;
+            @@Html.TextBoxFor(m =&#x3E; m.LastName, new { @@class = &#x22;form-control&#x22; })
+            &#x3C;span class=&#x22;help-block&#x22;&#x3E;
+                @@Html.ValidationMessageFor(m =&#x3E; m.LastName, &#x22;&#x22;, new { @@class = &#x22;text-danger&#x22; })
+            &#x3C;/span&#x3E;
+        &#x3C;/div&#x3E;
+    &#x3C;/div&#x3E;
+
+    &#x3C;div class=&#x22;form-group&#x22;&#x3E;
+        @@Html.LabelFor(m =&#x3E; m.FirstName, new { @@class = &#x22;col-md-4 control-label&#x22; })
+        &#x3C;div class=&#x22;col-md-8&#x22;&#x3E;
+            @@Html.TextBoxFor(m =&#x3E; m.FirstName, new { @@class = &#x22;form-control&#x22; })
+            &#x3C;span class=&#x22;help-block&#x22;&#x3E;
+                @@Html.ValidationMessageFor(m =&#x3E; m.FirstName, &#x22;&#x22;, new { @@class = &#x22;text-danger&#x22; })
+            &#x3C;/span&#x3E;
+        &#x3C;/div&#x3E;
+    &#x3C;/div&#x3E;
+    &#x3C;!-- Add custom field here --&#x3E;
+    &#x3C;div class=&#x22;form-group&#x22;&#x3E;
+        @@Html.LabelFor(m =&#x3E; m.BirthDate, new { @@class = &#x22;col-md-4 control-label&#x22; })
+        &#x3C;div class=&#x22;col-md-8&#x22;&#x3E;
+            @@Html.TextBoxFor(m =&#x3E; m.BirthDate, new { @@class = &#x22;form-control&#x22; })
+            &#x3C;span class=&#x22;help-block&#x22;&#x3E;
+                @@Html.ValidationMessageFor(m =&#x3E; m.BirthDate, &#x22;&#x22;, new { @@class = &#x22;text-danger&#x22; })
+            &#x3C;/span&#x3E;
+        &#x3C;/div&#x3E;
+    &#x3C;/div&#x3E;
+
+    &#x3C;div class=&#x22;form-group&#x22;&#x3E;
+        &#x3C;!-- Button --&#x3E;
+        &#x3C;div class=&#x22;col-md-offset-4 col-md-8&#x22;&#x3E;
+            &#x3C;button type=&#x22;submit&#x22; class=&#x22;btn btn-primary&#x22;&#x3E;&#x3C;i class=&#x22;icon-hand-right&#x22;&#x3E;&#x3C;/i&#x3E;Sign Up&#x3C;/button&#x3E;
+        &#x3C;/div&#x3E;
+    &#x3C;/div&#x3E;
+
+&#x3C;/form&#x3E;
+            </code></pre>
+        </div>
+        <div class="code-block">
+            <h6>Areas > Account > Controllers > AccountController.cs</h6>
+            <pre class=" language-markup"><code class="language-csharp">
+public async Task<ActionResult> Register(RegisterViewModel model)
+{
+    if (ModelState.IsValid)
+    {
+        var user = new ApplicationUser()
+        {
+            UserName = model.UserName,
+            PhoneNumber = string.IsNullOrEmpty(model.PhoneNumber) ? null : model.PhoneNumber.TrimStart('0'),
+            CountyCode =  string.IsNullOrEmpty(model.PhoneNumber) ? null : model.CountyCode,
+            UserProfile = new UserProfile
+            {
+                UserName = model.UserName,
+                LastName = model.LastName,
+                FirstName = model.FirstName,
+                RegistrationDate = DateTime.Now,
+                BirthDate = model.BirthDate,
+                InActive = false
+            }
+        };
+...
+            </code></pre>
+        </div>
+    </div>
+</section>

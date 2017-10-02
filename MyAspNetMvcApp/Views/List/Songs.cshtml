@@ -1,0 +1,18 @@
+﻿@model List<MyAspNetMvcApp.Models.Song>
+@{
+    ViewBag.Title = "Songs";
+}
+
+<h2>Songs</h2>
+
+
+@foreach (var song in Model)
+{
+    <div class="panel">
+        <img src="~/Images/@song.Artwork" width="200" />
+        <figure>
+            <strong>@song.Title</strong>
+            <em>@song.Artist</em>
+        </figure>
+    </div>
+}

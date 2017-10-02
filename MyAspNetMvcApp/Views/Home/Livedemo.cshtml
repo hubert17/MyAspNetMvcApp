@@ -1,0 +1,20 @@
+﻿@model List<MyAspNetMvcApp.Models.AppControllerAction>
+@{
+    ViewBag.Title = "Livedemo";
+}
+
+<style>
+    a, li {
+        font-size: large;
+    }
+</style>
+
+<h2>Live Demos</h2>
+
+<ul>
+    @foreach (var i in Model)
+    {
+        <li><a href="@Url.Action(i.Action, i.Controller)">/@i.Controller/@i.Action</a></li>
+    }
+</ul>
+

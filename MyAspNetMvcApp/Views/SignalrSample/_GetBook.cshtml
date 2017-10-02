@@ -1,0 +1,14 @@
+﻿@model MyAspNetMvcApp.Models.Book
+
+<tr>
+    <td>@Model.Id</td>
+    <td>@Model.Title</td>
+    <td>@Model.Author</td>
+    <td>@Model.ISBN</td>
+    <td>@Model.PublishYear</td>
+    <td>
+        <a href="/SignalrSample/edit/@Model.Id">Edit</a> |
+        <a href="/SignalrSample/delete/@Model.Id" onclick="return confirm('Delete @Model.Title by @Model.Author? Pag sure ja!');">Delete</a>
+    </td>
+</tr>
+

@@ -1,0 +1,15 @@
+﻿@model MyAspNetMvcApp.Models.Book
+@{
+    ViewBag.Title = "Delete";
+}
+
+<form action="/book3/delete" method="post">
+    <input type="hidden" name="@nameof(Model.Id)" value="@Model.Id" />
+    <h2>Do you want to delete @Model.Title?</h2>
+    <button type="submit">Yes</button>
+    <a href="/book3/index">No</a>
+</form>
+
+
+
+
