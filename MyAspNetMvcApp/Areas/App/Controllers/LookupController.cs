@@ -15,7 +15,7 @@ namespace MyAspNetMvcApp.Areas.App.Controllers
         // GET: App/Lookup
         public ActionResult Index(bool showInactive = false)
         {
-            ViewBag.lookups = showInactive ? db.Lookups.ToList() : db.Lookups.Where(x => x.InActive == false).ToList();
+            ViewBag.lookups = showInactive ? db.Lookups.ToList() : db.Lookups.Where(x => x.IsActive == true).ToList();
             return View();
         }
 

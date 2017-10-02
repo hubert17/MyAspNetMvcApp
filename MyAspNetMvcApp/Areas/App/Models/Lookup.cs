@@ -14,6 +14,6 @@ namespace MyAspNetMvcApp.Areas.App.Models
         public int Key { get; set; }
         public string Value { get; set; }
         public string Description { get; set; }
-        public bool InActive { get; set; }
+        public bool IsActive { get; set; }
     }
 }

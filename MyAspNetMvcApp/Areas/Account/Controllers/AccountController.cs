@@ -103,7 +103,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     UserProfile = new UserProfile
                     {
                         UserName = model.UserName,
-                        UserType = model.UserType,
+                        RegistrationType = model.RegistrationType,
                         LastName = model.LastName,
                         FirstName = model.FirstName,
                         RegistrationDate = DateTime.Now,

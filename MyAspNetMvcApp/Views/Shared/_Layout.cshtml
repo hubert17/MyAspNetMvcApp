@@ -56,7 +56,7 @@ else
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown hidden">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Home <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
@@ -67,53 +67,15 @@ else
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Facebook Groups <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="https://www.facebook.com/groups/aspnetmvcgabs/" target="_blank">Advance Web Development</a></li>
-                            <li><a href="https://www.facebook.com/groups/multimediaitphinmacoc/" target="_blank">Multiemedia-IT</a></li>
+                            <li><a href="#" target="_blank">Menu item 1</a></li>
+                            <li><a href="#" target="_blank">Menu item 2</a></li>
                             <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">Under construction</li>
-                            <li><a href="#">Desktop Publishing</a></li>
+                            <li class="dropdown-header">Sub Menu Header</li>
+                            <li><a href="#">Menu item 3</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">WebApps <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="http://poordooytify.azurewebsites.net" target="_blank">Poordooytify</a></li>
-                            <li><a href="https://github.com/hubert17/AspNetMvcGabs" target="_blank">Github Repository</a></li>
-                            <li><a href="@Url.Action("Livedemo", "Home")">Controller / Actions</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">Advance Web-1</li>
-                            <li><a href="#">Hello</a></li>
-                            <li><a href="#">Madam Kapalaran</a></li>
-                            <li><a href="#">Next Activity</a></li>
-                            <li><a href="@Url.Action("Index", "Geocities", new { firstname = "Bernard", age = 12 })">A very modern website. Haha!</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">Advance Web-2</li>
-                            <li><a href="#">Coming soon</a></li>
-                            <li><a href="#">More apps</a></li>
-                        </ul>
-                    </li>
-                    @if (Request.IsAuthenticated && (User.IsInRole("admin") || (User.Identity.Name == "owner")))
-                    {
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="@Url.Action("CreateProject","Project")">Create</a></li>
-                                <li><a href="@Url.Action("Index","Project")">Submit</a></li>
-                            </ul>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Submit Project <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="http://bernardgabon.azurewebsites.net/Project">via Azure [Fast]</a></li>
-                                <li><a href="@Url.Action("Index","Project")">with Somee [This]</a></li>
-                            </ul>
-                        </li>
-                    }
 
-                    @if (Request.IsAuthenticated && (User.IsInRole("admin") || (User.Identity.Name == "owner") ))
+                    @if (Request.IsAuthenticated && (User.IsInRole("admin")))
                     {
                         <li>@Html.ActionLink("User Roles", "Index", "Roles")</li>
                     }

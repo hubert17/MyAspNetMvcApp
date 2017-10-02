@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using MyAspNetMvcApp.Models;
+using MyAspNetMvcApp.Areas.Account.Models;
+using System.Linq;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace MyAspNetMvcApp.Areas.Account.ViewModels
 {
@@ -31,7 +36,7 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
 
         public string CountyCode { get; set; }
 
-        public string UserType { get; set; }
+        public string RegistrationType { get; set; }
 
         [Required]
         [Display(Name = "Lastname")]
@@ -42,6 +47,32 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
         public string FirstName { get; set; }
 
         //Add your custom field here
+
+
+        public static bool AddRole(string UserName, string RoleName)
+        {
+            if(RoleName != "admin")
+            {
+                try
+                {
+                    using (var db = new ApplicationDbContext())
+                    {
+                        ApplicationUser user = db.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                        var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                        userManager.AddToRole(user.Id, RoleName);
+                    }
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 
