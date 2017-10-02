@@ -20,7 +20,6 @@ namespace MyAspNetMvcApp.Models
 
         // Put your database tables here...
         // public DbSet<Class> TableName { get; set; }
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Faculty> Faculties { get; set; }
+
     }
 }

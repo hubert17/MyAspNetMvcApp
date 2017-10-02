@@ -16,37 +16,4 @@
     </div>
 *@
 
-@if (Request.QueryString["regtype"] == "s")
-{
-    <input type="hidden" name="@nameof(Model.RegistrationType)" value="s" />
-    <div class="form-group">
-        <label for="@nameof(Model.BirthDate)" class="col-md-4 control-label">Birth Date</label>
-        <div class="col-md-8">
-            <input type="text" name="@nameof(Model.BirthDate)" id="@nameof(Model.BirthDate)" class="form-control" />
-        </div>
-    </div>
 
-    <div class="form-group">
-        <label for="@nameof(Model.SchoolLastAttended)" class="col-md-4 control-label">Last School</label>
-        <div class="col-md-8">
-            <input type="text" name="@nameof(Model.SchoolLastAttended)" id="@nameof(Model.SchoolLastAttended)" class="form-control" />
-        </div>
-    </div>
-}
-else if (Request.QueryString["regtype"] == "f")
-{
-    <input type="hidden" name="@nameof(Model.RegistrationType)" value="f" />
-    <div class="form-group">
-        <label for="@nameof(Model.HireDate)" class="col-md-4 control-label">Hire Date</label>
-        <div class="col-md-8">
-            <input type="text" name="@nameof(Model.HireDate)" id="@nameof(Model.HireDate)" class="form-control" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="@nameof(Model.SSSNumber)" class="col-md-4 control-label">SSS Number</label>
-        <div class="col-md-8">
-            <input type="text" name="@nameof(Model.SSSNumber)" id="@nameof(Model.SSSNumber)" class="form-control" />
-        </div>
-    </div>
-}
