@@ -11,14 +11,6 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
         // Add your custom Registration fields here
         // public string City { get; set; }
 
-        //students
-        public DateTime BirthDate { get; set; }
-        public string SchoolLastAttended { get; set; }
-
-        // faculty
-        public DateTime HireDate { get; set; }
-        public string SSSNumber { get; set; }
-
 
 
 
