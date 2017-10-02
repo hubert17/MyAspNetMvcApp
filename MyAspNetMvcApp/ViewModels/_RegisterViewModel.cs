@@ -11,6 +11,13 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
         // Add your custom Registration fields here
         // public string City { get; set; }
 
+        //students
+        public DateTime BirthDate { get; set; }
+        public string SchoolLastAttended { get; set; }
+
+        // faculty
+        public DateTime HireDate { get; set; }
+        public string SSSNumber { get; set; }
 
 
 
@@ -26,6 +33,24 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
             // customer.City = register.City;
             // db.Customers.Add(customer);
 
+            if(register.RegistrationType == "s")
+            {
+                var student = new Student();
+                student.UserName = register.UserName;
+                student.BirthDate = register.BirthDate;
+                student.SchoolLastAttended = register.SchoolLastAttended;
+                db.Students.Add(student);
+            }
+            else if (register.RegistrationType == "f")
+            {
+                var faculty = new Faculty
+                {
+                    UserName = register.UserName,
+                    HireDate = register.HireDate,
+                    SSSNumber = register.SSSNumber
+                };
+                db.Faculties.Add(faculty);
+            }
 
             db.SaveChanges();
         }
