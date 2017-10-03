@@ -211,6 +211,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\MyAspNetMvcDb.mdb" />
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-dialog.css" />
     <Content Include="Content\bootstrap-print-fix.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -256,6 +258,7 @@
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\datatables.min.js" />
     <Content Include="Scripts\Docs\prism.aspnet.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -281,6 +284,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />

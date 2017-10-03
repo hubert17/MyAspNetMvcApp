@@ -12,6 +12,7 @@ namespace MyAspNetMvcApp.Controllers
     {
         public ActionResult Index()
         {
+            //ViewBag.MessageBox = "Hello! Welcome to " + AppSettings.AppTitle + "!";
             return View();
         }
 
