@@ -198,7 +198,8 @@
     </Compile>
     <Compile Include="Helpers\AppSettings.cs" />
     <Compile Include="Helpers\EmailUtil.cs" />
-    <Compile Include="Helpers\ImageUploadUtil.cs" />
+    <Compile Include="Helpers\FileUploadExtension.cs" />
+    <Compile Include="Helpers\ImageUploadExtension.cs" />
     <Compile Include="Helpers\SMSUtil.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Areas\Account\Models\UserProfile.cs" />

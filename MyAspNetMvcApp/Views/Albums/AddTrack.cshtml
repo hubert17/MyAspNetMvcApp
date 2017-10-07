@@ -1,0 +1,54 @@
+﻿@model MyAspNetMvcApp.ViewModels.AlbumViewModel
+@{
+    ViewBag.Title = "AddTrack";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Album</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>Title</dt>
+        <dd>@Model.Title</dd>
+        <dt>Artist</dt>
+        <dd>@Model.ArtistName</dd>
+        <dt>Recording Label</dt>
+        <dd>@Model.RecordingLabel</dd>
+        <dt>Release Year</dt>
+        <dd>@Model.ReleaseYear</dd>
+    </dl>
+    <img src="/ImageUpload/thumb/@Model.ArtworkFilename" class="img-thumbnail" />
+</div>
+
+<h3>Tracks</h3>
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>Track No</th>
+            <th>Song Title</th>
+            <th>Time</th>
+            <th>Listen</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var track in Model.Tracks)
+        {
+            <tr>
+                <td>@track.No</td>
+                <td>@track.Title</td>
+                <td>@track.Time</td>
+                <td>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form action="/albums/addtrack" method="post">
+    <input type="hidden" name="AlbumId" value="@Model.AlbumId" />
+    <input type="text" name="No" placeholder="Track No" class="form-control" />
+    <input type="text" name="Title" placeholder="Title" class="form-control" />
+    <input type="text" name="Time" placeholder="Duration" class="form-control" />
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

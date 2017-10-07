@@ -4,8 +4,8 @@
 // <input type="file" name="FileUpload" accept="image/*" />
 // [HttpPost]
 // public ActionResult Create(MyClass myObject, HttpPostedFileBase FileUpload)
-// myObject.Picture = Gabs.Helpers.ImageUtility.FileToByteArray(FileUpload);
-// <img src="data:image/jpg;base64,@Convert.ToBase64String(Model.Picture)" />
+// myObject.Picture = FileUpload.ToImageByteArray();
+// <img src="data:image/jpg;base64,@Model.Picture.ToBase64String()" />
 
 using System;
 using System.Drawing;
@@ -14,15 +14,15 @@ using System.IO;
 
 namespace Gabs.Helpers
 {
-    public class ImageUploadUtil
+    public static class ImageUploadExtension
     {
         #region DefaultSettings
         private const int MAX_HEIGHT = 600; // default height in pixel
         private const bool QUALITY = true; // true = high quality, false = fast performance
-        /// <summary>
-        /// The folder name of where the uploaded images are stored. http://SERVER/FOLDER
-        /// </summary>
-        public const string FOLDER = "ImageUpload";
+                                           /// <summary>
+                                           /// The folder name of where the uploaded images are stored. http://SERVER/FOLDER
+                                           /// </summary>
+        public const string FOLDER = "UploadedImages";
         /// <summary>
         /// The folder name of where the thumbnails are stored. http://SERVER/FOLDER/THUMBNAIL
         /// </summary>
@@ -35,11 +35,10 @@ namespace Gabs.Helpers
         /// <summary>
         /// Convert the uploaded image file to an array of byte and store in the database as Jpeg data.
         /// </summary>
-        /// <param name="File">An image HttpPostedFile</param>
         /// <param name="maxHeight">Height in Pixel</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>byte[] JpegImage</returns>
-        public static byte[] FileToByteArray(System.Web.HttpPostedFileBase File, int maxHeight, bool highQuality = QUALITY)
+        public static byte[] ToImageByteArray(this System.Web.HttpPostedFileBase File, int maxHeight, bool highQuality = QUALITY)
         {
             try
             {
@@ -58,21 +57,19 @@ namespace Gabs.Helpers
         /// <summary>
         /// Convert the uploaded image file to an array of byte and store in the database as Jpeg data.
         /// </summary>
-        /// <param name="File">An image HttpPostedFile</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>byte[] JpegImage</returns>
-        public static byte[] FileToByteArray(System.Web.HttpPostedFileBase File, bool highQuality)
+        public static byte[] ToImageByteArray(this System.Web.HttpPostedFileBase File, bool highQuality)
         {
-            return FileToByteArray(File, MAX_HEIGHT, highQuality);
+            return ToImageByteArray(File, MAX_HEIGHT, highQuality);
         }
         /// <summary>
         /// Convert the uploaded image file to an array of byte and store in the database as Jpeg data.
         /// </summary>
-        /// <param name="File">An image HttpPostedFile</param>
         /// <returns>byte[] JpegImage</returns>
-        public static byte[] FileToByteArray(System.Web.HttpPostedFileBase File)
+        public static byte[] ToImageByteArray(this System.Web.HttpPostedFileBase File)
         {
-            return FileToByteArray(File, MAX_HEIGHT, QUALITY);
+            return ToImageByteArray(File, MAX_HEIGHT, QUALITY);
         }
         #endregion
 
@@ -80,19 +77,18 @@ namespace Gabs.Helpers
         /// <summary>
         /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
         /// </summary>
-        /// <param name="File">An image HttpPostedFile</param>
         /// <param name="strFileName">Filename</param>
         /// <param name="strFolder">Folder</param>
         /// <param name="maxHeight">Height in Pixel</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>string Filename</returns>
-        public static string SaveToJpegFile(System.Web.HttpPostedFileBase File, string strFileName, string strFolder, int maxHeight = MAX_HEIGHT, bool highQuality = QUALITY)
+        public static string SaveToJpegFile(this System.Web.HttpPostedFileBase File, string strFileName, string strFolder, int maxHeight = MAX_HEIGHT, bool highQuality = QUALITY)
         {
             try
             {
                 if (File.ContentType.Contains("image"))
                 {
-                    var arrImageBytes = FileToByteArray(File, maxHeight, highQuality);
+                    var arrImageBytes = ToImageByteArray(File, maxHeight, highQuality);
 
                     string folder = string.IsNullOrEmpty(strFolder) ? System.Web.HttpContext.Current.Server.MapPath("~/" + FOLDER) : System.Web.HttpContext.Current.Server.MapPath("~/" + strFolder);
                     string filename = string.IsNullOrEmpty(strFileName) ? Path.GetFileNameWithoutExtension(File.FileName) : strFileName;
@@ -125,42 +121,38 @@ namespace Gabs.Helpers
         /// <summary>
         /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
         /// </summary>
-        /// <param name="File">An image HttpPostedFile</param>
         /// <param name="strFileName">Filename</param>
         /// <param name="maxHeight">Height in Pixel</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>string Filename</returns>
-        public static string SaveToJpegFile(System.Web.HttpPostedFileBase File, string strFileName, int maxHeight = MAX_HEIGHT, bool highQuality = QUALITY)
+        public static string SaveToJpegFile(this System.Web.HttpPostedFileBase File, string strFileName, int maxHeight = MAX_HEIGHT, bool highQuality = QUALITY)
         {
             return SaveToJpegFile(File, strFileName, FOLDER, maxHeight, highQuality);
         }
         /// <summary>
         /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
         /// </summary>
-        /// <param name="File">An image HttpPostedFile</param>
         /// <param name="maxHeight">Height in Pixel</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>string Filename</returns>
-        public static string SaveToJpegFile(System.Web.HttpPostedFileBase File, int maxHeight, bool highQuality = QUALITY)
+        public static string SaveToJpegFile(this System.Web.HttpPostedFileBase File, int maxHeight, bool highQuality = QUALITY)
         {
             return SaveToJpegFile(File, string.Empty, FOLDER, maxHeight, highQuality);
         }
         /// <summary>
         /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
         /// </summary>
-        /// <param name="File">An image HttpPostedFile</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>string Filename</returns>
-        public static string SaveToJpegFile(System.Web.HttpPostedFileBase File, bool highQuality)
+        public static string SaveToJpegFile(this System.Web.HttpPostedFileBase File, bool highQuality)
         {
             return SaveToJpegFile(File, string.Empty, FOLDER, MAX_HEIGHT, highQuality);
         }
         /// <summary>
         /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
         /// </summary>
-        /// <param name="File">An image HttpPostedFile</param>
         /// <returns>string Filename</returns>
-        public static string SaveToJpegFile(System.Web.HttpPostedFileBase File)
+        public static string SaveToJpegFile(this System.Web.HttpPostedFileBase File)
         {
             return SaveToJpegFile(File, string.Empty, FOLDER, MAX_HEIGHT, QUALITY);
         }
@@ -170,44 +162,49 @@ namespace Gabs.Helpers
         /// <summary>
         /// Resize a byte[] image.
         /// </summary>
-        /// <param name="image">Image of type byte[]</param>
         /// <param name="maxHeight">Height in Pixel</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>byte[] JpegImage</returns>
-        public static byte[] Resize(byte[] image, int maxHeight, bool highQuality = QUALITY)
+        public static byte[] Resize(this byte[] image, int maxHeight, bool highQuality = QUALITY)
         {
-            MemoryStream stream = new MemoryStream(image);
-            Image img = Image.FromStream(stream);
-
-            foreach (var prop in img.PropertyItems)
+            if (image != null)
             {
-                //if ((prop.Id == 0x0112 || prop.Id == 5029 || prop.Id == 274))
-                if (Array.IndexOf(img.PropertyIdList, 274) > -1)
+                MemoryStream stream = new MemoryStream(image);
+                Image img = Image.FromStream(stream);
+
+                foreach (var prop in img.PropertyItems)
                 {
-                    var orientation = (int)img.GetPropertyItem(274).Value[0];
-                    img = OrientImage(img, orientation);
+                    //if ((prop.Id == 0x0112 || prop.Id == 5029 || prop.Id == 274))
+                    if (Array.IndexOf(img.PropertyIdList, 274) > -1)
+                    {
+                        var orientation = (int)img.GetPropertyItem(274).Value[0];
+                        img = OrientImage(img, orientation);
+                    }
+
+                    img = ScaleImage(img, maxHeight, highQuality);
+
+                    var ms = new MemoryStream();
+                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    image = ms.ToArray();
                 }
 
-                img = ScaleImage(img, maxHeight, highQuality);
-
-                var ms = new MemoryStream();
-                img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                image = ms.ToArray();
+                return image;
             }
-
-            return image;
+            else
+            {
+                return null;
+            }
         }
         /// <summary>
         /// Resize and crop a byte[] image.
         /// </summary>
-        /// <param name="image">Image of type byte[]</param>
         /// <param name="Width">Width  in Pixel</param>
         /// <param name="Height">Height in Pixel</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>byte[] JpegImage</returns>
-        public static byte[] ResizeToThumbnail(byte[] image, int Width = THUMBNAIL_WIDTH, int Height = THUMBNAIL_HEIGHT, bool highQuality = false)
+        public static byte[] ResizeToThumbnail(this byte[] image, int Width = THUMBNAIL_WIDTH, int Height = THUMBNAIL_HEIGHT, bool highQuality = false)
         {
-            try
+            if (image != null)
             {
                 Image img;
                 using (var ms = new MemoryStream(image))
@@ -221,7 +218,7 @@ namespace Gabs.Helpers
                     return ms.ToArray();
                 }
             }
-            catch
+            else
             {
                 //Byte[] arrBlankImage = new Byte[64];
                 //Array.Clear(arrBlankImage, 0, arrBlankImage.Length);
@@ -354,5 +351,21 @@ namespace Gabs.Helpers
             return Convert.ToBase64String(Guid.NewGuid().ToByteArray()).TrimEnd(padding).Replace('+', '-').Replace('/', '_'); ;
         }
         #endregion
+
+    }
+}
+
+//Extension methods must be defined in a static class
+public static class ByteExtension
+{
+    // This is the extension method.
+    // The first parameter takes the "this" modifier
+    // and specifies the type for which the method is defined.
+    public static string ToBase64String(this byte[] ImageByte)
+    {
+        if (ImageByte != null)
+            return Convert.ToBase64String(ImageByte);
+        else
+            return string.Empty;
     }
 }
