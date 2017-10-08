@@ -38,7 +38,7 @@ namespace MyAspNetMvcApp.Helpers
             {
                 var file = ToFileByteArray(File);
 
-                string folder = string.IsNullOrEmpty(strFolder) ? System.Web.HttpContext.Current.Server.MapPath("~/" + FOLDER) : System.Web.HttpContext.Current.Server.MapPath("~/" + strFolder);
+                string folder = string.IsNullOrEmpty(strFolder) ? HttpContext.Current.Server.MapPath("~/" + FOLDER) : HttpContext.Current.Server.MapPath("~/" + strFolder);
                 string filename = string.IsNullOrEmpty(strFileName) ? Path.GetFileNameWithoutExtension(File.FileName) : strFileName;
                 string filenameExt = filename + "_" + GenerateUniqueChars() + Path.GetExtension(File.FileName);
                 string path = Path.Combine(folder, filenameExt);

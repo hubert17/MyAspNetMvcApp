@@ -1,0 +1,33 @@
+﻿@model MyAspNetMvcApp.Models.OrderApp.Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+
+<div class="thumbnail">
+    @try
+    {
+        <img class="img-responsive" src="data:image/jpg;base64,@Model.Picture.ToBase64String()" width="800" />
+    }
+    catch
+    {
+        <img class="img-responsive" src="/@Gabs.Helpers.ImageUploadExtension.FOLDER/@Model.PictureFilename" width="800" />
+    }
+
+
+    <div class="caption-full">
+        <h4 class="pull-right">@Model.Price</h4>
+        <h4>
+            <a href="#">@Model.Name</a>
+        </h4>
+        <form action="/cart/add" method="post">
+            <input type="hidden" name="productId" value="@Model.Id" />
+            <input type="text" name="quantity" placeholder="Quantity" />
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+</div>

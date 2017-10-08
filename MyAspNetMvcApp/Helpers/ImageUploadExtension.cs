@@ -14,14 +14,15 @@ using System.IO;
 
 namespace Gabs.Helpers
 {
+    // DON'T FORGET: using Gabs.Helpers or @using Gabs.Helpers
     public static class ImageUploadExtension
     {
         #region DefaultSettings
         private const int MAX_HEIGHT = 600; // default height in pixel
         private const bool QUALITY = true; // true = high quality, false = fast performance
-                                           /// <summary>
-                                           /// The folder name of where the uploaded images are stored. http://SERVER/FOLDER
-                                           /// </summary>
+        /// <summary>
+        /// The folder name of where the uploaded images are stored. http://SERVER/FOLDER
+        /// </summary>
         public const string FOLDER = "UploadedImages";
         /// <summary>
         /// The folder name of where the thumbnails are stored. http://SERVER/FOLDER/THUMBNAIL
@@ -31,7 +32,7 @@ namespace Gabs.Helpers
         private const int THUMBNAIL_HEIGHT = 150; // Assign 0 to disable
         #endregion
 
-        #region FileToByteArray
+        #region ToImageByteArray
         /// <summary>
         /// Convert the uploaded image file to an array of byte and store in the database as Jpeg data.
         /// </summary>
@@ -73,7 +74,7 @@ namespace Gabs.Helpers
         }
         #endregion
 
-        #region SaveToJpegFile
+        #region SaveAsJpegFile
         /// <summary>
         /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
         /// </summary>
@@ -82,7 +83,7 @@ namespace Gabs.Helpers
         /// <param name="maxHeight">Height in Pixel</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>string Filename</returns>
-        public static string SaveToJpegFile(this System.Web.HttpPostedFileBase File, string strFileName, string strFolder, int maxHeight = MAX_HEIGHT, bool highQuality = QUALITY)
+        public static string SaveAsJpegFile(this System.Web.HttpPostedFileBase File, string strFileName, string strFolder, int maxHeight = MAX_HEIGHT, bool highQuality = QUALITY)
         {
             try
             {
@@ -125,9 +126,9 @@ namespace Gabs.Helpers
         /// <param name="maxHeight">Height in Pixel</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>string Filename</returns>
-        public static string SaveToJpegFile(this System.Web.HttpPostedFileBase File, string strFileName, int maxHeight = MAX_HEIGHT, bool highQuality = QUALITY)
+        public static string SaveAsJpegFile(this System.Web.HttpPostedFileBase File, string strFileName, int maxHeight = MAX_HEIGHT, bool highQuality = QUALITY)
         {
-            return SaveToJpegFile(File, strFileName, FOLDER, maxHeight, highQuality);
+            return SaveAsJpegFile(File, strFileName, FOLDER, maxHeight, highQuality);
         }
         /// <summary>
         /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
@@ -135,26 +136,26 @@ namespace Gabs.Helpers
         /// <param name="maxHeight">Height in Pixel</param>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>string Filename</returns>
-        public static string SaveToJpegFile(this System.Web.HttpPostedFileBase File, int maxHeight, bool highQuality = QUALITY)
+        public static string SaveAsJpegFile(this System.Web.HttpPostedFileBase File, int maxHeight, bool highQuality = QUALITY)
         {
-            return SaveToJpegFile(File, string.Empty, FOLDER, maxHeight, highQuality);
+            return SaveAsJpegFile(File, string.Empty, FOLDER, maxHeight, highQuality);
         }
         /// <summary>
         /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
         /// </summary>
         /// <param name="highQuality">True - High quality, False -  Fast performance</param>
         /// <returns>string Filename</returns>
-        public static string SaveToJpegFile(this System.Web.HttpPostedFileBase File, bool highQuality)
+        public static string SaveAsJpegFile(this System.Web.HttpPostedFileBase File, bool highQuality)
         {
-            return SaveToJpegFile(File, string.Empty, FOLDER, MAX_HEIGHT, highQuality);
+            return SaveAsJpegFile(File, string.Empty, FOLDER, MAX_HEIGHT, highQuality);
         }
         /// <summary>
         /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
         /// </summary>
         /// <returns>string Filename</returns>
-        public static string SaveToJpegFile(this System.Web.HttpPostedFileBase File)
+        public static string SaveAsJpegFile(this System.Web.HttpPostedFileBase File)
         {
-            return SaveToJpegFile(File, string.Empty, FOLDER, MAX_HEIGHT, QUALITY);
+            return SaveAsJpegFile(File, string.Empty, FOLDER, MAX_HEIGHT, QUALITY);
         }
         #endregion
 

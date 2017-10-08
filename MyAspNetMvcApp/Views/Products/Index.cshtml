@@ -1,0 +1,43 @@
+﻿@model List<MyAspNetMvcApp.Models.OrderApp.Product>
+
+@using Gabs.Helpers
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="text-center">
+    <form action="/products/index">
+        <input type="text" name="keyword" />
+        <button type="submit">Search</button>
+    </form>
+</div>
+<p>
+
+</p>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <div class="thumbnail">
+                <a href="/products/details?id=@item.Id">
+                    <img src="data:image/jpg;base64,@item.Picture.ResizeToThumbnail().ToBase64String()" />
+                </a>
+                <div class="caption">
+                    <h4 class="pull-right">@string.Format("{0:C}", item.Price)</h4>
+                    <h4>
+                        <a href="/products/details?id=@item.Id">@item.Name</a>
+                    </h4>
+                </div>
+            </div>
+        </div>    }
+
+</div>
