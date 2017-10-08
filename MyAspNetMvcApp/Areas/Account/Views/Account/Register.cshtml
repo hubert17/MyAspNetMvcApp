@@ -115,6 +115,7 @@ else
                             </span>
                         </div>
                     </div>
+
                     <div class="form-group">
                         @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-4 control-label" })
                         @Html.HiddenFor(m => m.CountyCode)
@@ -127,22 +128,46 @@ else
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(m => m.LastName, new { @class = "col-md-4 control-label" })
-                        <div class="col-md-8">
-                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                        <label for="@nameof(Model.FirstName)" class="col-xs-12 col-sm-12 col-md-4 control-label">Name</label>
+                        <div class="col-xs-6 col-sm-6 col-md-4">
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First" })
+                            <span class="help-block">
+                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                            </span>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-4">
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last" })
                             <span class="help-block">
                                 @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
                             </span>
                         </div>
                     </div>
 
+
                     <div class="form-group">
-                        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-4 control-label" })
+                        @Html.LabelFor(m => m.BirthDate, new { @class = "col-md-4 control-label" })
                         <div class="col-md-8">
-                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                            <div class="input-group date" id="_@nameof(Model.BirthDate)">
+                                @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", @readonly = "readonly" })
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
                             <span class="help-block">
-                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(m => m.BirthDate, "", new { @class = "text-danger" })
                             </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Gender, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            <label class="radio-inline">
+                                <input type="radio" name="@nameof(Model.Gender)" id="GMale" value="M">Male
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="@nameof(Model.Gender)" id="GFemale" value="F">Female
+                            </label>
                         </div>
                     </div>
 
@@ -190,6 +215,18 @@ else
 
         $("#@nameof(Model.PhoneNumber)").on("countrychange", function (e, countryData) {
             $("#@nameof(Model.CountyCode)").val(countryData.dialCode);
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $('#_@nameof(Model.BirthDate)').datetimepicker({
+                viewMode: 'years',
+                format: 'MMMM DD, YYYY',
+                maxDate: moment(),
+                useCurrent: false,
+                ignoreReadonly: true
+            });
         });
     </script>
 

@@ -28,13 +28,11 @@ namespace MyAspNetMvcApp.Migrations
         {
             context.Lookups.AddOrUpdate(
               p => p.Key,
-                new Lookup { Type = "gender", Key = 1, Value = "Male", IsActive = true },
-                new Lookup { Type = "gender", Key = 2, Value = "Female", IsActive = true },
                 new Lookup { Type = "order_status", Key = -1, Value = "Shopping", IsActive = true },
-                new Lookup { Type = "order_status", Key = 10, Value = "Pending", IsActive = true },
-                new Lookup { Type = "order_status", Key = 11, Value = "Processing", IsActive = true },
-                new Lookup { Type = "order_status", Key = 12, Value = "Shipping", IsActive = true },
-                new Lookup { Type = "order_status", Key = 13, Value = "Delivered", IsActive = true },
+                new Lookup { Type = "order_status", Key = 1, Value = "Pending", IsActive = true },
+                new Lookup { Type = "order_status", Key = 2, Value = "Processing", IsActive = true },
+                new Lookup { Type = "order_status", Key = 3, Value = "Shipping", IsActive = true },
+                new Lookup { Type = "order_status", Key = 4, Value = "Delivered", IsActive = true },
                 new Lookup { Type = "product_category", Key = 20, Value = "Men's Clothing", IsActive = true },
                 new Lookup { Type = "product_category", Key = 21, Value = "Women’s Clothing", IsActive = true },
                 new Lookup { Type = "product_category", Key = 22, Value = "Computer & Office", IsActive = true },

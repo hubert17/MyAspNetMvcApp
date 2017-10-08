@@ -13,6 +13,11 @@ using MyAspNetMvcApp.Areas.Account.Models;
 using MyAspNetMvcApp.Areas.Account.ViewModels;
 using Microsoft.Owin.Security.DataProtection;
 using Microsoft.AspNet.Identity.Owin;
+using System.Configuration;
+using System.Net;
+using System.IO;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace MyAspNetMvcApp.Areas.Account.Controllers
 {
@@ -106,6 +111,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                         RegistrationType = model.RegistrationType,
                         LastName = model.LastName,
                         FirstName = model.FirstName,
+                        BirthDate = model.BirthDate,
+                        Gender = model.Gender,
                         RegistrationDate = DateTime.Now,
                         IsActive = true
                     }
@@ -154,6 +161,130 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [AllowAnonymous]
+        public ActionResult FbSignIn()
+        {
+            string app_id = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_ID"]);
+            string app_secret = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_Secret"]);
+            string scope = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_Scope"]);
+            string RedirectUrl = Convert.ToString(ConfigurationManager.AppSettings["Fb_RedirectUrl"]);
+
+            return Redirect(string.Format(
+                    "https://graph.facebook.com/oauth/authorize?client_id={0}&redirect_uri={1}&scope={2}",
+                    app_id, RedirectUrl, scope));
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> FbRedirectHandler()
+        {
+            try
+            {
+                string app_id = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_ID"]);
+                string app_secret = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_Secret"]);
+                string scope = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_Scope"]);
+                string AccessCode = Request["code"].ToString();
+                string access_token = string.Empty;
+
+                string url = string.Format("https://graph.facebook.com/oauth/access_token?client_id={0}&redirect_uri={1}&scope={2}&code={3}&client_secret={4}",
+                    app_id, Request.Url.AbsoluteUri, scope, AccessCode, app_secret);
+
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    string jsonResponse = reader.ReadToEnd();
+
+                    JavaScriptSerializer sr = new JavaScriptSerializer();
+                    string jsondata = jsonResponse;
+
+                    dynamic DynamicData = JObject.Parse(jsondata);
+
+                    access_token = DynamicData.access_token;
+                }
+
+                var user = GetDetails(access_token);
+                if (user != null)
+                    await SignInAsync(user, isPersistent: false);
+                else
+                {
+                    TempData["MessageBox"] = "Sign in failed. Unable to retrieve Facebook email information.";
+                    return RedirectToAction("Login");
+                }
+            }
+            catch(Exception ex)
+            {
+                TempData["MessagePanel"] = ex.Message;
+                return RedirectToAction("Login");
+            }
+
+            return RedirectToAction("Index", "Home", new { area = ""});
+        }
+
+        private ApplicationUser GetDetails(string AccessToken)
+        {
+            Uri eatTargetUri = new Uri("https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=" + ConfigurationManager.AppSettings["Fb_App_ID"] + "&client_secret=" + ConfigurationManager.AppSettings["Fb_App_Secret"] + "&fb_exchange_token=" + AccessToken);
+            HttpWebRequest eat = (HttpWebRequest)HttpWebRequest.Create(eatTargetUri);
+
+            StreamReader eatStr = new StreamReader(eat.GetResponse().GetResponseStream());
+            string eatToken = eatStr.ReadToEnd().ToString().Replace("access_token=", "");
+
+            // Split the access token and expiration from the single string
+            string[] eatWords = eatToken.Split('&');
+            string extendedAccessToken = eatWords[0];
+
+            // Request the Facebook user information
+            Uri targetUserUri = new Uri("https://graph.facebook.com/me?fields=first_name,last_name,gender,email,birthday&access_token=" + AccessToken);
+            HttpWebRequest user = (HttpWebRequest)HttpWebRequest.Create(targetUserUri);
+
+            // Read the returned JSON object response
+            StreamReader userInfo = new StreamReader(user.GetResponse().GetResponseStream());
+            string jsonResponse = string.Empty;
+            jsonResponse = userInfo.ReadToEnd();
+
+            // Deserialize and convert the JSON object to the Facebook.User object type
+            JavaScriptSerializer sr = new JavaScriptSerializer();
+            string jsondata = jsonResponse;
+
+            dynamic facebook = JObject.Parse(jsondata);
+
+            //string firstName = facebook.Name;
+            string FacebookId = facebook.Id;
+            string FacebookEmail = facebook.email;
+            /*You can get other dynamic variables*/
+
+            if(string.IsNullOrEmpty(FacebookEmail))
+                return null;
+            else
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    ApplicationUser _user = UserManager.FindByName(FacebookEmail);
+                    if (_user == null)
+                    {
+                        _user = new ApplicationUser()
+                        {
+                            UserName = FacebookEmail,
+                            UserProfile = new UserProfile
+                            {
+                                UserName = FacebookEmail,
+                                LastName = facebook.last_name,
+                                FirstName = facebook.first_name,
+                                BirthDate = facebook.birthday,
+                                Gender = facebook.gender == "male" ? "M" : "F",
+                                RegistrationDate = DateTime.Now,
+                                IsActive = true
+                            }
+                        };
+                        UserManager.CreateAsync(_user);
+                    }
+
+                    return _user;
+                }
+
+            }
         }
 
         [AllowAnonymous]

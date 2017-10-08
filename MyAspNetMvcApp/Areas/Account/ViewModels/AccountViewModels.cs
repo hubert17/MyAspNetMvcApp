@@ -11,13 +11,13 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
 {
     public partial class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "You can't leave this empty.")]
         [Display(Name = "Email")]
         [EmailAddress(ErrorMessage = "Invalid email address")]
         [System.Web.Mvc.Remote("CheckExistingEmail", "Account", ErrorMessage = "Email already exists")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "You can't leave this empty.")]
         [StringLength(20, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -30,24 +30,28 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
 
         [StringLength(20, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 10)]
         [DataType(DataType.PhoneNumber)]
-        [Display(Name = "Mobile Number")]
+        [Display(Name = "Mobile phone")]
         [System.Web.Mvc.Remote("CheckExistingPhoneNumber", "Account", ErrorMessage = "Phone number already exists")]
         public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "You can't leave this empty.")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Birthday")]
+        public DateTime BirthDate { get; set; }
+
+        public string Gender { get; set; }
 
         public string CountyCode { get; set; }
 
         public string RegistrationType { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "You can't leave this empty.")]
         [Display(Name = "Lastname")]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "You can't leave this empty.")]
         [Display(Name = "Firstname")]
         public string FirstName { get; set; }
-
-        //Add your custom field here
-
 
         public static bool AddRole(string UserName, string RoleName)
         {
@@ -63,15 +67,9 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
                     }
                     return true;
                 }
-                catch
-                {
-                    return false;
-                }
+                catch{}
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
     }
