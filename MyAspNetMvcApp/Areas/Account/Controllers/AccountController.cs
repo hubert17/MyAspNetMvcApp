@@ -166,10 +166,10 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         [AllowAnonymous]
         public ActionResult FbSignIn()
         {
-            string app_id = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_ID"]);
-            string app_secret = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_Secret"]);
-            string scope = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_Scope"]);
-            string RedirectUrl = Convert.ToString(ConfigurationManager.AppSettings["Fb_RedirectUrl"]);
+            string app_id = ConfigurationManager.AppSettings["Fb_App_ID"].ToString();
+            string app_secret = ConfigurationManager.AppSettings["Fb_App_Secret"].ToString();
+            string scope = ConfigurationManager.AppSettings["Fb_App_Scope"].ToString();
+            string RedirectUrl = ConfigurationManager.AppSettings["Fb_RedirectUrl"].ToString();
 
             return Redirect(string.Format(
                     "https://graph.facebook.com/oauth/authorize?client_id={0}&redirect_uri={1}&scope={2}",
@@ -181,9 +181,9 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         {
             try
             {
-                string app_id = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_ID"]);
-                string app_secret = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_Secret"]);
-                string scope = Convert.ToString(ConfigurationManager.AppSettings["Fb_App_Scope"]);
+                string app_id = ConfigurationManager.AppSettings["Fb_App_ID"].ToString();
+                string app_secret = ConfigurationManager.AppSettings["Fb_App_Secret"].ToString();
+                string scope = ConfigurationManager.AppSettings["Fb_App_Scope"].ToString();
                 string AccessCode = Request["code"].ToString();
                 string access_token = string.Empty;
 
@@ -191,7 +191,6 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     app_id, Request.Url.AbsoluteUri, scope, AccessCode, app_secret);
 
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
                     StreamReader reader = new StreamReader(response.GetResponseStream());
@@ -279,6 +278,9 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                             }
                         };
                         UserManager.CreateAsync(_user);
+
+                        string WelcomeMsg = "Hello " + _user.UserProfile.FirstName + "! Welcome to " + AppSettings.AppTitle + ". "; ;
+                        TempData["MessageBox"] = WelcomeMsg;
                     }
 
                     return _user;
