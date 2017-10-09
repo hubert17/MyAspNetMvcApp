@@ -32,5 +32,9 @@ namespace MyAspNetMvcApp
         {
             get { return Boolean.Parse(ConfigurationManager.AppSettings["EmailVerificationEnabled"]); }
         }
+        public static bool FacebookLoginEnabled
+        {
+            get { return Boolean.Parse(ConfigurationManager.AppSettings["FacebookLoginEnabled"]); }
+        }
     }
 }
