@@ -53,7 +53,7 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
         [Display(Name = "Firstname")]
         public string FirstName { get; set; }
 
-        public static bool AddRole(string UserName, string RoleName)
+        public static string AddRole(string UserName, string RoleName)
         {
             if(RoleName != "admin")
             {
@@ -61,15 +61,21 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
                 {
                     using (var db = new ApplicationDbContext())
                     {
+                        var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                        if (!db.Roles.Any(r => r.Name == RoleName))
+                        {
+                            roleManager.Create(new IdentityRole(RoleName));
+                        }
+
                         ApplicationUser user = db.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                         var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
                         userManager.AddToRole(user.Id, RoleName);
                     }
-                    return true;
+                    return RoleName;
                 }
                 catch{}
             }
-            return false;
+            return string.Empty;
         }
 
     }

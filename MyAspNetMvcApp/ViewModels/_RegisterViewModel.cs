@@ -15,8 +15,9 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
 
 
         // DO NOT REMOVE! This saves custom field data upon Registration
-        public static void SaveRegistrationCustomData(RegisterViewModel register)
+        public static string SaveRegistrationCustomData(RegisterViewModel register)
         {
+            string result = string.Empty;
             var db = new ApplicationDbContext();
 
             // Add your custom User Registration class here
@@ -26,8 +27,9 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
             // db.Customers.Add(customer);
 
 
-
             db.SaveChanges();
+            //result = AddRole(register.UserName, "Staff");
+            return result;
         }
 
     }

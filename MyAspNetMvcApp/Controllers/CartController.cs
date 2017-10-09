@@ -23,7 +23,7 @@ namespace MyAspNetMvcApp.Controllers
                 .Select(s => new OrderViewModel
                 {
                     OrderId = s.Id,
-                    CustomerName = s.Customer.FirstName + " " + s.Customer.LastName
+                    CustomerName = s.Customer.Profile.FirstName + " " + s.Customer.Profile.LastName
                 }).FirstOrDefault();
 
             OrderVM.OrderItems = db.OrderItems.Where(x => x.OrderId == OrderVM.OrderId)

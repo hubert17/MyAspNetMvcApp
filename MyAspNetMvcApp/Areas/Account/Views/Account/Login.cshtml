@@ -78,7 +78,7 @@
                                     Don't have an account? <a href="@Url.Action("Register", "Account", new { Area = "Account" })">Sign up here.</a>
                                     @if(AppSettings.FacebookLoginEnabled)
                                     {
-                                        @Html.Raw(" Login with ")
+                                        @Html.Raw(" <br>Sign in with ")
                                         <a href="/account/FbSignIn"><i class="fa fa-facebook-f"></i>acebook.</a>
                                     }
                                 </div>

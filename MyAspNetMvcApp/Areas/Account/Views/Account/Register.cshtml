@@ -189,9 +189,9 @@ else
 </div>
 
 @section Scripts {
-    @{
-        Html.RenderPartial("_ValidationScriptsPartial");
-    }
+    @{ Html.RenderPartial("~/Views/Shared/_ValidationScriptsPartial.cshtml"); }
+    @{ Html.RenderPartial("~/Views/Shared/_SubmitAnimationScriptPartial.cshtml"); }
+
 
 @if (HttpContext.Current.Request.IsLocal)
 {
@@ -229,8 +229,5 @@ else
             });
         });
     </script>
-
-    <script src="@Url.Content("~/Scripts/jquery.dotanimation.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/jquery.dotanimation.custom.js")"></script>
 
 }

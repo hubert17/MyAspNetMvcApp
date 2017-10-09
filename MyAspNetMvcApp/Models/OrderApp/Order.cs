@@ -14,7 +14,7 @@ namespace MyAspNetMvcApp.Models.OrderApp
         [ForeignKey("Customer")]
         public string UserName { get; set; }
         //Navigation property
-        public UserProfile Customer { get; set; } 
+        public Customer Customer { get; set; } 
 
         public DateTime OrderDate { get; set; }
         public int Status { get; set; }

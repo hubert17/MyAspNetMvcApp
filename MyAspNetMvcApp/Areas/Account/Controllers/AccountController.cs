@@ -128,16 +128,20 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    RegisterViewModel.SaveRegistrationCustomData(model);
+                    string InitRole = RegisterViewModel.SaveRegistrationCustomData(model);
 
-                    string WelcomeMsg = "Hello " + model.FirstName + "! Welcome to " + AppSettings.AppTitle + ". "; ;
-                    if(AppSettings.EmailVerificationEnabled)
+                    string WelcomeMsg = "Hello " + model.FirstName + "! Welcome to " + AppSettings.AppTitle + ". ";
+                    if(!string.IsNullOrEmpty(InitRole))
+                    {
+                        WelcomeMsg += "The webapp initially assigns your role as a/n " + InitRole + ". ";
+                    }
+                    if (AppSettings.EmailVerificationEnabled)
                     {
                         var callbackUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = user.Token });
                         Gabs.Helpers.EmailUtil.SendEmail(user.Email,
                            "Confirm Your Account",
                            "Hello " + model.FirstName +"!<br><br> Please confirm your account by clicking this <a href=\"" + callbackUrl + "\">link</a>.");
-                        WelcomeMsg += "Kindly check your email to verify your account.";
+                        WelcomeMsg += "Kindly check your email to verify your account. ";
                     }
 
                     await SignInAsync(user, isPersistent: false);
@@ -146,7 +150,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     {
                         var smsMsg = "Hello " + model.FirstName + "! You can now login to " + AppSettings.AppTitle + " using your mobile number.";
                         Gabs.Helpers.SMSUtil.Send("+" + model.CountyCode + model.PhoneNumber, smsMsg);
-                        WelcomeMsg += " We have also sent a welcome message to your mobile phone.";
+                        WelcomeMsg += " We have also sent a welcome message to your mobile phone. ";
                         //return RedirectToAction("VerifyPhoneNumber", "Account");                       
                     }
 
