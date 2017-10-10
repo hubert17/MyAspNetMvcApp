@@ -75,7 +75,7 @@ else
                         </ul>
                     </li>
 
-                    @if (Request.IsAuthenticated && (User.IsInRole("admin")))
+                    @if (Request.IsAuthenticated && (User.IsInRole(System.Configuration.ConfigurationManager.AppSettings["AdminRolename"])))
                     {
                         <li>@Html.ActionLink("User Roles", "Index", "Roles")</li>
                     }

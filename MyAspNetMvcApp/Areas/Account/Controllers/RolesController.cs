@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace MyAspNetMvcApp.Areas.Account.Controllers
 {
-    [Authorize(Roles = @"admin")]
+    // http://divineops.net/custom-mvc-role-authorize-attribute-using-app-settings/
+    [AdminAuthorize]
     public class RolesController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();
@@ -196,4 +197,18 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         }
     }
 
+}
+
+public class AdminAuthorizeAttribute : AuthorizeAttribute
+{
+
+    public AdminAuthorizeAttribute()
+    {
+        this.Roles = System.Configuration.ConfigurationManager.AppSettings["AdminRolename"];
+    }
+
+    protected override bool AuthorizeCore(HttpContextBase httpContext)
+    {
+        return base.AuthorizeCore(httpContext);
+    }
 }
