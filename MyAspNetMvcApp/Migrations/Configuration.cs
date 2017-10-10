@@ -44,10 +44,11 @@ namespace MyAspNetMvcApp.Migrations
 
         private void SeedIdentity(ApplicationDbContext context)
         {
+            string AdminRolename = System.Configuration.ConfigurationManager.AppSettings["AdminRolename"];
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            if (!context.Roles.Any(r => r.Name == "admin"))
+            if (!context.Roles.Any(r => r.Name == AdminRolename))
             {
-                roleManager.Create(new IdentityRole("admin"));
+                roleManager.Create(new IdentityRole(AdminRolename));
             }
 
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
@@ -59,10 +60,10 @@ namespace MyAspNetMvcApp.Migrations
                 {
                     UserName = username,
                     PhoneNumber = "1234567890",                    
-                    UserProfile = new UserProfile { UserName = username, LastName = "Admin", FirstName = "Temp", RegistrationType = "admin", RegistrationDate = DateTime.Now, IsActive = true }
+                    UserProfile = new UserProfile { UserName = username, LastName = AdminRolename, FirstName = "Temp Admin", RegistrationType = AdminRolename, RegistrationDate = DateTime.Now, IsActive = true }
                 };
                 userManager.Create(user, System.Configuration.ConfigurationManager.AppSettings["AdminPassword"]);
-                userManager.AddToRole(user.Id, "admin");
+                userManager.AddToRole(user.Id, AdminRolename);
 
 
             }
@@ -73,7 +74,7 @@ namespace MyAspNetMvcApp.Migrations
                 {
                     UserName = username,
                     PhoneNumber = "9876543210",
-                    UserProfile = new UserProfile { UserName = username, LastName = "User", FirstName = "Temp", RegistrationDate = DateTime.Now, IsActive = true }
+                    UserProfile = new UserProfile { UserName = username, LastName = "User", FirstName = "Temp User", RegistrationDate = DateTime.Now, IsActive = true }
                 };
                 userManager.Create(user, System.Configuration.ConfigurationManager.AppSettings["TempPassword"]);
             }

@@ -55,7 +55,7 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
 
         public static string AddRole(string UserName, string RoleName)
         {
-            if(RoleName != "admin")
+            if(RoleName != System.Configuration.ConfigurationManager.AppSettings["AdminRolename"]) // Restrict adding of ADMIN role
             {
                 try
                 {

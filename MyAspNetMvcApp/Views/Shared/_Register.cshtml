@@ -14,6 +14,25 @@
             <input type="text" name="@nameof(Model.City)" id="@nameof(Model.City)" class="form-control" />
         </div>
     </div>
-*@
 
+    @if (ViewBag.RegType == "faculty")
+    {
+        <div class="form-group">
+            <label for="@nameof(Model.HireDate)" class="col-md-4 control-label">Hire Date</label>
+            <div class="col-md-8">
+                <input type="text" name="@nameof(Model.HireDate)" id="@nameof(Model.HireDate)" class="form-control" />
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.RegType == "student")
+    {
+        <div class="form-group">
+            <label for="@nameof(Model.Course)" class="col-md-4 control-label">Course</label>
+            <div class="col-md-8">
+                <input type="text" name="@nameof(Model.Course)" id="@nameof(Model.Course)" class="form-control" />
+            </div>
+        </div>
+    }
+*@
 

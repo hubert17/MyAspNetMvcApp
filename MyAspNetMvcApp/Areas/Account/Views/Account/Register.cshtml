@@ -72,12 +72,13 @@ else
     <div id="signupbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-info">
             <div class="panel-heading">
-                <div class="panel-title">Register a new account</div>
+                <div class="panel-title"><strong>Register @(string.IsNullOrEmpty(ViewBag.RegType) ? "a new account" : "as " + ViewBag.RegType )</strong></div>
                 <div style="float:right; font-size: 80%; position: relative; top:-15px"><a id="signinlink" href="@Url.Action("Login","Account")">Log in</a></div>
             </div>
             <div class="panel-body">
                 <form action="@Url.Action("Register", "Account", new { area = "Account" })" method="post" id="signupform" class="form-horizontal" role="form">
                     @Html.AntiForgeryToken()
+                    <input type="hidden" name="@nameof(Model.RegistrationType)" value="@ViewBag.RegType" />
 
                     @if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count > 0)
                     {

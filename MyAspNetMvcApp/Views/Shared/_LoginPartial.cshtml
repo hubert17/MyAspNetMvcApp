@@ -4,8 +4,9 @@
     <form action="@Url.Action("LogOff", "Account", new { Area = "Account" })" method="post" id="logoutForm" class="navbar-right">
         @Html.AntiForgeryToken()
         <ul class="nav navbar-nav navbar-right">
+            @*@Html.Partial("_NotificationMenu")*@
             <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+                @Html.ActionLink("Hello " + User.FirstName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>
@@ -19,7 +20,7 @@ else
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Register <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li>@Html.ActionLink("Register", "Register", "Account", new { Area = "Account" }, htmlAttributes: new { id = "registerLink" })</li>
+                    <li><a href="/Account/Register" id="registerLink">Register as Student</a></li>
                     <li><a href="/Account/FbSignIn">Sign in with <i class="fa fa-facebook-f"></i>acebook</a></li>
                 </ul>
             </li>

@@ -18,6 +18,7 @@ using System.Net;
 using System.IO;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json.Linq;
+using System.Security.Principal;
 
 namespace MyAspNetMvcApp.Areas.Account.Controllers
 {
@@ -86,8 +87,9 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult Register(string RegType)
         {
+            ViewBag.RegType = RegType;
             return View();
         }
 
@@ -128,12 +130,13 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    string InitRole = RegisterViewModel.SaveRegistrationCustomData(model);
+                    RegisterViewModel.SaveRegistrationCustomData(model);
+                    string initRole = RegisterViewModel.AddRole(model.UserName, model.RegistrationType);
 
                     string WelcomeMsg = "Hello " + model.FirstName + "! Welcome to " + AppSettings.AppTitle + ". ";
-                    if(!string.IsNullOrEmpty(InitRole))
+                    if(!string.IsNullOrEmpty(initRole))
                     {
-                        WelcomeMsg += "The webapp initially assigns your role as a/n " + InitRole + ". ";
+                        WelcomeMsg += "The webapp initially assigns your role as a/n " + initRole + ". ";
                     }
                     if (AppSettings.EmailVerificationEnabled)
                     {
@@ -150,7 +153,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     {
                         var smsMsg = "Hello " + model.FirstName + "! You can now login to " + AppSettings.AppTitle + " using your mobile number.";
                         Gabs.Helpers.SMSUtil.Send("+" + model.CountyCode + model.PhoneNumber, smsMsg);
-                        WelcomeMsg += " We have also sent a welcome message to your mobile phone. ";
+                        WelcomeMsg += " We have sent a welcome message to your mobile phone. ";
                         //return RedirectToAction("VerifyPhoneNumber", "Account");                       
                     }
 
@@ -168,12 +171,14 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult FbSignIn()
+        public ActionResult FbSignIn(string RegType)
         {
             string app_id = ConfigurationManager.AppSettings["Fb_App_ID"].ToString();
             string app_secret = ConfigurationManager.AppSettings["Fb_App_Secret"].ToString();
             string scope = ConfigurationManager.AppSettings["Fb_App_Scope"].ToString();
             string RedirectUrl = ConfigurationManager.AppSettings["Fb_RedirectUrl"].ToString();
+
+            Session["RegType"] = RegType;
 
             return Redirect(string.Format(
                     "https://graph.facebook.com/oauth/authorize?client_id={0}&redirect_uri={1}&scope={2}",
@@ -276,14 +281,22 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                                 LastName = facebook.last_name,
                                 FirstName = facebook.first_name,
                                 BirthDate = facebook.birthday,
-                                Gender = facebook.gender == "male" ? "M" : "F",
+                                Gender = facebook.gender == "male" ? "M" : facebook.gender == "female" ? "F" : null,
+                                RegistrationType = Session["RegType"].ToString(),
                                 RegistrationDate = DateTime.Now,
                                 IsActive = true
                             }
                         };
                         UserManager.CreateAsync(_user);
 
-                        string WelcomeMsg = "Hello " + _user.UserProfile.FirstName + "! Welcome to " + AppSettings.AppTitle + ". "; ;
+                        string WelcomeMsg = "Hello " + _user.UserProfile.FirstName + "! Welcome to " + AppSettings.AppTitle + ". "; 
+                        if (!string.IsNullOrEmpty(_user.UserProfile.RegistrationType))
+                        {
+                            string InitRole = RegisterViewModel.AddRole(_user.UserName, _user.UserProfile.RegistrationType);
+                            WelcomeMsg += "The webapp initially assigns your role as a/n " + InitRole + ". ";
+                        }
+                        Session.Remove("RegType");
+
                         TempData["MessageBox"] = WelcomeMsg;
                     }
 
@@ -547,6 +560,9 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             await UserManager.UpdateAsync(user);
 
             var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+            identity.AddClaim(new Claim("FirstName", user.UserProfile.FirstName));
+
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
@@ -616,5 +632,24 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             }
         }
         #endregion
+    }
+}
+
+public static class GenericPrincipalExtensions
+{
+    public static string FirstName(this IPrincipal user)
+    {
+        if (user.Identity.IsAuthenticated)
+        {
+            ClaimsIdentity claimsIdentity = user.Identity as ClaimsIdentity;
+            foreach (var claim in claimsIdentity.Claims)
+            {
+                if (claim.Type == "FirstName")
+                    return claim.Value;
+            }
+            return "";
+        }
+        else
+            return "";
     }
 }
