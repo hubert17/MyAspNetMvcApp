@@ -130,14 +130,17 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    RegisterViewModel.SaveRegistrationCustomData(model);
-                    string initRole = RegisterViewModel.AddRole(model.UserName, model.RegistrationType);
-
                     string WelcomeMsg = "Hello " + model.FirstName + "! Welcome to " + AppSettings.AppTitle + ". ";
-                    if(!string.IsNullOrEmpty(initRole))
+
+                    RegisterViewModel.SaveRegistrationCustomData(model);
+
+                    if (!string.IsNullOrEmpty(model.RegistrationType))
                     {
-                        WelcomeMsg += "The webapp initially assigns your role as a/n " + initRole + ". ";
+                        string InitRole = RegisterViewModel.AddRole(model.UserName, model.RegistrationType);
+                        if (!string.IsNullOrEmpty(InitRole))
+                            WelcomeMsg += "The webapp initially assigns your role as a/n " + InitRole + ". ";
                     }
+
                     if (AppSettings.EmailVerificationEnabled)
                     {
                         var callbackUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = user.Token });
@@ -293,7 +296,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                         if (!string.IsNullOrEmpty(_user.UserProfile.RegistrationType))
                         {
                             string InitRole = RegisterViewModel.AddRole(_user.UserName, _user.UserProfile.RegistrationType);
-                            WelcomeMsg += "The webapp initially assigns your role as a/n " + InitRole + ". ";
+                            if(!string.IsNullOrEmpty(InitRole))
+                                WelcomeMsg += "The webapp initially assigns your role as a/n " + InitRole + ". ";
                         }
                         Session.Remove("RegType");
 
