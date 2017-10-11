@@ -28,7 +28,7 @@ namespace MyAspNetMvcApp.Areas.Account.Models
         }
 
         [MaxLength(20)]
-        [Index(IsUnique = true)]
+        //[Index(IsUnique = true)]
         public override string PhoneNumber { get; set; }
         public string CountyCode { get; set; }
         public string Token { get; set; }

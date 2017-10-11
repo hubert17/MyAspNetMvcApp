@@ -14,6 +14,7 @@ namespace MyAspNetMvcApp.Areas.Account.Models
         public string FirstName { get; set; }
         public DateTime? BirthDate { get; set; }
         public string Gender { get; set; }
+        public byte[] Picture { get; set; }
         public string RegistrationType { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public DateTime? LastLogin { get; set; }

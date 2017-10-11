@@ -14,6 +14,9 @@ namespace MyAspNetMvcApp.Controllers
         {
             //ViewBag.MessageBox = "Hello! Welcome to " + AppSettings.AppTitle + "!";
             return View();
+
+            // This is for www.bernardgabon.com. Kindly remove this and uncomment the code above.
+            //return RedirectToAction("Index", "BernardGabonDotCom", new { area = "BernardGabonDotCom" });
         }
 
         public ActionResult About()

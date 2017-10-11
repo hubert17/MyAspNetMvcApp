@@ -35,6 +35,9 @@ body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
 }
+footer {
+    margin: 0 0 0 0 !important;
+}
 .footer {
     position: absolute;
     bottom: 0;

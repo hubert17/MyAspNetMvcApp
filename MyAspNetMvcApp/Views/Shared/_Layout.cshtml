@@ -79,6 +79,9 @@ else
             </div>
         </div>
     </div>
+
+    @RenderSection("Outsidecontainer", required: false)
+
     <div class="container body-content">
         @if (TempData["MessagePanel"] != null)
         {

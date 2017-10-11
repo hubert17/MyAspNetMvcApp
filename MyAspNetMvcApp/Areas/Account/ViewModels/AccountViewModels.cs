@@ -45,6 +45,8 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
 
         public string RegistrationType { get; set; }
 
+        public byte[] Picture { get; set; }
+
         [Required(ErrorMessage = "You can't leave this empty.")]
         [Display(Name = "Lastname")]
         public string LastName { get; set; }

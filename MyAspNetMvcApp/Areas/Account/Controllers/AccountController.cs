@@ -58,7 +58,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 using (var db = new ApplicationDbContext())
                 {
                     string myPhone = String.Join("", model.UserName.Split('(', '-', ')')).TrimStart('0');
-                    ApplicationUser myUser = db.Users.FirstOrDefault(u => u.UserName == model.UserName || (u.PhoneNumber == myPhone ));
+                    ApplicationUser myUser = db.Users.FirstOrDefault(u => u.UserName == model.UserName || (u.PhoneNumber == myPhone));
                     if (myUser != null)
                     {
                         model.UserName = myUser.UserName;
@@ -68,7 +68,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 if (user != null && user.UserProfile.IsActive)
                 {
                     await SignInAsync(user, model.RememberMe);
-                    if(string.IsNullOrEmpty(returnUrl))
+                    if (string.IsNullOrEmpty(returnUrl))
                         return RedirectToAction("index", "home", new { area = "" });
                     else
                         return RedirectToLocal(returnUrl);
@@ -106,7 +106,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 {
                     UserName = model.UserName,
                     PhoneNumber = string.IsNullOrEmpty(model.PhoneNumber) ? null : model.PhoneNumber.TrimStart('0'),
-                    CountyCode =  string.IsNullOrEmpty(model.PhoneNumber) ? null : model.CountyCode,
+                    CountyCode = string.IsNullOrEmpty(model.PhoneNumber) ? null : model.CountyCode,
                     UserProfile = new UserProfile
                     {
                         UserName = model.UserName,
@@ -120,7 +120,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     }
                 };
 
-                if(AppSettings.EmailVerificationEnabled)
+                if (AppSettings.EmailVerificationEnabled)
                 {
                     char[] padding = { '=' };
                     user.Token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).TrimEnd(padding).Replace('+', '-').Replace('/', '_');
@@ -146,7 +146,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                         var callbackUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = user.Token });
                         Gabs.Helpers.EmailUtil.SendEmail(user.Email,
                            "Confirm Your Account",
-                           "Hello " + model.FirstName +"!<br><br> Please confirm your account by clicking this <a href=\"" + callbackUrl + "\">link</a>.");
+                           "Hello " + model.FirstName + "!<br><br> Please confirm your account by clicking this <a href=\"" + callbackUrl + "\">link</a>.");
                         WelcomeMsg += "Kindly check your email to verify your account. ";
                     }
 
@@ -225,13 +225,13 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     return RedirectToAction("Login");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["MessagePanel"] = ex.Message;
                 return RedirectToAction("Login");
             }
 
-            return RedirectToAction("Index", "Home", new { area = ""});
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         private ApplicationUser GetDetails(string AccessToken)
@@ -247,7 +247,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             string extendedAccessToken = eatWords[0];
 
             // Request the Facebook user information
-            Uri targetUserUri = new Uri("https://graph.facebook.com/me?fields=first_name,last_name,gender,email,birthday&access_token=" + AccessToken);
+            Uri targetUserUri = new Uri("https://graph.facebook.com/me?fields=email,first_name,last_name,gender,picture.width(300),birthday&access_token=" + AccessToken);
             HttpWebRequest user = (HttpWebRequest)HttpWebRequest.Create(targetUserUri);
 
             // Read the returned JSON object response
@@ -262,11 +262,11 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             dynamic facebook = JObject.Parse(jsondata);
 
             //string firstName = facebook.Name;
-            string FacebookId = facebook.Id;
+            string FacebookId = facebook.id;
             string FacebookEmail = facebook.email;
             /*You can get other dynamic variables*/
 
-            if(string.IsNullOrEmpty(FacebookEmail))
+            if (string.IsNullOrEmpty(FacebookEmail))
                 return null;
             else
             {
@@ -275,9 +275,21 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     ApplicationUser _user = UserManager.FindByName(FacebookEmail);
                     if (_user == null)
                     {
-                        _user = new ApplicationUser()
+                        byte[] fbPhotoData;
+                        try
+                        {
+                            WebClient webClient = new WebClient();
+                            string fbPhotoUrl = facebook.picture.data.url;
+                            fbPhotoData = webClient.DownloadData(fbPhotoUrl);
+                        }
+                        catch
+                        {
+                            fbPhotoData = null;
+                        }
+                        var newUser = new ApplicationUser()
                         {
                             UserName = FacebookEmail,
+                            PhoneNumber = FacebookId,
                             UserProfile = new UserProfile
                             {
                                 UserName = FacebookEmail,
@@ -285,23 +297,25 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                                 FirstName = facebook.first_name,
                                 BirthDate = facebook.birthday,
                                 Gender = facebook.gender == "male" ? "M" : facebook.gender == "female" ? "F" : null,
-                                RegistrationType = Session["RegType"].ToString(),
+                                RegistrationType = Session["RegType"] != null ?  Session["RegType"].ToString() : null,
                                 RegistrationDate = DateTime.Now,
-                                IsActive = true
+                                IsActive = true,
+                                Picture = fbPhotoData
                             }
                         };
-                        UserManager.CreateAsync(_user);
+                        UserManager.Create(newUser);
 
-                        string WelcomeMsg = "Hello " + _user.UserProfile.FirstName + "! Welcome to " + AppSettings.AppTitle + ". "; 
-                        if (!string.IsNullOrEmpty(_user.UserProfile.RegistrationType))
+                        string WelcomeMsg = "Hello " + newUser.UserProfile.FirstName + "! Welcome to " + AppSettings.AppTitle + ". ";
+                        if (!string.IsNullOrEmpty(newUser.UserProfile.RegistrationType))
                         {
-                            string InitRole = RegisterViewModel.AddRole(_user.UserName, _user.UserProfile.RegistrationType);
-                            if(!string.IsNullOrEmpty(InitRole))
+                            string InitRole = RegisterViewModel.AddRole(newUser.UserName, newUser.UserProfile.RegistrationType);
+                            if (!string.IsNullOrEmpty(InitRole))
                                 WelcomeMsg += "The webapp initially assigns your role as a/n " + InitRole + ". ";
                         }
                         Session.Remove("RegType");
 
                         TempData["MessageBox"] = WelcomeMsg;
+                        return newUser;
                     }
 
                     return _user;
@@ -319,7 +333,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 return RedirectToAction("index", "home", new { area = "" });
             }
 
-            var user = UserManager.FindById(userId);            
+            var user = UserManager.FindById(userId);
             if (user != null && user.TokenExpiration > DateTime.Now && !string.IsNullOrEmpty(user.Token) && user.Token.Equals(code))
             {
                 user.EmailConfirmed = true;
@@ -413,7 +427,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     LastName = user.UserProfile.LastName,
                     FirstName = user.UserProfile.FirstName,
                     BirthDate = user.UserProfile.BirthDate,
-                    Gender = user.UserProfile.Gender
+                    Gender = user.UserProfile.Gender,
+                    Picture = user.UserProfile.Picture
                 };
                 return View();
             }
@@ -524,7 +539,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             ApplicationUser user = await UserManager.FindByNameAsync(model.Email);
-            if (user!=null && user.TokenExpiration > DateTime.Now)
+            if (user != null && user.TokenExpiration > DateTime.Now)
             {
                 user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.NewPassword);
                 user.Token = null;
