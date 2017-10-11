@@ -392,15 +392,32 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         // GET: /Account/Manage
         public ActionResult Manage(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
+            ViewBag.MessagePanel =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
+                : null;
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
-            return View();
+
+            using (var db = new ApplicationDbContext())
+            {
+                ApplicationUser user = UserManager.FindByName(User.Identity.GetUserName());
+                ViewData["profile"] = new RegisterViewModel
+                {
+                    UserName = user.UserName,
+                    PhoneNumber = user.PhoneNumber,
+                    CountyCode = user.CountyCode,
+                    RegistrationType = string.Join(", ", UserManager.GetRoles(user.Id)),
+                    LastName = user.UserProfile.LastName,
+                    FirstName = user.UserProfile.FirstName,
+                    BirthDate = user.UserProfile.BirthDate,
+                    Gender = user.UserProfile.Gender
+                };
+                return View();
+            }
+
         }
 
         //

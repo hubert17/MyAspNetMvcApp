@@ -37,7 +37,7 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
         [Required(ErrorMessage = "You can't leave this empty.")]
         [DataType(DataType.Date)]
         [Display(Name = "Birthday")]
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public string Gender { get; set; }
 

@@ -3,6 +3,8 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Manage Account";
+
+    RegisterViewModel profile = ViewData["profile"] as RegisterViewModel;
 }
 
 @section Head {
@@ -20,6 +22,10 @@
                 border-top: 0;
             }
 
+                .table-user-information > tbody > tr > td:nth-child(2) {
+                    color: #337ab7;
+                }
+
         .toppad {
             margin-top: 20px;
         }
@@ -33,9 +39,6 @@
     <h2>@ViewBag.Title</h2>
 </div>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-
-
 <div class="row">
 
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
@@ -43,43 +46,34 @@
 
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title"><strong>Bernard Gabon</strong></h3>
+                <h3 class="panel-title"><strong>@profile.FirstName @profile.LastName</strong></h3>
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="@Url.Content("~/Images/friendster_GABS_FINAL.jpg")" class="img-circle img-responsive"> </div>
+                    <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="@Url.Content("~/Images/profile.jpg")" class="img-circle img-responsive"> </div>
 
                     <div class=" col-md-9 col-lg-9 ">
                         <table class="table table-user-information">
                             <tbody>
                                 <tr>
-                                    <td>Department:</td>
-                                    <td>Programming</td>
-                                </tr>
-                                <tr>
-                                    <td>Hire date:</td>
-                                    <td>06/23/2013</td>
-                                </tr>
-                                <tr>
-                                    <td>Date of Birth</td>
-                                    <td>01/24/1988</td>
-                                </tr>
-
-                                <tr>
-                                    <td>Gender</td>
-                                    <td>Female</td>
-                                </tr>
-                                <tr>
-                                    <td>Home Address</td>
-                                    <td>Kathmandu,Nepal</td>
+                                    <td>Roles</td>
+                                    <td><a href="@profile.UserName">@profile.RegistrationType</a></td>
                                 </tr>
                                 <tr>
                                     <td>Email</td>
-                                    <td><a href="mailto:info@support.com">info@support.com</a></td>
+                                    <td><a href="@profile.UserName">@profile.UserName</a></td>
                                 </tr>
                                 <tr>
                                     <td>Mobile Number</td>
-                                    <td>0999-999-9999</td>
+                                    <td>+@profile.CountyCode@profile.PhoneNumber</td>
+                                </tr>
+                                <tr>
+                                    <td>Date of Birth</td>
+                                    <td>@profile.BirthDate.Value.ToString("MMMM dd, yyyy")</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender</td>
+                                    <td>@(profile.Gender == "M" ? "Male" : profile.Gender == "F" ? "Female" : "")</td>
                                 </tr>
 
                             </tbody>
@@ -88,14 +82,17 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
+                <button id="btnMoreProfile" data-original-title="More Profile Information" data-toggle="tooltip" title="More Profile Information" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-user"></i></button>
                 <span class="pull-right">
                     <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
-                    <a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-lock"></i></a>
+                    <button id="btnChangePassword" data-original-title="Change Password" data-toggle="tooltip" title="Change Password" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-lock"></i></button>
                 </span>
             </div>
         </div>
-        <div class="panel panel-info">
+
+        @Html.Partial("~/Views/Shared/_MoreProfile.cshtml")
+
+        <div class="panel panel-info hidden" id="pnlChangePassword">
             <div class="panel-heading">
                 <h3 class="panel-title">Change Password</h3>
             </div>
@@ -127,4 +124,13 @@
 @section Scripts {
     @{ Html.RenderPartial("~/Views/Shared/_ValidationScriptsPartial.cshtml"); }
     @{ Html.RenderPartial("~/Views/Shared/_SubmitAnimationScriptPartial.cshtml"); }
+
+    <script>
+        $("#btnMoreProfile").click(function () {
+            $("#pnlMoreProfile").toggleClass('hidden');
+        });
+        $("#btnChangePassword").click(function () {
+            $("#pnlChangePassword").toggleClass('hidden');
+        });
+    </script>
 }

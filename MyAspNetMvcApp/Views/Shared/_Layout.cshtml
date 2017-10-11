@@ -74,11 +74,6 @@ else
                             <li><a href="#" target="_blank">Menu item 3</a></li>
                         </ul>
                     </li>
-
-                    @if (Request.IsAuthenticated && (User.IsInRole(System.Configuration.ConfigurationManager.AppSettings["AdminRolename"])))
-                    {
-                        <li>@Html.ActionLink("User Roles", "Index", "Roles")</li>
-                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
