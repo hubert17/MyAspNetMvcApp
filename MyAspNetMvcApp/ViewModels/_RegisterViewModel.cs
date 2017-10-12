@@ -32,3 +32,4 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
 
     }
 }
+

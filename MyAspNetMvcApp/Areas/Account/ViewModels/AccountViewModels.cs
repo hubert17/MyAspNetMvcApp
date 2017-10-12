@@ -37,11 +37,12 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
         [Required(ErrorMessage = "You can't leave this empty.")]
         [DataType(DataType.Date)]
         [Display(Name = "Birthday")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? BirthDate { get; set; }
 
         public string Gender { get; set; }
 
-        public string CountyCode { get; set; }
+        public string CountryCode { get; set; }
 
         public string RegistrationType { get; set; }
 

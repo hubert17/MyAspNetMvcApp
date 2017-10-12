@@ -106,7 +106,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 {
                     UserName = model.UserName,
                     PhoneNumber = string.IsNullOrEmpty(model.PhoneNumber) ? null : model.PhoneNumber.TrimStart('0'),
-                    CountyCode = string.IsNullOrEmpty(model.PhoneNumber) ? null : model.CountyCode,
+                    CountryCode = string.IsNullOrEmpty(model.PhoneNumber) ? null : model.CountryCode,
                     UserProfile = new UserProfile
                     {
                         UserName = model.UserName,
@@ -155,7 +155,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     if (!string.IsNullOrEmpty(model.PhoneNumber))
                     {
                         var smsMsg = "Hello " + model.FirstName + "! You can now login to " + AppSettings.AppTitle + " using your mobile number.";
-                        Gabs.Helpers.SMSUtil.Send("+" + model.CountyCode + model.PhoneNumber, smsMsg);
+                        Gabs.Helpers.SMSUtil.Send("+" + model.CountryCode + model.PhoneNumber, smsMsg);
                         WelcomeMsg += " We have sent a welcome message to your mobile phone. ";
                         //return RedirectToAction("VerifyPhoneNumber", "Account");                       
                     }
@@ -422,7 +422,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 {
                     UserName = user.UserName,
                     PhoneNumber = user.PhoneNumber,
-                    CountyCode = user.CountyCode,
+                    CountryCode = user.CountryCode,
                     RegistrationType = string.Join(", ", UserManager.GetRoles(user.Id)),
                     LastName = user.UserProfile.LastName,
                     FirstName = user.UserProfile.FirstName,
@@ -432,6 +432,56 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 };
                 return View();
             }
+
+        }
+
+        public ActionResult EditProfile()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var user = UserManager.FindByName(User.Identity.Name);
+                var profile = new RegisterViewModel
+                {
+                    UserName = user.UserName,
+                    PhoneNumber = user.PhoneNumber,
+                    CountryCode = user.CountryCode,
+                    LastName = user.UserProfile.LastName,
+                    FirstName = user.UserProfile.FirstName,
+                    Gender = user.UserProfile.Gender,
+                    BirthDate = user.UserProfile.BirthDate,
+                    Picture = user.UserProfile.Picture,
+                };
+
+                return View(profile);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile(RegisterViewModel profile, HttpPostedFileBase FileUpload)
+        {
+            var db = new ApplicationDbContext();
+            var phoneExist = db.Users.Where(x => x.PhoneNumber == profile.PhoneNumber).FirstOrDefault() != null;
+
+            var user = UserManager.FindByName(User.Identity.Name);
+
+            user.UserProfile.LastName = profile.LastName;
+            user.UserProfile.FirstName = profile.FirstName;
+            user.UserProfile.Gender = profile.Gender;
+            user.UserProfile.BirthDate = profile.BirthDate;
+            if (FileUpload != null)
+                user.UserProfile.Picture = FileUpload.ToImageByteArray(300);
+
+            if(!phoneExist)
+            {
+                user.PhoneNumber = profile.PhoneNumber;
+                user.CountryCode = profile.CountryCode;
+            }
+
+            UserManager.Update(user);
+
+            TempData["MessagePanel"] = "Your account has been successfully updated.";
+            return RedirectToAction("Manage");
 
         }
 
@@ -483,7 +533,9 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            //return View(model);
+            TempData["MessagePanel"] = "ops! Something went wrong.";
+            return RedirectToAction("Manage");
         }
 
         [AllowAnonymous]

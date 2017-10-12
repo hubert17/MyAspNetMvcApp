@@ -119,7 +119,7 @@ else
 
                     <div class="form-group">
                         @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-4 control-label" })
-                        @Html.HiddenFor(m => m.CountyCode)
+                        @Html.HiddenFor(m => m.CountryCode)
                         <div class="col-md-8">
                             @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
                             <span class="help-block">
@@ -204,7 +204,7 @@ else
 }
     <script>
         $(document).ready(function () {
-            $("#@nameof(Model.CountyCode)").val(63);
+            $("#@nameof(Model.CountryCode)").val(63);
             $("#@nameof(Model.PhoneNumber)").intlTelInput({
                  initialCountry: "ph",
                  placeholderNumberType: "MOBILE",
@@ -215,7 +215,7 @@ else
         });
 
         $("#@nameof(Model.PhoneNumber)").on("countrychange", function (e, countryData) {
-            $("#@nameof(Model.CountyCode)").val(countryData.dialCode);
+            $("#@nameof(Model.CountryCode)").val(countryData.dialCode);
         });
     </script>
 

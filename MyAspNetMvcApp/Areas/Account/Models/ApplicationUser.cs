@@ -30,7 +30,7 @@ namespace MyAspNetMvcApp.Areas.Account.Models
         [MaxLength(20)]
         //[Index(IsUnique = true)]
         public override string PhoneNumber { get; set; }
-        public string CountyCode { get; set; }
+        public string CountryCode { get; set; }
         public string Token { get; set; }
         public DateTime? TokenExpiration { get; set; }
         public virtual UserProfile UserProfile { get; set; }

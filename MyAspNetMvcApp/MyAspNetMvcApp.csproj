@@ -366,6 +366,7 @@
     <Content Include="Areas\Geocities\Views\Geocities\Page3.cshtml" />
     <Content Include="Areas\BernardGabonDotCom\Views\web.config" />
     <Content Include="Areas\BernardGabonDotCom\Views\BernardGabonDotCom\Index.cshtml" />
+    <Content Include="Areas\Account\Views\Account\EditProfile.cshtml" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
@@ -447,7 +448,6 @@
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Shared\_InternalLayoutCSS.cshtml" />
     <Content Include="Views\Shared\_NotificationMenu.cshtml" />
-    <Content Include="Views\Shared\_MoreProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Account\Views\Shared\" />
