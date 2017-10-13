@@ -13,8 +13,8 @@ namespace Gabs.Helpers
 {
     public static class EmailUtil
     {
-        private const string ACCOUNT_EMAIL = "yuberto.gabon@gmail.com";
-        private const string ACCOUNT_PASSWORD = "kinimeme17";
+        private const string ACCOUNT_EMAIL = "username@gmail.com";
+        private const string ACCOUNT_PASSWORD = "my_password";
         private const string SMTP_HOST = "smtp.gmail.com"; // smtp-mail.outlook.com, smtp.mail.yahoo.com
         private const int SMTP_PORT = 587;
         private const bool REQUIRE_SSL = true;
@@ -39,7 +39,8 @@ namespace Gabs.Helpers
             List<string> mailTos = mailTo.Split(MULTI_MAILTO_SEPARATOR).ToList();
             foreach (var mailto in mailTos)
             {
-                mail.To.Add(mailto);
+                if(!string.IsNullOrEmpty(mailto))
+                    mail.To.Add(mailto);
             }
             if (!String.IsNullOrEmpty(mailCc)) mail.CC.Add(mailCc);
             if (!String.IsNullOrEmpty(mailBc)) mail.Bcc.Add(mailBc);
