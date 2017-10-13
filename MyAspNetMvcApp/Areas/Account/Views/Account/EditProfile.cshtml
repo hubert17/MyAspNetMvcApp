@@ -58,7 +58,16 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Profile Photo" src="@Model.Picture.ToBase64StringHTMLImgJpgSrc()" class="img-circle img-responsive"> </div>
+                        <div class="col-md-3 col-lg-3 " align="center">
+                            @if (string.IsNullOrEmpty(Model.Picture.ToBase64StringHTMLImgJpgSrc()))
+                            {
+                                <img alt="User Profile Photo" src="@Url.Content("~/Images/fb-noprofilepic.jpg")" class="img-circle img-responsive">
+                            }
+                            else
+                            {
+                                <img alt="User Profile Photo" src="@Model.Picture.ToBase64StringHTMLImgJpgSrc()" class="img-circle img-responsive">
+                            }
+                        </div>
 
                         <div class=" col-md-9 col-lg-9 ">
                             <table class="table table-user-information">
@@ -70,8 +79,8 @@
                                     <tr>
                                         <td>Mobile Number</td>
                                         <td>
-                                            @Html.TextBoxFor(m => m.CountryCode, new { @style = "width:15%" })
-                                            @Html.TextBoxFor(m => m.PhoneNumber, new { @style = "width:55%" })
+                                            @Html.TextBoxFor(m => m.CountryCode, new { placeholder = "##", @style = "width:15%" })
+                                            @Html.TextBoxFor(m => m.PhoneNumber, new { placeholder ="##########", @style = "width:55%" })
                                         </td>
                                     </tr>
                                     <tr>

@@ -325,6 +325,31 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         }
 
         [AllowAnonymous]
+        public string VerifyEmail()
+        {
+            if (AppSettings.EmailVerificationEnabled)
+            {
+                var user = UserManager.FindByName(User.Identity.Name);
+                if(!user.EmailConfirmed)
+                {
+                    char[] padding = { '=' };
+                    user.Token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).TrimEnd(padding).Replace('+', '-').Replace('/', '_');
+                    user.TokenExpiration = DateTime.Now.AddHours(1);
+                    UserManager.Update(user);
+
+                    var callbackUrl = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = user.Token });
+                    Gabs.Helpers.EmailUtil.SendEmail(user.Email,
+                       "Confirm Your Account",
+                       "Hello " + user.UserProfile.FirstName + "!<br><br> Please confirm your account by clicking this <a href=\"" + callbackUrl + "\">link</a>.");
+
+                    return "1";
+                }
+            }
+
+            return "0";
+        }
+
+        [AllowAnonymous]
         public ActionResult ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
@@ -430,6 +455,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     Gender = user.UserProfile.Gender,
                     Picture = user.UserProfile.Picture
                 };
+                ViewBag.Verified = user.EmailConfirmed;
                 return View();
             }
 

@@ -46,11 +46,27 @@
 
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title"><strong>@profile.FirstName @profile.LastName</strong></h3>
+                <h3 class="panel-title">
+                    <strong>@profile.FirstName @profile.LastName 
+                        @if(ViewBag.Verified == true)
+                        {
+                            <i class="fa fa-check-circle"></i>
+                        }
+                     </strong>
+                </h3>
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Profile Photo" src="data:image/jpg;base64,@profile.Picture.ToBase64String()" class="img-circle img-responsive"> </div>
+                    <div class="col-md-3 col-lg-3 " align="center">
+                        @if (string.IsNullOrEmpty(profile.Picture.ToBase64StringHTMLImgJpgSrc()))
+                        {
+                            <img alt="User Profile Photo" src="@Url.Content("~/Images/fb-noprofilepic.jpg")" class="img-circle img-responsive">
+                        }
+                        else
+                        {
+                            <img alt="User Profile Photo" src="data:image/jpg;base64,@profile.Picture.ToBase64String()" class="img-circle img-responsive">
+                        }
+                    </div>
 
                     <div class=" col-md-9 col-lg-9 ">
                         <table class="table table-user-information">
@@ -81,7 +97,14 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <button id="btnMoreProfile" data-original-title="More Account Information" data-toggle="tooltip" title="More Account Information" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-user"></i></button>
+                @if (ViewBag.Verified == false)
+                {
+                    <button id="btnVerify" data-original-title="Verify Account" data-toggle="tooltip" title="Verify Account" type="button" class="btn btn-sm btn-primary">Verify Account</button>
+                }
+                else
+                {
+                    <button id="btnVerify" data-original-title="Verified Account" data-toggle="tooltip" title="Verified Account" type="button" class="btn btn-sm btn-success disabled" disabled><i class="fa fa-check-circle"></i> Verified Account</button>
+                }
                 <span class="pull-right">
                     <a href="/account/editprofile" data-original-title="Edit this user" data-toggle="tooltip" title="Edit Account" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
                     <button id="btnChangePassword" data-original-title="Change Password" data-toggle="tooltip" title="Change Password" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-lock"></i></button>
@@ -129,5 +152,35 @@
         $("#btnChangePassword").click(function () {
             $("#pnlChangePassword").toggleClass('hidden');
         });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#btnVerify").click(function () {
+                $(this).attr('disabled', true);
+                $(this).html('Requesting...');
+                var value;
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("VerifyEmail", "Account")',
+                    success: function (res) {
+                        $(this).hide();
+                        if (res == "1") {
+                          BootstrapDialog.show({
+                              title: '@MyAspNetMvcApp.AppSettings.AppTitle',
+                              message: 'An account email verification has been sent. Please check your inbox.'
+                          });
+                        }
+                        else {
+                          BootstrapDialog.show({
+                              title: '@MyAspNetMvcApp.AppSettings.AppTitle',
+                              message: 'Oops. Something went wrong.'
+                          });
+                        }
+                    }
+                });
+            });
+        });
+
     </script>
 }

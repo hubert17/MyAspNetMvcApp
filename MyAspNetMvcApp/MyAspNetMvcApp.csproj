@@ -375,6 +375,7 @@
     <Content Include="Images\avatar2.png" />
     <Content Include="Images\avatar3.png" />
     <Content Include="Images\avatar5.png" />
+    <Content Include="Images\fb-noprofilepic.jpg" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\datatables.min.js" />
     <Content Include="Scripts\Docs\prism.aspnet.js" />
