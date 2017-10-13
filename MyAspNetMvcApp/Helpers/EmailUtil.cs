@@ -13,8 +13,8 @@ namespace Gabs.Helpers
 {
     public static class EmailUtil
     {
-        private const string ACCOUNT_EMAIL = "";
-        private const string ACCOUNT_PASSWORD = "";
+        private const string ACCOUNT_EMAIL = "yuberto.gabon@gmail.com";
+        private const string ACCOUNT_PASSWORD = "kinimeme17";
         private const string SMTP_HOST = "smtp.gmail.com"; // smtp-mail.outlook.com, smtp.mail.yahoo.com
         private const int SMTP_PORT = 587;
         private const bool REQUIRE_SSL = true;
