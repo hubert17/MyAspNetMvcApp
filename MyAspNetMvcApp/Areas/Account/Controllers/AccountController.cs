@@ -261,8 +261,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
 
             dynamic facebook = JObject.Parse(jsondata);
 
-            //string firstName = facebook.Name;
-            string FacebookId = facebook.id;
+            //string FacebookId = facebook.id;
             string FacebookEmail = facebook.email;
             /*You can get other dynamic variables*/
 
@@ -289,7 +288,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                         var newUser = new ApplicationUser()
                         {
                             UserName = FacebookEmail,
-                            PhoneNumber = FacebookId,
+                            EmailConfirmed = true,
+                            //PhoneNumber = ,
                             UserProfile = new UserProfile
                             {
                                 UserName = FacebookEmail,
