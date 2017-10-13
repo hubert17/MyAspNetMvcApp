@@ -164,7 +164,7 @@
                     type: "POST",
                     url: '@Url.Action("VerifyEmail", "Account")',
                     success: function (res) {
-                        $(this).hide();
+                        $("#btnVerify").text("Pending");
                         if (res == "1") {
                           BootstrapDialog.show({
                               title: '@MyAspNetMvcApp.AppSettings.AppTitle',
