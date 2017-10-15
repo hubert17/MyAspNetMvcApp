@@ -48,6 +48,22 @@ else
     @{ Html.RenderPartial("_GoogleAnalytics"); }
 
 </head>
+
+@{
+    var msgtype = "info";
+    var messageType = string.Empty;
+    if (ViewBag.MessageType != null)
+    {
+        msgtype = (string)ViewBag.MessageType;
+        messageType = "type: BootstrapDialog.TYPE_" + msgtype.ToUpper() + ",";
+    }
+    if (TempData["MessageType"] != null)
+    {
+        msgtype = (string)TempData["MessageType"];
+        messageType = "type: BootstrapDialog.TYPE_" + msgtype.ToUpper() + ",";
+    }
+}
+
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top hidden-print">
         <div class="container">
@@ -80,19 +96,19 @@ else
         </div>
     </div>
 
-    @RenderSection("Outsidecontainer", required: false)
+    @RenderSection("Nocontainer", required: false)
 
     <div class="container body-content">
         @if (TempData["MessagePanel"] != null)
         {
-            <div class="alert alert-info alert-dismissable">
+            <div class="alert alert-@msgtype alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 @TempData["MessagePanel"]
             </div>
         } 
         @if (ViewBag.MessagePanel != null)
         {
-            <div class="alert alert-info alert-dismissable">
+            <div class="alert alert-@msgtype alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 @ViewBag.MessagePanel
             </div>
@@ -129,7 +145,8 @@ else
 @if (ViewBag.MessageBox != null)
 {
     <script>
-          BootstrapDialog.show({
+        BootstrapDialog.show({
+              @messageType
               title: '@MyAspNetMvcApp.AppSettings.AppTitle',
               message: '@ViewBag.MessageBox'
           });
@@ -138,7 +155,8 @@ else
 @if (TempData["MessageBox"] != null)
 {
     <script>
-          BootstrapDialog.show({
+        BootstrapDialog.show({
+              @messageType
               title: '@MyAspNetMvcApp.AppSettings.AppTitle',
               message: '@TempData["MessageBox"]'
           });

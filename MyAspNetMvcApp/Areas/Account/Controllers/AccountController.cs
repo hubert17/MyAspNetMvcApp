@@ -221,12 +221,14 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     await SignInAsync(user, isPersistent: false);
                 else
                 {
+                    TempData["MessageType"] = "danger";
                     TempData["MessageBox"] = "Sign in failed. Unable to retrieve Facebook email information.";
                     return RedirectToAction("Login");
                 }
             }
             catch (Exception ex)
             {
+                TempData["MessageType"] = "danger";
                 TempData["MessagePanel"] = ex.Message;
                 return RedirectToAction("Login");
             }
@@ -368,7 +370,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 TempData["MessageBox"] = "We have successfully verified your email.";
                 return RedirectToAction("Login", "Account");
             }
-
+            TempData["MessageType"] = "warning";
             TempData["MessagePanel"] = "Sorry. Your email confirmation token has expired.";
             return RedirectToAction("index", "home", new { area = "" });
         }
@@ -560,6 +562,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
 
             // If we got this far, something failed, redisplay form
             //return View(model);
+            TempData["MessageType"] = "danger";
             TempData["MessagePanel"] = "ops! Something went wrong.";
             return RedirectToAction("Manage");
         }
@@ -608,6 +611,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 await UserManager.UpdateAsync(user);
             }
 
+            TempData["MessageType"] = "warning";
             TempData["MessagePanel"] = "Sorry. Your password reset token has expired.";
             return RedirectToAction("Index", "Home", new { area = "" });
         }
