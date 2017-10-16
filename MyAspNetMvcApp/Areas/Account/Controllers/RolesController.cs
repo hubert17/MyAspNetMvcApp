@@ -21,7 +21,15 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         // GET: /Roles/
         public ActionResult Index(string Message = "")
         {
-            var users = context.Users.OrderBy(o=>o.UserName).ToList();
+            List<ApplicationUser> users;
+            if (TempData["roleFilter"] == null)
+                users = context.Users.OrderBy(o => o.UserName).ToList();
+            else
+            {
+                var roleFilter = (string)TempData["roleFilter"];
+                var roleId = context.Roles.Where(r => r.Name == roleFilter).First().Id;
+                users = context.Users.Where(x => x.Roles.Any(r => r.RoleId == roleId)).OrderBy(o => o.UserName).ToList();
+            }
 
             var userRoles = new Dictionary<string, List<string>>();
 
@@ -39,6 +47,13 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             ViewBag.Message = Message.Trim();
             
             return View(users);
+        }
+
+        public ActionResult FilterUsers(string RoleName)
+        {
+            TempData["roleFilter"] = RoleName;
+            TempData["MessagePanel"] = "Displaying users with " + RoleName + " role. Refresh to show all.";
+            return RedirectToAction("Index");
         }
 
         //
@@ -89,16 +104,26 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         {
             try
             {
-                if (RoleName != "admin")
+                if (RoleName != System.Configuration.ConfigurationManager.AppSettings["AdminRolename"])
                 {
                     var thisRole = context.Roles.Where(r => r.Name.Equals(RoleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                    context.Roles.Remove(thisRole);
-                    context.SaveChanges();
+                    var users = context.Users.Where(x => x.Roles.Any(r => r.RoleId == thisRole.Id)).OrderBy(o => o.UserName).ToList();
+                    if (users.Count > 0)
+                    {
+                        TempData["roleFilter"] = thisRole.Name;
+                        TempData["MessagePanel"] = RoleName + " cannot be deleted. It has members.";
+                    }
+                    else
+                    {
+                        context.Roles.Remove(thisRole);
+                        context.SaveChanges();
+                    }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                TempData["Message"] = RoleName + " cannot be deleted. It has users.";
+                TempData["MessageType"] = "danger";
+                TempData["MessagePanel"] = "Oops! Something went wrong. " + ex.Message;
             }
             return RedirectToAction("Index");
         }
@@ -114,8 +139,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 userManager.AddToRole(user.Id, RoleName);
 
                 // prepopulat roles for the view dropdown
-                var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
-                ViewBag.Roles = list;
+                //var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+                //ViewBag.Roles = list;
             }
 
             TempData["UserName"] = UserName;
@@ -134,8 +159,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 ViewBag.RolesForThisUser = userManager.GetRoles(user.Id);
 
                 // prepopulat roles for the view dropdown
-                var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
-                ViewBag.Roles = list;
+                //var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+                //ViewBag.Roles = list;
             }
 
             TempData["UserName"] = UserName;
@@ -146,6 +171,12 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteRoleForUser(string UserName, string RoleName)
         {
+            if(System.Configuration.ConfigurationManager.AppSettings["AdminUsername"] == UserName)
+            {
+                TempData["MessageBox"] = "Invalid action.";
+                return RedirectToAction("Index");
+            }
+
             var account = new AccountController();
             ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
 
@@ -155,8 +186,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             }
 
             // prepopulat roles for the view dropdown
-            var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
-            ViewBag.Roles = list;
+            //var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            //ViewBag.Roles = list;
 
             TempData["UserName"] = UserName;
             return RedirectToAction("Index");
@@ -171,9 +202,10 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             //await userManager.SetLockoutEndDateAsync(user.Id, DateTime.Today.AddYears(10));
 
             user.UserProfile.IsActive = false;
+            user.LockoutEnabled = true;
             await userManager.UpdateAsync(user);
 
-            TempData["Message"] = UserName + " has been deactivated.";
+            TempData["MessageBox"] = UserName + " has been deactivated.";
 
             TempData["UserName"] = UserName;
             return RedirectToAction("Index");
@@ -188,9 +220,10 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             //await userManager.SetLockoutEndDateAsync(user.Id, DateTime.Now);
 
             user.UserProfile.IsActive = true;
+            user.LockoutEnabled = false;
             await userManager.UpdateAsync(user);
 
-            TempData["Message"] = UserName + " has been reactivated.";
+            TempData["MessageBox"] = UserName + " has been reactivated.";
 
             TempData["UserName"] = UserName;
             return RedirectToAction("Index");

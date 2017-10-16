@@ -53,32 +53,39 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            try
             {
-                using (var db = new ApplicationDbContext())
+                if (ModelState.IsValid)
                 {
-                    string myPhone = String.Join("", model.UserName.Split('(', '-', ')')).TrimStart('0');
-                    ApplicationUser myUser = db.Users.FirstOrDefault(u => u.UserName == model.UserName || (u.PhoneNumber == myPhone));
-                    if (myUser != null)
+                    using (var db = new ApplicationDbContext())
                     {
-                        model.UserName = myUser.UserName;
+                        string myPhone = String.Join("", model.UserName.Split('(', '-', ')')).TrimStart('0');
+                        ApplicationUser myUser = db.Users.FirstOrDefault(u => u.UserName == model.UserName || (u.PhoneNumber == myPhone));
+                        if (myUser != null)
+                        {
+                            model.UserName = myUser.UserName;
+                        }
+                    }
+                    var user = await UserManager.FindAsync(model.UserName, model.Password);
+                    if (user != null && (user.UserProfile.IsActive || user.LockoutEnabled == false))
+                    {
+                        await SignInAsync(user, model.RememberMe);
+                        if (string.IsNullOrEmpty(returnUrl))
+                            return RedirectToAction("index", "home", new { area = "" });
+                        else
+                            return RedirectToLocal(returnUrl);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Invalid username or password.");
                     }
                 }
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null && user.UserProfile.IsActive)
-                {
-                    await SignInAsync(user, model.RememberMe);
-                    if (string.IsNullOrEmpty(returnUrl))
-                        return RedirectToAction("index", "home", new { area = "" });
-                    else
-                        return RedirectToLocal(returnUrl);
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                }
             }
-
+            catch(Exception ex)
+            {
+                ViewBag.MessageType = "danger";
+                ViewBag.MessageBox = "Database connection string is not properly configured or invalid. " + ex.Message;
+            }
             // If we got this far, something failed, redisplay form
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
@@ -218,7 +225,15 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
 
                 var user = GetDetails(access_token);
                 if (user != null)
-                    await SignInAsync(user, isPersistent: false);
+                {
+                    if(user.UserProfile.IsActive == false || user.LockoutEnabled == true)
+                    {
+                        TempData["MessageType"] = "danger";
+                        TempData["MessageBox"] = "Sign in failed. Contact the administrator.";
+                    }
+                    else
+                        await SignInAsync(user, isPersistent: false);
+                }
                 else
                 {
                     TempData["MessageType"] = "danger";

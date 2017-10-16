@@ -39,7 +39,8 @@
                                 }
                                 <td><input type="text" name="name" value="@role.Name" class="form-control" @_readonly /></td>
                                 <td><button type="submit" class="btn btn-primary" title="Save" @_disabled ><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
-                                <td><a href="/Roles/Delete?RoleName=@role.Name" class="btn btn-danger" @_disabled onclick="return confirm('Are you sure to delete?')" title="Delete"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                <td><a href="/Roles/FilterUsers?RoleName=@role.Name" class="btn btn-primary" title="View members"><span class="glyphicon glyphicon-search"></span></a></td>
+                                <td><a href="/Roles/Delete?RoleName=@role.Name" class="btn btn-danger @_disabled" @_disabled onclick="return confirm('Are you sure to delete?')" title="Delete"><span class="glyphicon glyphicon-remove"></span></a></td>
                             </tr>
                         </table>
                         <hr />
@@ -51,7 +52,7 @@
                     <table width="100%">
                         <tr>
                             <td><input type="text" name="RoleName"  class="form-control" placeholder="Add Role" /></td>
-                            <td><button type="submit" class="btn btn-primary" title="Add"><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
+                            <td colspan="2"><button type="submit" class="btn btn-primary" title="Add"><span class="glyphicon glyphicon-floppy-disk"></span></button></td>
                             <td><button type="reset" class="btn btn-default" title="Cancel"><span class="glyphicon glyphicon-remove"></span></button></td>
                         </tr>
                     </table>
@@ -110,7 +111,7 @@
                                                 {
                                                     @roles <button type="button" class="btn btn-danger btn-xs disabled" disabled><span class="glyphicon glyphicon-remove"></span></button>
                                                 }
-                                                else if (roles == "admin" && user.UserName == User.Identity.Name)
+                                                else if (roles == System.Configuration.ConfigurationManager.AppSettings["AdminRolename"] && user.UserName == User.Identity.Name)
                                                 {
                                                     @roles <button type="submit" class="btn btn-danger btn-xs" onClick="return confirm('Warning: You are about to remove yourself from the admin group. Continue?')"><span class="glyphicon glyphicon-remove"></span></button>
                                                 }
@@ -169,7 +170,7 @@
 
     <div class="col-sm-3">
         <div class="panel panel-info">
-            <div class="panel-heading"><strong>Actvity</strong></div>
+            <div class="panel-heading"><strong>Activity</strong></div>
             <div class="panel-body" style="padding:5px;">
                 @foreach(var user in Model.OrderByDescending(o=>o.UserProfile.LastLogin).Take(20))
                 {
