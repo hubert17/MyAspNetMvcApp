@@ -83,8 +83,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             }
             catch(Exception ex)
             {
-                ViewBag.MessageType = "danger";
-                ViewBag.MessageBox = "Database connection string is not properly configured or invalid. " + ex.Message;
+                ViewData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                ViewData[BSMessage.DIALOGBOX] = "Database connection string is not properly configured or invalid. " + ex.Message;
             }
             // If we got this far, something failed, redisplay form
             ViewBag.ReturnUrl = returnUrl;
@@ -167,7 +167,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                         //return RedirectToAction("VerifyPhoneNumber", "Account");                       
                     }
 
-                    TempData["MessageBox"] = WelcomeMsg;
+                    TempData[BSMessage.DIALOGBOX] = WelcomeMsg;
                     return RedirectToAction("Index", "Home", new { area = "", welcome = true });
                 }
                 else
@@ -228,23 +228,23 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 {
                     if(user.UserProfile.IsActive == false || user.LockoutEnabled == true)
                     {
-                        TempData["MessageType"] = "danger";
-                        TempData["MessageBox"] = "Sign in failed. Contact the administrator.";
+                        TempData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                        TempData[BSMessage.DIALOGBOX] = "Sign in failed. Contact the administrator.";
                     }
                     else
                         await SignInAsync(user, isPersistent: false);
                 }
                 else
                 {
-                    TempData["MessageType"] = "danger";
-                    TempData["MessageBox"] = "Sign in failed. Unable to retrieve Facebook email information.";
+                    TempData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                    TempData[BSMessage.DIALOGBOX] = "Sign in failed. Unable to retrieve Facebook email information.";
                     return RedirectToAction("Login");
                 }
             }
             catch (Exception ex)
             {
-                TempData["MessageType"] = "danger";
-                TempData["MessagePanel"] = ex.Message;
+                TempData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                TempData[BSMessage.PANEL] = ex.Message;
                 return RedirectToAction("Login");
             }
 
@@ -331,7 +331,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                         }
                         Session.Remove("RegType");
 
-                        TempData["MessageBox"] = WelcomeMsg;
+                        TempData[BSMessage.DIALOGBOX] = WelcomeMsg;
                         return newUser;
                     }
 
@@ -371,7 +371,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         {
             if (userId == null || code == null)
             {
-                TempData["MessageAlert"] = "An error has occured.";
+                TempData[BSMessage.ALERT] = "An error has occured.";
                 return RedirectToAction("index", "home", new { area = "" });
             }
 
@@ -382,11 +382,11 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 user.Token = null;
                 user.TokenExpiration = null;
                 UserManager.Update(user);
-                TempData["MessageBox"] = "We have successfully verified your email.";
+                TempData[BSMessage.DIALOGBOX] = "We have successfully verified your email.";
                 return RedirectToAction("Login", "Account");
             }
-            TempData["MessageType"] = "warning";
-            TempData["MessagePanel"] = "Sorry. Your email confirmation token has expired.";
+            TempData[BSMessage.TYPE] = BSMessage.MessageType.WARNING;
+            TempData[BSMessage.PANEL] = "Sorry. Your email confirmation token has expired.";
             return RedirectToAction("index", "home", new { area = "" });
         }
 
@@ -448,7 +448,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         // GET: /Account/Manage
         public ActionResult Manage(ManageMessageId? message)
         {
-            ViewBag.MessagePanel =
+            ViewData[BSMessage.PANEL] =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
@@ -523,7 +523,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
 
             UserManager.Update(user);
 
-            TempData["MessagePanel"] = "Your account has been successfully updated.";
+            TempData[BSMessage.PANEL] = "Your account has been successfully updated.";
             return RedirectToAction("Manage");
 
         }
@@ -577,8 +577,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
 
             // If we got this far, something failed, redisplay form
             //return View(model);
-            TempData["MessageType"] = "danger";
-            TempData["MessagePanel"] = "ops! Something went wrong.";
+            TempData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+            TempData[BSMessage.PANEL] = "ops! Something went wrong.";
             return RedirectToAction("Manage");
         }
 
@@ -626,8 +626,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 await UserManager.UpdateAsync(user);
             }
 
-            TempData["MessageType"] = "warning";
-            TempData["MessagePanel"] = "Sorry. Your password reset token has expired.";
+            TempData[BSMessage.TYPE] = BSMessage.MessageType.WARNING;
+            TempData[BSMessage.PANEL] = "Sorry. Your password reset token has expired.";
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
@@ -644,11 +644,11 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 var result = await UserManager.UpdateAsync(user);
                 if (!result.Succeeded)
                 {
-                    TempData["MessageAlert"] = "Password reset failed.";
+                    TempData[BSMessage.ALERT] = "Password reset failed.";
                     return RedirectToAction("Index", "Home", new { area = "" });
                 }
             }
-            TempData["MessageBox"] = "You may now login with your new password.";
+            TempData[BSMessage.DIALOGBOX] = "You may now login with your new password.";
             return RedirectToAction("Login", "Account");
         }
 

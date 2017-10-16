@@ -210,6 +210,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AppSettings.cs" />
+    <Compile Include="Helpers\BSMessage.cs" />
     <Compile Include="Helpers\EmailUtil.cs" />
     <Compile Include="Helpers\FileUploadExtension.cs" />
     <Compile Include="Helpers\ImageUploadExtension.cs" />

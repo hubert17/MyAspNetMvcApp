@@ -64,7 +64,7 @@
                         }
                         else
                         {
-                            <img alt="User Profile Photo" src="data:image/jpg;base64,@profile.Picture.ToBase64String()" class="img-circle img-responsive">
+                            <img alt="User Profile Photo" src="data:image/jpg;base64,@profile.Picture.ResizeToThumbnail(200,200).ToBase64String()" class="img-circle img-responsive">
                         }
                     </div>
 

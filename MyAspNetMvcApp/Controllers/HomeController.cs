@@ -12,7 +12,7 @@ namespace MyAspNetMvcApp.Controllers
     {
         public ActionResult Index()
         {
-            //ViewBag.MessageBox = "Hello! Welcome to " + AppSettings.AppTitle + "!";
+            //ViewData[BSMessage.DIALOGBOX] = "Hello! Welcome to " + AppSettings.AppTitle + "!";
             return View();
 
             // This is for www.bernardgabon.com. Kindly remove this and uncomment the code above.

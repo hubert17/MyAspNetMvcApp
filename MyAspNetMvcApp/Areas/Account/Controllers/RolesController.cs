@@ -52,7 +52,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         public ActionResult FilterUsers(string RoleName)
         {
             TempData["roleFilter"] = RoleName;
-            TempData["MessagePanel"] = "Displaying users with " + RoleName + " role. Refresh to show all.";
+            TempData[BSMessage.PANEL] = "Displaying users with " + RoleName + " role. Refresh to show all.";
             return RedirectToAction("Index");
         }
 
@@ -111,7 +111,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     if (users.Count > 0)
                     {
                         TempData["roleFilter"] = thisRole.Name;
-                        TempData["MessagePanel"] = RoleName + " cannot be deleted. It has members.";
+                        TempData[BSMessage.PANEL] = RoleName + " cannot be deleted. It has members.";
                     }
                     else
                     {
@@ -122,8 +122,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             }
             catch(Exception ex)
             {
-                TempData["MessageType"] = "danger";
-                TempData["MessagePanel"] = "Oops! Something went wrong. " + ex.Message;
+                TempData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                TempData[BSMessage.PANEL] = "Oops! Something went wrong. " + ex.Message;
             }
             return RedirectToAction("Index");
         }
@@ -173,7 +173,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         {
             if(System.Configuration.ConfigurationManager.AppSettings["AdminUsername"] == UserName)
             {
-                TempData["MessageBox"] = "Invalid action.";
+                TempData[BSMessage.DIALOGBOX] = "Invalid action.";
                 return RedirectToAction("Index");
             }
 
@@ -205,7 +205,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             user.LockoutEnabled = true;
             await userManager.UpdateAsync(user);
 
-            TempData["MessageBox"] = UserName + " has been deactivated.";
+            TempData[BSMessage.DIALOGBOX] = UserName + " has been deactivated.";
 
             TempData["UserName"] = UserName;
             return RedirectToAction("Index");
@@ -223,7 +223,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             user.LockoutEnabled = false;
             await userManager.UpdateAsync(user);
 
-            TempData["MessageBox"] = UserName + " has been reactivated.";
+            TempData[BSMessage.DIALOGBOX] = UserName + " has been reactivated.";
 
             TempData["UserName"] = UserName;
             return RedirectToAction("Index");

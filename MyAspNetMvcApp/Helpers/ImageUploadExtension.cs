@@ -216,7 +216,7 @@ public static class ImageUploadExtension
     /// <param name="Height">Height in Pixel</param>
     /// <param name="highQuality">True - High quality, False -  Fast performance</param>
     /// <returns>byte[] JpegImage</returns>
-    public static byte[] ResizeToThumbnail(this byte[] image, int Width = THUMBNAIL_WIDTH, int Height = THUMBNAIL_HEIGHT, bool highQuality = false)
+    public static byte[] ResizeToThumbnail(this byte[] image, int Width = THUMBNAIL_WIDTH, int Height = THUMBNAIL_HEIGHT, bool Fill = true)
     {
         if (image != null)
         {
@@ -225,7 +225,7 @@ public static class ImageUploadExtension
             {
                 img = Image.FromStream(ms);
             }
-            var resizeImage = FixedSize(img, Width, Height, highQuality);
+            var resizeImage = FixedSize(img, Width, Height, Fill);
             using (var ms = new MemoryStream())
             {
                 resizeImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);

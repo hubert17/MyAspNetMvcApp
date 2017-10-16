@@ -72,7 +72,7 @@ namespace MyAspNetMvcApp.Controllers
 
             if (product == null)
             {
-                TempData["MessageAlert"] = "Product does not exist.";
+                TempData[BSMessage.ALERT] = "Product does not exist.";
                 return RedirectToAction("Index");
             }
 

@@ -75,7 +75,7 @@ namespace MyAspNetMvcApp.Controllers
             db.OrderItems.Add(myOrderItems);
             db.SaveChanges();
 
-            TempData["MessageBox"] = "Added to cart.";
+            TempData[BSMessage.DIALOGBOX] = "Added to cart.";
             return RedirectToAction("Index", "Products");
         }
     }

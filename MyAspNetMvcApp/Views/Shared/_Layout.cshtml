@@ -8,16 +8,16 @@
     <meta property="og:description" content="@MyAspNetMvcApp.AppSettings.AppDescription" />
     <title>@ViewBag.Title - @MyAspNetMvcApp.AppSettings.AppTitle</title>
     
-@if(TempData["MessageAlert"] != null)
+@if(TempData[BSMessage.TYPE] != null)
 {
     <script>
-        alert('@TempData["MessageAlert"]')
+        alert('@TempData[BSMessage.ALERT]')
     </script>
 }
-@if(ViewBag.MessageAlert != null)
+@if(ViewData[BSMessage.ALERT] != null)
 {
     <script>
-        alert('@ViewBag.MessageAlert')
+        alert('@ViewData[BSMessage.ALERT]')
     </script>
 }
 
@@ -52,14 +52,14 @@ else
 @{
     var msgtype = "info";
     var messageType = string.Empty;
-    if (ViewBag.MessageType != null)
+    if (ViewData[BSMessage.TYPE] != null)
     {
-        msgtype = (string)ViewBag.MessageType;
+        msgtype = (string)ViewData[BSMessage.TYPE];
         messageType = "type: BootstrapDialog.TYPE_" + msgtype.ToUpper() + ",";
     }
-    if (TempData["MessageType"] != null)
+    if (TempData[BSMessage.TYPE] != null)
     {
-        msgtype = (string)TempData["MessageType"];
+        msgtype = (string)TempData[BSMessage.TYPE];
         messageType = "type: BootstrapDialog.TYPE_" + msgtype.ToUpper() + ",";
     }
 }
@@ -99,18 +99,18 @@ else
     @RenderSection("Nocontainer", required: false)
 
     <div class="container body-content">
-        @if (TempData["MessagePanel"] != null)
+        @if (TempData[BSMessage.PANEL] != null)
         {
             <div class="alert alert-@msgtype alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                @TempData["MessagePanel"]
+                @TempData[BSMessage.PANEL]
             </div>
         } 
-        @if (ViewBag.MessagePanel != null)
+        @if (ViewData[BSMessage.PANEL] != null)
         {
             <div class="alert alert-@msgtype alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                @ViewBag.MessagePanel
+                @ViewData[BSMessage.PANEL]
             </div>
         }        
 
@@ -142,23 +142,23 @@ else
 }
     <script src="@Url.Content("~/Scripts/Site.js")"></script>
 
-@if (ViewBag.MessageBox != null)
+@if (ViewData[BSMessage.DIALOGBOX] != null)
 {
     <script>
         BootstrapDialog.show({
               @messageType
               title: '@MyAspNetMvcApp.AppSettings.AppTitle',
-              message: '@ViewBag.MessageBox'
+              message: '@ViewData[BSMessage.DIALOGBOX]'
           });
     </script>
 }
-@if (TempData["MessageBox"] != null)
+@if (TempData[BSMessage.DIALOGBOX] != null)
 {
     <script>
         BootstrapDialog.show({
               @messageType
               title: '@MyAspNetMvcApp.AppSettings.AppTitle',
-              message: '@TempData["MessageBox"]'
+              message: '@TempData[BSMessage.DIALOGBOX]'
           });
     </script>
 }
