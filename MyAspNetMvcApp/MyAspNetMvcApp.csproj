@@ -187,6 +187,7 @@
     <Compile Include="Areas\Account\Controllers\AccountController.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
     <Compile Include="Areas\App\Controllers\LookupController.cs" />
+    <Compile Include="Areas\App\Controllers\NotificationsController.cs" />
     <Compile Include="Areas\App\Models\Lookup.cs" />
     <Compile Include="Areas\App\Models\LookupViewModel.cs" />
     <Compile Include="Areas\BernardGabonDotCom\BernardGabonDotComAreaRegistration.cs" />
@@ -368,6 +369,8 @@
     <Content Include="Areas\BernardGabonDotCom\Views\web.config" />
     <Content Include="Areas\BernardGabonDotCom\Views\BernardGabonDotCom\Index.cshtml" />
     <Content Include="Areas\Account\Views\Account\EditProfile.cshtml" />
+    <Content Include="Areas\App\Views\Lookup\_LookupItem.cshtml" />
+    <Content Include="Areas\App\Views\Lookup\_LookupEdit.cshtml" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
@@ -453,6 +456,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Account\Views\Shared\" />
+    <Folder Include="Areas\App\Views\Notifications\" />
     <Folder Include="Areas\BernardGabonDotCom\Views\GabsProject\" />
     <Folder Include="Areas\BernardGabonDotCom\Views\Shared\" />
     <Folder Include="Areas\Docs\Models\" />

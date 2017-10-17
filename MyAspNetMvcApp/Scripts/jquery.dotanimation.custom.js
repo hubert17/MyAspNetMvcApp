@@ -36,7 +36,9 @@ var submitAnimator = function (e) {
 }
 
 var stopSubmitAnimator = function () {
-    var $el = $(":submit, .btn-submit");
-    $el.trigger('stopDotAnimation');
-    $el.replaceWith(btnSubmitCopy);
+    if (btnSubmitCopy) {
+        var $el = $(":submit, .btn-submit");
+        $el.trigger('stopDotAnimation');
+        $el.replaceWith(btnSubmitCopy);
+    }
 }

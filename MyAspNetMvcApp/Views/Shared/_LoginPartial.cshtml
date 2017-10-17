@@ -14,6 +14,7 @@
                             @Html.ActionLink("My Profile", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
                         </li>
                         <li>@Html.ActionLink("Manage User Roles", "Index", "Roles")</li>
+                        <li><a href="@Url.Action("Index", "Lookup", new { Area = "App" })">Manage Lookups</a></li>
                     </ul>
                 </li>
             }

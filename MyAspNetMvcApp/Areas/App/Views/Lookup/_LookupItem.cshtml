@@ -1,0 +1,13 @@
+﻿@model MyAspNetMvcApp.Areas.App.Models.Lookup
+
+<tr>
+    <td>@Model.Type</td>
+    <td>@Model.Key</td>
+    <td>@Model.Value</td>
+    <td>@Model.Description</td>
+    <td align="center">@(Model.IsActive ? "✓" : "✗")</td>
+    <td>
+        <button type="button" id="btn-@Model.Id" data-Id="@Model.Id" class="btn btn-warning btn-xs btnEdit hidden"><i class="glyphicon glyphicon-edit"></i> Edit</button>
+    </td>
+</tr>
+

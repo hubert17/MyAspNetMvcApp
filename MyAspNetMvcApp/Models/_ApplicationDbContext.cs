@@ -11,7 +11,7 @@ namespace MyAspNetMvcApp.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext() : base("DbConnSqlSomee") // Connection string name
+        public ApplicationDbContext() : base("DbConnJetAccess") // Connection string name
         {
         }
 

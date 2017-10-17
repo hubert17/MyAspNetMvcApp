@@ -8,7 +8,8 @@ using MyAspNetMvcApp.Areas.App.Models;
 
 namespace MyAspNetMvcApp.Areas.App.Controllers
 {
-    
+ 
+    [AdminAuthorize]
     public class LookupController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
@@ -19,9 +20,51 @@ namespace MyAspNetMvcApp.Areas.App.Controllers
             return View();
         }
 
-        public ActionResult Create()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Lookup lookup)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    lookup.IsActive = true;
+                    db.Lookups.Add(lookup);
+                    db.SaveChanges();
+                    return PartialView("~/Areas/App/Views/Lookup/_LookupItem.cshtml", lookup);
+                }
+                catch
+                { }
+            }
+            return new HttpStatusCodeResult(400, "Oops! Something went wrong.");
+        }
+
+        public ActionResult Edit(int Id)
+        {
+            try
+            {
+                var lookup = db.Lookups.Find(Id);
+                return PartialView("~/Areas/App/Views/Lookup/_LookupEdit.cshtml", lookup);
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(400, "Oops! Something went wrong.");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Lookup lookup)
+        {
+            try
+            {
+                db.Entry(lookup).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return PartialView("~/Areas/App/Views/Lookup/_LookupItem.cshtml", lookup);
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(400, "Oops! Something went wrong.");
+            }
         }
     }
 }

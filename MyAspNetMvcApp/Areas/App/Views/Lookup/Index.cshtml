@@ -1,23 +1,38 @@
 ﻿@model MyAspNetMvcApp.Areas.App.Models.Lookup
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Manage Lookup Key/Value";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Book List</h2>
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Book with Ajax</button>
+@section Head {
+    <style>
+        .btnEdit, .btnSave {
+            line-height: 1 !important;
+        }
+        td input {
+            border: none;
+        }
+    </style>    
+}
 
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-plus-sign"></i> Add New Lookup</button>
+        <h2>Lookups</h2>
+    </div>
+</div>
 <div class="table-responsive">
 
-    <table class="table table-hover table-striped table-condensed">
+    <table class="table table-hover table-striped" id="tblLookup">
         <thead>
             <tr>
+                <th class="hidden">Id</th>
                 <th>TYPE</th>
-                <th>KEY</th>
+                <th width="10%">KEY</th>
                 <th>VALUE</th>
                 <th>DESCRIPTION</th>
-                <th>ACTIVE</th>
-                <th>ACTION</th>
+                <th width="5%">ACTIVE</th>
+                <th width="5%">ACTION</th>
             </tr>
         </thead>
         <tbody>
@@ -28,10 +43,9 @@
                     <td>@lookup.Key</td>
                     <td>@lookup.Value</td>
                     <td>@lookup.Description</td>
-                    <td>@(lookup.InActive ?  "✗": "✓")</td>
+                    <td align="center">@(lookup.IsActive ? "✓" : "✗")</td>
                     <td>
-                        <a href="/lookup3/edit/@lookup.Id">Edit</a> |
-                        <a href="/lookup3/deactivate/@lookup.Id" onclick="return confirm('Deactivate @lookup.Type Key:@lookup.Key Value: @lookup.Value?');">Deactivate</a>
+                        <button type="button" id="btn-@lookup.Id" data-Id="@lookup.Id" class="btn btn-warning btn-xs btnEdit hidden"><i class="glyphicon glyphicon-edit"></i> Edit</button>
                     </td>
                 </tr>
 
@@ -42,86 +56,68 @@
 </div>
 
 
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+<form action="@Url.Action("Create", "Lookup", new { area = "App" })" method="post">
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add Book</h4>
-            </div>
-            <div class="modal-body">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Lookup Key/Value</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
 
-                <form action="/ajaxsample/create" class="form-horizontal">
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Lookup</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Key, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Key, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Key, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Key, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Key, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Key, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Value, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Value, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.InActive, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.InActive)
-                    @Html.ValidationMessageFor(model => model.InActive, "", new { @class = "text-danger" })
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnCreateLookup" class="btn btn-primary">Submit</button>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
         </div>
     </div>
-                </form>
 
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary btn-submit">Submit</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
+</form>
 
 @section Scripts {
     @{
@@ -133,22 +129,77 @@
     }
 
     <script>
-        $(document).on('click', '.btn-submit', function (e) {
+        $(document).on('click', '#btnCreateLookup', function (e) {
             e.preventDefault();
+            var form = $(this).parents('form:first');
             $.ajax({
                 type: "POST",
                 url: form.attr('action'),
                 data: form.serialize(),
                 success: function (data) {
                     $('tbody').append(data);
-                    $("#myModal").modal("hide");
-                    $('form').trigger("reset");
+                },
+                error: function (response) {
+                    alert(response.statusText);
                 }
             });
+            $("#myModal").modal("hide");
+            $('form').trigger("reset");
         });
 
         $("#myModal").on('hidden.bs.modal', function () {
             stopSubmitAnimator();
+        });
+
+        //$(document).on('mouseover', '#tblLookup tr', function () {
+        ////$('#tblLookup tr').hover(function () {
+        //    $(this).find('.btnEdit').removeClass('hidden');
+        //}, function () {
+        //    $(this).find('.btnEdit').addClass('hidden');
+        //    });
+
+        $(document).on({
+            mouseenter: function () {
+                $(this).find('.btnEdit').removeClass('hidden');
+            },
+            mouseleave: function () {
+                $(this).find('.btnEdit').addClass('hidden');
+            }
+        }, "#tblLookup tr"); //pass the element as an argument to .on
+
+
+        $(document).on('click', '.btnEdit', function (e) {
+            //$('.btnEdit').click(function (e) {
+            e.preventDefault();
+            var thisItem = $('#' + e.currentTarget.id);
+            $.ajax({
+                url: '@Url.Action("Edit", "Lookup", new { area = "App" })',
+                data: { Id: thisItem.attr('data-Id') },
+                success: function (data) {
+                    thisItem.closest('tr').replaceWith(data);
+                },
+                error: function (response) {
+                    alert(response.statusText);
+                }
+            });
+        });
+
+        $(document).on('click', '.btnSave', function (e) {
+            e.preventDefault();
+            var thisItem = '#row-' + $('#' + e.currentTarget.id).attr('data-Id');
+            console.log(thisItem);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Edit", "Lookup", new { area = "App" })',
+                data: $(thisItem + " :input").serialize(),
+                success: function (data) {
+                    $(thisItem).replaceWith(data);
+                },
+                error: function (response) {
+                    alert(response.statusText);
+                    window.location.reload(false); 
+                }
+            });
         });
 
     </script>
