@@ -17,6 +17,7 @@
         @Html.EditorFor(model => model.IsActive, new { })
     </td>
     <td>
+        @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.Id)
         <button type="button" id="btn-@Model.Id" data-Id="@Model.Id" class="btn btn-info btn-xs btnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
     </td>

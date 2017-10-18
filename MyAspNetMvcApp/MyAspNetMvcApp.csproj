@@ -358,7 +358,6 @@
     <Content Include="Areas\Docs\Views\Docs\_template.cshtml" />
     <Content Include="Areas\App\Views\web.config" />
     <Content Include="Areas\App\Views\Lookup\Index.cshtml" />
-    <Content Include="Areas\App\Views\Lookup\Create.cshtml" />
     <Content Include="Areas\Poordooytify\Views\web.config" />
     <Content Include="Areas\Poordooytify\Views\Poordooytify\Index.cshtml" />
     <Content Include="Areas\Geocities\Views\web.config" />

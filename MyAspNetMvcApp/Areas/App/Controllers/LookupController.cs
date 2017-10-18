@@ -53,6 +53,7 @@ namespace MyAspNetMvcApp.Areas.App.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Lookup lookup)
         {
             try

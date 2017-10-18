@@ -151,13 +151,6 @@
             stopSubmitAnimator();
         });
 
-        //$(document).on('mouseover', '#tblLookup tr', function () {
-        ////$('#tblLookup tr').hover(function () {
-        //    $(this).find('.btnEdit').removeClass('hidden');
-        //}, function () {
-        //    $(this).find('.btnEdit').addClass('hidden');
-        //    });
-
         $(document).on({
             mouseenter: function () {
                 $(this).find('.btnEdit').removeClass('hidden');
@@ -169,7 +162,6 @@
 
 
         $(document).on('click', '.btnEdit', function (e) {
-            //$('.btnEdit').click(function (e) {
             e.preventDefault();
             var thisItem = $('#' + e.currentTarget.id);
             $.ajax({
