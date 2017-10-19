@@ -199,6 +199,7 @@
     <Compile Include="Areas\BernardGabonDotCom\ViewModel\ProjectViewModel.cs" />
     <Compile Include="Areas\Docs\Controllers\DocsController.cs" />
     <Compile Include="Areas\Docs\DocsAreaRegistration.cs" />
+    <Compile Include="Areas\Examples\ExamplesAreaRegistration.cs" />
     <Compile Include="Areas\Geocities\Controllers\GeocitiesController.cs" />
     <Compile Include="Areas\Geocities\GeocitiesAreaRegistration.cs" />
     <Compile Include="Areas\Poordooytify\Controllers\PoordooytifyController.cs" />
@@ -239,8 +240,6 @@
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-dialog.css" />
-    <Content Include="Content\bootstrap-notifications.css" />
-    <Content Include="Content\bootstrap-notifications.min.css" />
     <Content Include="Content\bootstrap-print-fix.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -370,6 +369,7 @@
     <Content Include="Areas\Account\Views\Account\EditProfile.cshtml" />
     <Content Include="Areas\App\Views\Lookup\_LookupItem.cshtml" />
     <Content Include="Areas\App\Views\Lookup\_LookupEdit.cshtml" />
+    <Content Include="Areas\Examples\Views\web.config" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
@@ -459,6 +459,9 @@
     <Folder Include="Areas\BernardGabonDotCom\Views\GabsProject\" />
     <Folder Include="Areas\BernardGabonDotCom\Views\Shared\" />
     <Folder Include="Areas\Docs\Models\" />
+    <Folder Include="Areas\Examples\Controllers\" />
+    <Folder Include="Areas\Examples\Models\" />
+    <Folder Include="Areas\Examples\Views\Shared\" />
     <Folder Include="Areas\Geocities\Models\" />
     <Folder Include="Areas\Geocities\Views\Shared\" />
     <Folder Include="Areas\Poordooytify\Models\" />

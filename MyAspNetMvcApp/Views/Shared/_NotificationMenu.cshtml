@@ -1,24 +1,61 @@
-﻿<li class="dropdown dropdown-notifications">
-            <a href="#notifications-panel" class="dropdown-toggle" data-toggle="dropdown">
-              <i data-count="2" class="glyphicon glyphicon-bell notification-icon"></i>
-            </a>
-
-            <div class="dropdown-container dropdown-position-bottomright">
-
-              <div class="dropdown-toolbar">
-                <div class="dropdown-toolbar-actions">
-                  <a href="#">Mark all as read</a>
+﻿<li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="fa fa-bell fa-fw hidden-xs"></i> 
+        <span class="visible-xs">Notifications <span class="caret"></span></span>
+        <span class="badge badge-notify">8</span>
+    </a>
+    <ul class="dropdown-menu dropdown-alerts">
+        <li>
+            <a href="#">
+                <div>
+                    <i class="fa fa-comment fa-fw"></i> New Comment
+                    <span class="pull-right text-muted small">4 minutes ago</span>
                 </div>
-                <h3 class="dropdown-toolbar-title">Notifications (2)</h3>
-              </div><!-- /dropdown-toolbar -->
-
-              <ul class="dropdown-menu">
-                  ...
-              </ul>
-
-              <div class="dropdown-footer text-center">
-                <a href="#">View All</a>
-              </div><!-- /dropdown-footer -->
-
-            </div><!-- /dropdown-container -->
-          </li><!-- /dropdown -->
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="#">
+                <div>
+                     3 New Followers
+                    <span class="pull-right text-muted small">12 minutes ago</span>
+                </div>
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="#">
+                <div>
+                    <i class="fa fa-envelope fa-fw"></i> Message Sent
+                    <span class="pull-right text-muted small">4 minutes ago</span>
+                </div>
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="#">
+                <div>
+                    <i class="fa fa-tasks fa-fw"></i> New Task
+                    <span class="pull-right text-muted small">4 minutes ago</span>
+                </div>
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="#">
+                <div>
+                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                    <span class="pull-right text-muted small">4 minutes ago</span>
+                </div>
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a class="text-center" href="#">
+                <strong>See All Alerts</strong>
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+    </ul>
+    <!-- /.dropdown-alerts -->
+</li>

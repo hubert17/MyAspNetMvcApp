@@ -27,7 +27,6 @@
     <link href="@Url.Content("~/Content/font-awesome.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/bootstrap-dialog.css")" rel = "stylesheet" />
     <link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel = "stylesheet" />
-    <link href="@Url.Content("~/Content/bootstrap-notifications.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
     <script src="@Url.Content("~/Scripts/modernizr-2.8.3.js")"></script>
 }
@@ -46,6 +45,7 @@ else
     @RenderSection("Head", required: false)
 
     @{ Html.RenderPartial("_GoogleAnalytics"); }
+
 
 </head>
 
@@ -81,15 +81,16 @@ else
                     <li><a href="/home/about">About</a></li>
                     <li><a href="/home/contact">Contact</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown Menu <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Facebook <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Menu item 1</a></li>
-                            <li><a href="#">Menu item 2</a></li>
+                            <li><a href="https://www.facebook.com/groups/aspnetmvcgabs/" target="_blank">ASP.NET MVC Developers Group</a></li>
+                            <li><a href="https://www.facebook.com/hubert17academy/">Hubert17 Academy</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-header">Sub Menu Header</li>
                             <li><a href="#" target="_blank">Menu item 3</a></li>
                         </ul>
                     </li>
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

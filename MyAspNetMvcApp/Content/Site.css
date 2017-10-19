@@ -47,3 +47,24 @@ footer {
 }
 
 
+.dropdown-alerts {
+    width: 310px;
+    min-width: 0;
+}
+.badge-notify {
+    background: red;
+    position: relative;
+    top: -10px;
+    left: -12px;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+.dropdown-alerts .divider {
+    margin: 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+.dropdown-alerts > li > a {
+    padding: 10px;
+}
