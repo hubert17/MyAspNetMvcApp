@@ -10,10 +10,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello @User.FirstName() <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>
-                            @Html.ActionLink("My Profile", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
-                        </li>
-                        <li>@Html.ActionLink("Manage User Roles", "Index", "Roles")</li>
+                        <li><a href="@Url.Action("Manage", "Account", new { Area = "" })">Manage User Roles</a></li>
+                        <li><a href="@Url.Action("Index", "Roles", new { Area = "" })">Manage User Roles</a></li>
                         <li><a href="@Url.Action("Index", "Lookup", new { Area = "App" })">Manage Lookups</a></li>
                     </ul>
                 </li>

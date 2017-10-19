@@ -1,0 +1,64 @@
+﻿@model IEnumerable<MyAspNetMvcApp.Areas.Examples.ViewModels.StudentExcelViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Import Excel</h2>
+<form method="post" enctype="multipart/form-data">
+    Upload Excel File <input type="file" name="ExcelFile" />
+    <button type="submit">Upload</button>
+</form>
+
+<form action="/examples/importexcel/batchsubmit" method="post">
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YearSection)
+            </th>
+            <th></th>
+        </tr>
+
+        @{ 
+            int i = 0;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <input type="text" name="@(nameof(item.IdNumber) + "[" + i + "]")" value="@item.IdNumber" />
+                </td>
+                <td>
+                    <input type="text" name="@(nameof(item.LastName) + "[" + i + "]")" value="@item.LastName" />
+                </td>
+                <td>
+                    <input type="text" name="@(nameof(item.FirstName) + "[" + i + "]")" value="@item.FirstName" />
+                </td>
+                <td>
+                    <input type="text" name="@(nameof(item.YearSection) + "[" + i + "]")" value="@item.YearSection" />
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+
+            i++;
+        }
+
+    </table>
+
+    <button type="submit" class="btn btn-primary btn-lg">Batch Submit</button>
+</form>

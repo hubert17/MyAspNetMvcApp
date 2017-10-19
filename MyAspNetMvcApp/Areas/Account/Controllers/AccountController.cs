@@ -109,6 +109,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         {
             if (ModelState.IsValid)
             {
+                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
                 var user = new ApplicationUser()
                 {
                     UserName = model.UserName,
@@ -118,8 +119,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     {
                         UserName = model.UserName,
                         RegistrationType = model.RegistrationType,
-                        LastName = model.LastName,
-                        FirstName = model.FirstName,
+                        LastName = textInfo.ToTitleCase(model.LastName),
+                        FirstName = textInfo.ToTitleCase(model.FirstName),
                         BirthDate = model.BirthDate,
                         Gender = model.Gender,
                         RegistrationDate = DateTime.Now,

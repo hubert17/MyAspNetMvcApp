@@ -49,6 +49,9 @@
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.0.6\lib\net40\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="JetEntityFrameworkProvider, Version=1.2.11.0, Culture=neutral, PublicKeyToken=756cf6beb8fe7b41, processorArchitecture=x86">
       <HintPath>..\packages\JetEntityFrameworkProvider.1.2.11\lib\JetEntityFrameworkProvider.dll</HintPath>
     </Reference>
@@ -89,6 +92,18 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NPOI, Version=2.0.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.0.6\lib\net40\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.0.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.0.6\lib\net40\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.0.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.0.6\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.0.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.0.6\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
     <Reference Include="Plivo, Version=2.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Plivo.3.0.7\lib\net40\Plivo.dll</HintPath>
     </Reference>
@@ -97,6 +112,9 @@
     </Reference>
     <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleExcelImport, Version=0.0.1.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleExcelImport.0.0.1.5\lib\net35\SimpleExcelImport.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -199,7 +217,9 @@
     <Compile Include="Areas\BernardGabonDotCom\ViewModel\ProjectViewModel.cs" />
     <Compile Include="Areas\Docs\Controllers\DocsController.cs" />
     <Compile Include="Areas\Docs\DocsAreaRegistration.cs" />
+    <Compile Include="Areas\Examples\Controllers\ImportExcelController.cs" />
     <Compile Include="Areas\Examples\ExamplesAreaRegistration.cs" />
+    <Compile Include="Areas\Examples\ViewModels\StudentExcelViewModel.cs" />
     <Compile Include="Areas\Geocities\Controllers\GeocitiesController.cs" />
     <Compile Include="Areas\Geocities\GeocitiesAreaRegistration.cs" />
     <Compile Include="Areas\Poordooytify\Controllers\PoordooytifyController.cs" />
@@ -370,6 +390,8 @@
     <Content Include="Areas\App\Views\Lookup\_LookupItem.cshtml" />
     <Content Include="Areas\App\Views\Lookup\_LookupEdit.cshtml" />
     <Content Include="Areas\Examples\Views\web.config" />
+    <Content Include="Areas\Examples\Views\ImportExcel\Index.cshtml" />
+    <Content Include="Areas\Examples\Views\ImportExcel\BatchSubmit.cshtml" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
@@ -459,7 +481,6 @@
     <Folder Include="Areas\BernardGabonDotCom\Views\GabsProject\" />
     <Folder Include="Areas\BernardGabonDotCom\Views\Shared\" />
     <Folder Include="Areas\Docs\Models\" />
-    <Folder Include="Areas\Examples\Controllers\" />
     <Folder Include="Areas\Examples\Models\" />
     <Folder Include="Areas\Examples\Views\Shared\" />
     <Folder Include="Areas\Geocities\Models\" />
