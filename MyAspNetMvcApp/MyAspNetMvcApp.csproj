@@ -398,7 +398,6 @@
     <Content Include="Areas\Examples\Views\ImportExcel\BatchSubmit.cshtml" />
     <Content Include="Downloads\Students.xlsx" />
     <Content Include="Downloads\Students_XLS.xls" />
-    <Content Include="Downloads\Web.config" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
