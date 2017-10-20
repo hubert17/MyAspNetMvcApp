@@ -18,9 +18,9 @@ public static class ImageUploadExtension
     #region DefaultSettings
     private const int MAX_HEIGHT = 600; // default height in pixel
     private const bool QUALITY = true; // true = high quality, false = fast performance
-                                       /// <summary>
-                                       /// The folder name of where the uploaded images are stored. http://SERVER/FOLDER
-                                       /// </summary>
+    /// <summary>
+    /// The folder name of where the uploaded images are stored. http://SERVER/FOLDER
+    /// </summary>
     public const string FOLDER = "UploadedImages";
     /// <summary>
     /// The folder name of where the thumbnails are stored. http://SERVER/FOLDER/THUMBNAIL
@@ -47,7 +47,7 @@ public static class ImageUploadExtension
 
     #region ToImageByteArray
     /// <summary>
-    /// Convert the uploaded image file to an array of byte and store in the database as Jpeg data.
+    /// Convert the uploaded image file to an array of byte and store in the database as Jpeg data. [BernardGabon.com]
     /// </summary>
     /// <param name="maxHeight">Height in Pixel</param>
     /// <param name="highQuality">True - High quality, False -  Fast performance</param>
@@ -69,7 +69,7 @@ public static class ImageUploadExtension
         return null;
     }
     /// <summary>
-    /// Convert the uploaded image file to an array of byte and store in the database as Jpeg data.
+    /// Convert the uploaded image file to an array of byte and store in the database as Jpeg data. [BernardGabon.com]
     /// </summary>
     /// <param name="highQuality">True - High quality, False -  Fast performance</param>
     /// <returns>byte[] JpegImage</returns>
@@ -78,7 +78,7 @@ public static class ImageUploadExtension
         return ToImageByteArray(File, MAX_HEIGHT, highQuality);
     }
     /// <summary>
-    /// Convert the uploaded image file to an array of byte and store in the database as Jpeg data.
+    /// Convert the uploaded image file to an array of byte and store in the database as Jpeg data. [BernardGabon.com]
     /// </summary>
     /// <returns>byte[] JpegImage</returns>
     public static byte[] ToImageByteArray(this System.Web.HttpPostedFileBase File)
@@ -89,7 +89,7 @@ public static class ImageUploadExtension
 
     #region SaveAsJpegFile
     /// <summary>
-    /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
+    /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy. [BernardGabon.com]
     /// </summary>
     /// <param name="strFileName">Filename</param>
     /// <param name="strFolder">Folder</param>
@@ -133,7 +133,7 @@ public static class ImageUploadExtension
         return string.Empty;
     }
     /// <summary>
-    /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
+    /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy. [BernardGabon.com]
     /// </summary>
     /// <param name="strFileName">Filename</param>
     /// <param name="maxHeight">Height in Pixel</param>
@@ -144,7 +144,7 @@ public static class ImageUploadExtension
         return SaveAsJpegFile(File, strFileName, FOLDER, maxHeight, highQuality);
     }
     /// <summary>
-    /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
+    /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy. [BernardGabon.com]
     /// </summary>
     /// <param name="maxHeight">Height in Pixel</param>
     /// <param name="highQuality">True - High quality, False -  Fast performance</param>
@@ -154,7 +154,7 @@ public static class ImageUploadExtension
         return SaveAsJpegFile(File, string.Empty, FOLDER, maxHeight, highQuality);
     }
     /// <summary>
-    /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
+    /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy. [BernardGabon.com]
     /// </summary>
     /// <param name="highQuality">True - High quality, False -  Fast performance</param>
     /// <returns>string Filename</returns>
@@ -163,7 +163,7 @@ public static class ImageUploadExtension
         return SaveAsJpegFile(File, string.Empty, FOLDER, MAX_HEIGHT, highQuality);
     }
     /// <summary>
-    /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy.
+    /// Resize and save the uploaded image as a JPG file on disk plus thumbnail copy. [BernardGabon.com]
     /// </summary>
     /// <returns>string Filename</returns>
     public static string SaveAsJpegFile(this System.Web.HttpPostedFileBase File)
@@ -174,7 +174,7 @@ public static class ImageUploadExtension
 
     #region Methods
     /// <summary>
-    /// Resize a byte[] image.
+    /// Resize a byte[] image. [BernardGabon.com]
     /// </summary>
     /// <param name="maxHeight">Height in Pixel</param>
     /// <param name="highQuality">True - High quality, False -  Fast performance</param>
@@ -210,7 +210,7 @@ public static class ImageUploadExtension
         }
     }
     /// <summary>
-    /// Resize and crop a byte[] image.
+    /// Resize and crop a byte[] image. [BernardGabon.com]
     /// </summary>
     /// <param name="Width">Width  in Pixel</param>
     /// <param name="Height">Height in Pixel</param>

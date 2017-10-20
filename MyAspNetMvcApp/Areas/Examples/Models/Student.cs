@@ -9,6 +9,7 @@ namespace MyAspNetMvcApp.Areas.Examples.Models
     public class Student
     {
         public int Id { get; set; }
+        [Index(IsUnique = true)]
         public string IdNumber { get; set; }
         //[Index("IX_FirstAndSecond", 1, IsUnique = true)]
         public string LastName { get; set; }

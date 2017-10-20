@@ -220,7 +220,7 @@
     <Compile Include="Areas\Docs\DocsAreaRegistration.cs" />
     <Compile Include="Areas\Examples\Controllers\ImportExcelController.cs" />
     <Compile Include="Areas\Examples\ExamplesAreaRegistration.cs" />
-    <Compile Include="Areas\Examples\Models\AppDbContext.cs" />
+    <Compile Include="Areas\Examples\Models\ExamplesDbContext.cs" />
     <Compile Include="Areas\Examples\Models\Student.cs" />
     <Compile Include="Areas\Examples\ViewModels\StudentExcelViewModel.cs" />
     <Compile Include="Areas\Geocities\Controllers\GeocitiesController.cs" />
@@ -259,6 +259,7 @@
     <Compile Include="ViewModels\_RegisterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\ExamplesDb.mdb" />
     <Content Include="App_Data\MyAspNetMvcDb.mdb" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
@@ -397,6 +398,7 @@
     <Content Include="Areas\Examples\Views\ImportExcel\BatchSubmit.cshtml" />
     <Content Include="Downloads\Students.xlsx" />
     <Content Include="Downloads\Students_XLS.xls" />
+    <Content Include="Downloads\Web.config" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />

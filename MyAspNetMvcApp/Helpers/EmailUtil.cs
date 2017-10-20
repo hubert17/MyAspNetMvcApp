@@ -1,4 +1,5 @@
 ﻿// C# SMTP Configuration for Outlook.Com SMTP Host
+// https://www.facebook.com/hubert17academy/posts/967177190089579
 // https://www.codeproject.com/Articles/700211/Csharp-SMTP-Configuration-for-Outlook-Com-SMTP-Hos
 // Allowing less secure apps to access your account in Gmail
 // https://support.google.com/accounts/answer/6010255
@@ -15,9 +16,9 @@ namespace Gabs.Helpers
     {
         private const string ACCOUNT_EMAIL = "username@gmail.com";
         private const string ACCOUNT_PASSWORD = "my_password";
-        private const string SMTP_HOST = "smtp.gmail.com"; // smtp-mail.outlook.com, smtp.mail.yahoo.com
+        private const string SMTP_HOST = "smtp.gmail.com"; // smtp-mail.outlook.com, smtp.mail.yahoo.com, mail.gmx.com
         private const int SMTP_PORT = 587;
-        private const bool REQUIRE_SSL = true;
+        private const bool REQUIRE_SSL = true; // false for GMX.com
         private const char MULTI_MAILTO_SEPARATOR = ';'; // semi-colon or comma
         private const bool IS_HTML = true;
         private static string SUBJECT_LABEL = "[" + MyAspNetMvcApp.AppSettings.AppTitle + "]";

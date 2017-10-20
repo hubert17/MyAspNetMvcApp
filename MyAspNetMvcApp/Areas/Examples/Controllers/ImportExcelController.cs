@@ -44,6 +44,20 @@ namespace MyAspNetMvcApp.Areas.Examples.Controllers
                         stud.FirstName = names[1];
                     }
                 }
+                else
+                {
+                    using (var db = new ExamplesDbContext())
+                    {
+                        output = db.Students.Select(s => new StudentExcelViewModel
+                        {
+                            IdNumber = s.IdNumber,
+                            FullName = s.LastName,
+                            FirstName = s.FirstName,
+                            YearSection = s.YearSection
+                        }).ToList();
+                        ViewBag.FromDb = true;
+                    }
+                }
             }
             catch
             {
@@ -56,25 +70,46 @@ namespace MyAspNetMvcApp.Areas.Examples.Controllers
         public ActionResult BatchSubmit(string[] IdNumber, string[] FullName, string[] FirstName, string[] YearSection)
         {
             var students = new List<Student>();
-            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-            for (int i = 0; i < IdNumber.Length; i++)
-            {
-                students.Add(new Student()
-                {
-                    IdNumber = IdNumber[i],
-                    LastName = textInfo.ToTitleCase(FullName[i]),
-                    FirstName = textInfo.ToTitleCase(FirstName[i]),
-                    YearSection = YearSection[i]
-                });
-            }
 
-            using (var db = new AppDbContext())
+            try
             {
-                db.Students.AddRange(students);
-                db.SaveChanges();
+                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                for (int i = 0; i < IdNumber.Length; i++)
+                {
+                    students.Add(new Student()
+                    {
+                        IdNumber = IdNumber[i],
+                        LastName = textInfo.ToTitleCase(FullName[i].ToLower()),
+                        FirstName = textInfo.ToTitleCase(FirstName[i].ToLower()),
+                        YearSection = YearSection[i]
+                    });
+                }
+
+                using (var db = new ExamplesDbContext())
+                {
+                    db.Students.AddRange(students);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                ViewData[BSMessage.PANEL] = ex.GetBaseException().Message;
             }
 
             return View(students);
+        }
+
+        public ActionResult Delete(string IdNumber)
+        {
+            using (var db = new ExamplesDbContext())
+            {
+                var stud = db.Students.Where(x => x.IdNumber == IdNumber).FirstOrDefault();
+                db.Students.Remove(stud);
+                db.SaveChanges();
+                TempData[BSMessage.DIALOGBOX] = stud.FirstName + " " + stud.LastName + " has been deleted.";
+            }
+            return RedirectToAction("Index");
         }
     }
 }

@@ -5,14 +5,87 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Import Excel</h2>
-<form method="post" enctype="multipart/form-data">
-    Upload Excel File <input type="file" name="ExcelFile" />
-    <button type="submit">Upload</button>
-</form>
+<h2>Import data from Excel worksheet</h2>
 
-<form action="/examples/importexcel/batchsubmit" method="post">
-    <button type="submit" class="btn btn-primary btn-lg">Batch Submit</button>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data" class="form-horizontal" role="search">
+            <p>
+                <a href="@Url.Content("~/Downloads/Students_XLS.xls")">Download Excel template</a>
+            </p>
+            <p>Upload Excel file</p>
+
+            <div class="input-group add-on">
+                <input type="file" name="ExcelFile" class="form-control" />
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">Upload</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@if (ViewBag.FromDb != true)
+{
+    <h2>From Excel</h2>
+    <form action="/examples/importexcel/batchsubmit" method="post">
+        <button type="submit" class="btn btn-primary btn-lg">Batch Submit</button>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.YearSection)
+                </th>
+                <th></th>
+            </tr>
+
+            @{
+                int i = 0;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="text" name="@(nameof(item.IdNumber) + "[" + i + "]")" value="@item.IdNumber" />
+                    </td>
+                    <td>
+                        <input type="text" name="@(nameof(item.FullName) + "[" + i + "]")" value="@item.FullName" />
+                    </td>
+                    <td>
+                        <input type="text" name="@(nameof(item.FirstName) + "[" + i + "]")" value="@item.FirstName" />
+                    </td>
+                    <td>
+                        <input type="text" name="@(nameof(item.YearSection) + "[" + i + "]")" value="@item.YearSection" />
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Delete","ImportExcel")" class="btn-remove" >Delete</a>
+
+                    </td>
+                </tr>
+
+                i++;
+            }
+
+        </table>
+
+        <button type="submit" class="btn btn-primary btn-lg">Batch Submit</button>
+    </form>
+
+    }
+    else
+    {
+        <h2>From Database</h2>
     <table class="table">
         <tr>
             <th>
@@ -30,35 +103,39 @@
             <th></th>
         </tr>
 
-        @{ 
-            int i = 0;
-        }
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    <input type="text" name="@(nameof(item.IdNumber) + "[" + i + "]")" value="@item.IdNumber" />
+                    @Html.DisplayFor(modelItem => item.IdNumber)
                 </td>
                 <td>
-                    <input type="text" name="@(nameof(item.FullName) + "[" + i + "]")" value="@item.FullName" />
+                    @Html.DisplayFor(modelItem => item.FullName)
                 </td>
                 <td>
-                    <input type="text" name="@(nameof(item.FirstName) + "[" + i + "]")" value="@item.FirstName" />
+                    @Html.DisplayFor(modelItem => item.FirstName)
                 </td>
                 <td>
-                    <input type="text" name="@(nameof(item.YearSection) + "[" + i + "]")" value="@item.YearSection" />
+                    @Html.DisplayFor(modelItem => item.YearSection)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Delete", "Delete", new { IdNumber = item.IdNumber })
                 </td>
             </tr>
-
-            i++;
         }
 
     </table>
 
-    <button type="submit" class="btn btn-primary btn-lg">Batch Submit</button>
-</form>
+}
+
+
+
+@section Scripts {
+    <script>
+        $('.btn-remove').click(function () {
+            $(this).closest('tr').remove();
+            return false;
+        });
+    </script>
+}

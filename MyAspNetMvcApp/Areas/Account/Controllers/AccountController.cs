@@ -119,8 +119,8 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     {
                         UserName = model.UserName,
                         RegistrationType = model.RegistrationType,
-                        LastName = textInfo.ToTitleCase(model.LastName),
-                        FirstName = textInfo.ToTitleCase(model.FirstName),
+                        LastName = textInfo.ToTitleCase(model.LastName.ToLower()),
+                        FirstName = textInfo.ToTitleCase(model.FirstName.ToLower()),
                         BirthDate = model.BirthDate,
                         Gender = model.Gender,
                         RegistrationDate = DateTime.Now,

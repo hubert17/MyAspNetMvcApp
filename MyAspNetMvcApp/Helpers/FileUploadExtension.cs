@@ -16,20 +16,33 @@ public static class FileUploadExtension
 {
     public const string FOLDER = "UploadedFiles";
 
+    /// <summary>
+    /// Convert the file upload to byte array. [BernardGabon.com]
+    /// </summary>
+    /// <param name="File">HttpPostedFileBase</param>
+    /// <returns>byte[] data</returns>
     public static byte[] ToFileByteArray(this HttpPostedFileBase File)
     {
         try
         {
-            // Convert Uploaded File to byte array
             byte[] file = new byte[File.ContentLength];
             File.InputStream.Read(file, 0, File.ContentLength);
             return file;
         }
-        catch { }
+        catch
+        {
+            return null;
+        }
 
-        return null;
     }
 
+    /// <summary>
+    /// Save the uploaded file to a folder. [BernardGabon.com]
+    /// </summary>
+    /// <param name="File">Filename</param>
+    /// <param name="strFileName">Filename</param>
+    /// <param name="strFolder">Folder</param>
+    /// <returns>string Filename</returns>
     public static string SaveToFolder(this HttpPostedFileBase File, string strFileName = "", string strFolder = "")
     {
         try
@@ -46,9 +59,9 @@ public static class FileUploadExtension
 
             return filenameExt;
         }
-        catch (Exception ex)
+        catch
         {
-            return ex.Message;
+            return string.Empty;
         }
     }
 
