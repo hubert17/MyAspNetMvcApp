@@ -206,6 +206,7 @@
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
     <Compile Include="Areas\App\Controllers\LookupController.cs" />
     <Compile Include="Areas\App\Controllers\NotificationsController.cs" />
+    <Compile Include="Areas\App\Models\AppControllerAction.cs" />
     <Compile Include="Areas\App\Models\Lookup.cs" />
     <Compile Include="Areas\App\Models\LookupViewModel.cs" />
     <Compile Include="Areas\BernardGabonDotCom\BernardGabonDotComAreaRegistration.cs" />
@@ -219,6 +220,8 @@
     <Compile Include="Areas\Docs\DocsAreaRegistration.cs" />
     <Compile Include="Areas\Examples\Controllers\ImportExcelController.cs" />
     <Compile Include="Areas\Examples\ExamplesAreaRegistration.cs" />
+    <Compile Include="Areas\Examples\Models\AppDbContext.cs" />
+    <Compile Include="Areas\Examples\Models\Student.cs" />
     <Compile Include="Areas\Examples\ViewModels\StudentExcelViewModel.cs" />
     <Compile Include="Areas\Geocities\Controllers\GeocitiesController.cs" />
     <Compile Include="Areas\Geocities\GeocitiesAreaRegistration.cs" />
@@ -392,6 +395,8 @@
     <Content Include="Areas\Examples\Views\web.config" />
     <Content Include="Areas\Examples\Views\ImportExcel\Index.cshtml" />
     <Content Include="Areas\Examples\Views\ImportExcel\BatchSubmit.cshtml" />
+    <Content Include="Downloads\Students.xlsx" />
+    <Content Include="Downloads\Students_XLS.xls" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
@@ -481,7 +486,6 @@
     <Folder Include="Areas\BernardGabonDotCom\Views\GabsProject\" />
     <Folder Include="Areas\BernardGabonDotCom\Views\Shared\" />
     <Folder Include="Areas\Docs\Models\" />
-    <Folder Include="Areas\Examples\Models\" />
     <Folder Include="Areas\Examples\Views\Shared\" />
     <Folder Include="Areas\Geocities\Models\" />
     <Folder Include="Areas\Geocities\Views\Shared\" />

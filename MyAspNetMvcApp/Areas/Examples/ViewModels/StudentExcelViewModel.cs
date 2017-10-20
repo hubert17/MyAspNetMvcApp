@@ -11,7 +11,7 @@ namespace MyAspNetMvcApp.Areas.Examples.ViewModels
         [ExcelImport("Student No.", order = 2)]
         public string IdNumber { get; set; }
         [ExcelImport("Student Name", order = 3)]
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         [ExcelImport("", ignore = true)]
         public string FirstName { get; set; }
         [ExcelImport("Section", order = 4)]

@@ -33,6 +33,15 @@
         <h2>Github</h2>
         <p>Download the code of this Web Application (BernardGabon.com) on Github. This web app is a great base template for any of your future web development projects.</p>
         <p><a class="btn btn-default" href="https://github.com/hubert17/MyAspNetMvcApp" target="_blank">Download &raquo;</a></p>
+        <h2>Examples</h2>
+        <ul>
+            @foreach (var i in ViewBag.ConAct as List<MyAspNetMvcApp.Areas.App.Models.AppControllerAction>)
+            {
+                <li><a href="@Url.Action(i.Action, i.Controller, new { area = "Examples"})">/@i.Controller/@i.Action</a></li>
+            }
+        </ul>
+
+
     </div>
     <div class="col-md-4">
         <h2>Poordooytify</h2>

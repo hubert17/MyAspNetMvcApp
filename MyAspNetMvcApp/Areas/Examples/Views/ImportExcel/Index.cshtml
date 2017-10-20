@@ -12,14 +12,14 @@
 </form>
 
 <form action="/examples/importexcel/batchsubmit" method="post">
-
+    <button type="submit" class="btn btn-primary btn-lg">Batch Submit</button>
     <table class="table">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.IdNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model.FullName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
@@ -40,7 +40,7 @@
                     <input type="text" name="@(nameof(item.IdNumber) + "[" + i + "]")" value="@item.IdNumber" />
                 </td>
                 <td>
-                    <input type="text" name="@(nameof(item.LastName) + "[" + i + "]")" value="@item.LastName" />
+                    <input type="text" name="@(nameof(item.FullName) + "[" + i + "]")" value="@item.FullName" />
                 </td>
                 <td>
                     <input type="text" name="@(nameof(item.FirstName) + "[" + i + "]")" value="@item.FirstName" />

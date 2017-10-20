@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using MyAspNetMvcApp.Areas.Examples.ViewModels;
+using MyAspNetMvcApp.Areas.Examples.Models;
+using System.Globalization;
 
 namespace MyAspNetMvcApp.Areas.Examples.Controllers
 {
@@ -19,17 +21,26 @@ namespace MyAspNetMvcApp.Areas.Examples.Controllers
             {
                 if(ExcelFile != null)
                 {
-                    //var data = System.IO.File.ReadAllBytes(@"C:\Users\Drive_D\My Documents\COC LESSONS\ADV WEB-1\__VSProjects\excel import\Students.xlsx");
                     var data = ExcelFile.ToFileByteArray();
                     ImportFromExcel import = new ImportFromExcel();
-                    import.LoadXlsx(data);
+                    if(Path.GetExtension(ExcelFile.FileName.ToLower()) == ".xlsx")
+                        import.LoadXlsx(data);
+                    else if (Path.GetExtension(ExcelFile.FileName.ToLower()) == ".xls")
+                        import.LoadXls(data);
+                    else
+                    {
+                        TempData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                        TempData[BSMessage.DIALOGBOX] =  "Invalid Excel worksheet: " + Path.GetExtension(ExcelFile.FileName);
+                        return RedirectToAction("Index");
+                    }
+
                     output = import.ExcelToList<StudentExcelViewModel>(0, 1);
 
                     foreach (var stud in output)
                     {
                         Char[] separators = new Char[] { ',' }; // only the space character, in this case
-                        var names = stud.LastName.Split(separators);
-                        stud.LastName = names[0];
+                        var names = stud.FullName.Split(separators);
+                        stud.FullName = names[0];
                         stud.FirstName = names[1];
                     }
                 }
@@ -41,18 +52,26 @@ namespace MyAspNetMvcApp.Areas.Examples.Controllers
             return View(output);
         }
 
-        public ActionResult BatchSubmit(string[] IdNumber, string[] LastName, string[] FirstName, string[] YearSection)
+        [HttpPost]
+        public ActionResult BatchSubmit(string[] IdNumber, string[] FullName, string[] FirstName, string[] YearSection)
         {
-            var students = new List<StudentExcelViewModel>();
+            var students = new List<Student>();
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
             for (int i = 0; i < IdNumber.Length; i++)
             {
-                students.Add(new StudentExcelViewModel()
+                students.Add(new Student()
                 {
                     IdNumber = IdNumber[i],
-                    LastName = LastName[i],
-                    FirstName = FirstName[i],
+                    LastName = textInfo.ToTitleCase(FullName[i]),
+                    FirstName = textInfo.ToTitleCase(FirstName[i]),
                     YearSection = YearSection[i]
                 });
+            }
+
+            using (var db = new AppDbContext())
+            {
+                db.Students.AddRange(students);
+                db.SaveChanges();
             }
 
             return View(students);

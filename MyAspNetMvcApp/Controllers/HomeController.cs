@@ -13,6 +13,7 @@ namespace MyAspNetMvcApp.Controllers
         public ActionResult Index()
         {
             //ViewData[BSMessage.DIALOGBOX] = "Hello! Welcome to " + AppSettings.AppTitle + "!";
+            ViewBag.ConAct = MyAspNetMvcApp.Areas.App.Models.AppControllerAction.GetExamples();
             return View();
 
             // This is for www.bernardgabon.com. Kindly remove this and uncomment the code above.
