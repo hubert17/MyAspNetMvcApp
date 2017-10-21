@@ -99,7 +99,7 @@
                                 </tr>
                                 <tr>
                                     <td>Mobile Number</td>
-                                    <td>@(!string.IsNullOrEmpty(profile.PhoneNumber) ? string.IsNullOrEmpty(profile.CountryCode) ? "0" : "+" + profile.CountryCode : "" )@profile.PhoneNumber</td>
+                                    <td>@Gabs.Helpers.Formatter.FormatPhoneNumber(profile.PhoneNumber,profile.CountryCode)</td>
                                 </tr>
                                 <tr>
                                     <td>Date of Birth</td>

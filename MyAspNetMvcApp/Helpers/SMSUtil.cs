@@ -16,6 +16,12 @@ namespace Gabs.Helpers
         private const string AUTH_TOKEN = "";
         private const string SENDER_NO = "+639999999999";
 
+        /// <summary>
+        /// Sends text message using Plivo.com [BernardGabon.com]
+        /// </summary>
+        /// <param name="mobileNo">Mobile number of the recipient. Must register first in Plivo when using Trial account.</param>
+        /// <param name="smsMessage">Limited character short message.</param>
+        /// <returns>string messageDetails</returns>
         public static string Send(string mobileNo, string smsMessage)
         {
             RestAPI plivo = new RestAPI(AUTH_ID, AUTH_TOKEN);
@@ -39,6 +45,11 @@ namespace Gabs.Helpers
             //return resp.Data.api_id;
         }
 
+        /// <summary>
+        /// Generate 6 digit code for any SMS verification. [BernardGabon.com]
+        /// </summary>
+        /// <param name="mobileNo">This is optional.</param>
+        /// <returns>string 6DigitSMSCode</returns>
         public static string GenerateCode(string mobileNo = "")
         {
             int maxSize = 6;

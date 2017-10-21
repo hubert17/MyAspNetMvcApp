@@ -135,45 +135,5 @@
 @section Scripts {
     @{ Html.RenderPartial("~/Views/Shared/_ValidationScriptsPartial.cshtml"); }
     @{ Html.RenderPartial("~/Views/Shared/_SubmitAnimationScriptPartial.cshtml"); }
-
-<script>
-        if (window.top !== window.self) {
-            $('.navbar').hide();
-            $('.container').hide();
-
-            var loc = window.top.location.href, index = loc.indexOf('#');
-            if (index > 0)
-                window.top.location.replace('@Url.Action("Login", "Account", new { Area = "Account" })?ReturnUrl=' + loc.substring(0, index));
-            else
-                window.top.location.replace('@Url.Action("Login", "Account", new { Area = "Account" })');
-        }
-
-        $(document).ready(function () {
-            $("#btn-forgot").click(function () {
-                var email = $('#fpemail').val();
-                if (!email) {
-                    return;
-                }
-                $(this).attr('disabled', true);
-                $(this).html('Requesting...');
-                var value;
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("ForgotPassword","Account")?email=' + email,
-                    success: function (res) {
-                        $('#forgotform').hide();
-                        if (res == "1") {
-                            //alert('Reset password request for ' + email + ' has been sent. Please check your inbox.');
-                            $('#forgotalert').html('Reset password request for ' + email + ' has been sent. Please check your inbox or spam folder.');
-                        }
-                        else {
-                            $('#forgotalert').html('Check your inbox.');
-                        }
-                        //$('#forgotalert').removeClass('hidden');
-                    }
-                });
-            });
-        });
-
-</script>
+    <script src="@Url.Content("~/Scripts/app-login.js")"></script>
 }

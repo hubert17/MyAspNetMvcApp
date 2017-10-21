@@ -1,4 +1,4 @@
-﻿@model MyAspNetMvcApp.Areas.App.Models.Lookup
+﻿@model MyAspNetMvcApp.Lookup
 @{
     ViewBag.Title = "Manage Lookup Key/Value";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -36,7 +36,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var lookup in ViewBag.lookups as List<MyAspNetMvcApp.Areas.App.Models.Lookup>)
+            @foreach (var lookup in ViewBag.lookups as List<MyAspNetMvcApp.Lookup>)
             {
                 <tr>
                     <td>@lookup.Type</td>

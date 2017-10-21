@@ -11,8 +11,7 @@ namespace MyAspNetMvcApp.Areas.Examples.Models
     {
         public ExamplesDbContext() 
         {
-            //Database.SetInitializer<ExamplesDbContext>(new DropCreateDatabaseIfModelChanges<ExamplesDbContext>());
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ExamplesDbContext, Configuration>());
+            Database.SetInitializer<ExamplesDbContext>(new DropCreateDatabaseIfModelChanges<ExamplesDbContext>());
         }
 
         // Put your database tables here...
@@ -21,19 +20,5 @@ namespace MyAspNetMvcApp.Areas.Examples.Models
         public DbSet<Student> Students { get; set; }
     }
 
-    internal sealed class Configuration : DbMigrationsConfiguration<ExamplesDbContext>
-    {
-        public Configuration()
-        {
-            AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
-        }
-
-        protected override void Seed(ExamplesDbContext context)
-        {
-
-        }
-
-    }
 
 }

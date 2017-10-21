@@ -236,8 +236,10 @@
     </Compile>
     <Compile Include="Helpers\AppSettings.cs" />
     <Compile Include="Helpers\BSMessage.cs" />
+    <Compile Include="Helpers\Constant.cs" />
     <Compile Include="Helpers\EmailUtil.cs" />
     <Compile Include="Helpers\FileUploadExtension.cs" />
+    <Compile Include="Helpers\Formatter.cs" />
     <Compile Include="Helpers\ImageUploadExtension.cs" />
     <Compile Include="Helpers\SMSUtil.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -407,6 +409,7 @@
     <Content Include="Images\avatar3.png" />
     <Content Include="Images\avatar5.png" />
     <Content Include="Images\fb-noprofilepic.jpg" />
+    <Content Include="Scripts\app-login.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\datatables.min.js" />
     <Content Include="Scripts\Docs\prism.aspnet.js" />

@@ -36,7 +36,7 @@ namespace MyAspNetMvcApp.Areas.App.Controllers
                 catch
                 { }
             }
-            return new HttpStatusCodeResult(400, "Oops! Something went wrong.");
+            return new HttpStatusCodeResult(400, "Oops! Something went wrong. Lookup Key must be unique.");
         }
 
         public ActionResult Edit(int Id)

@@ -520,7 +520,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
 
             if (!phoneExist)
             {
-                user.PhoneNumber = profile.PhoneNumber;
+                user.PhoneNumber = string.IsNullOrEmpty(profile.PhoneNumber) ? null : profile.PhoneNumber.TrimStart('0');
                 user.CountryCode = profile.CountryCode;
             }
 
