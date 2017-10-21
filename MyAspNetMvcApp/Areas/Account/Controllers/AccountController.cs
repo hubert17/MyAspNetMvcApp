@@ -502,7 +502,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProfile(RegisterViewModel profile, HttpPostedFileBase FileUpload)
+        public ActionResult EditProfile(RegisterViewModel profile, HttpPostedFileBase FileUpload, bool deletePic = false)
         {
             var db = new ApplicationDbContext();
             var phoneExist = db.Users.Where(x => x.PhoneNumber == profile.PhoneNumber).FirstOrDefault() != null;
@@ -515,8 +515,10 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             user.UserProfile.BirthDate = profile.BirthDate;
             if (FileUpload != null)
                 user.UserProfile.Picture = FileUpload.ToImageByteArray(300);
+            else if (deletePic)
+                user.UserProfile.Picture = null;
 
-            if(!phoneExist)
+            if (!phoneExist)
             {
                 user.PhoneNumber = profile.PhoneNumber;
                 user.CountryCode = profile.CountryCode;

@@ -40,6 +40,27 @@
             padding-top: 0px !important;
         }
     </style>
+
+    <style>
+        div.img-delete {
+            position: relative;
+            float: left;
+        }
+        div.img-delete:hover img {
+            opacity: 0.5;
+        }
+        div.img-delete:hover input {
+            display: block;
+        }
+        div.img-delete input {
+            position: absolute;
+            display: none;
+        }
+        div.img-delete input.delete {
+            top: 0;
+            left: 72%;
+        }
+    </style>
 }
 
 <div class="text-center">
@@ -58,7 +79,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3 col-lg-3 " align="center">
+                        <div class="col-md-3 col-lg-3 img-delete" align="center">
                             @if (string.IsNullOrEmpty(Model.Picture.ToBase64StringHTMLImgJpgSrc()))
                             {
                                 <img alt="User Profile Photo" src="@Url.Content("~/Images/fb-noprofilepic.jpg")" class="img-circle img-responsive">
@@ -66,6 +87,7 @@
                             else
                             {
                                 <img alt="User Profile Photo" src="@Model.Picture.ResizeToThumbnail(200,200).ToBase64StringHTMLImgJpgSrc()" class="img-circle img-responsive">
+                                <input class="delete btn-danger btn-xs" type="button" value="X" title="Remove profile pic" />
                             }
                         </div>
 
@@ -108,7 +130,10 @@
                                     </tr>
                                     <tr>
                                         <td>Photo</td>
-                                        <td><input type="file" name="FileUpload" accept="image/*" /></td>
+                                        <td>
+                                            <input type="file" name="FileUpload" accept="image/*" />
+                                            <input type="hidden" name="deletePic" id="deletePic" />
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -137,8 +162,12 @@
 
 
 @section Scripts {
-    @{ Html.RenderPartial("~/Views/Shared/_SubmitAnimationScriptPartial.cshtml"); }
-
-
+    <script>
+        $('input.delete').click(function () {
+            $('#deletePic').val('true');
+            $('.img-delete img').attr('src', '@Url.Content("~/Images/fb-noprofilepic.jpg")');
+            $('.img-delete input.delete').addClass('hidden');
+        });
+    </script>
 
 }
