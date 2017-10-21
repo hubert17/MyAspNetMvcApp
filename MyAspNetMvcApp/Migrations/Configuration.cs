@@ -9,6 +9,8 @@ namespace MyAspNetMvcApp.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     using MyAspNetMvcApp.Areas.App.Models;
+    using System.Data.Entity.Migrations.History;
+    using System.Data.Common;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
@@ -84,4 +86,6 @@ namespace MyAspNetMvcApp.Migrations
         }
 
     }
+
+
 }

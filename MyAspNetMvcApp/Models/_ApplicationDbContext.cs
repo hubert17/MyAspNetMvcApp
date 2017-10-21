@@ -9,10 +9,20 @@ using MyAspNetMvcApp.Models.OrderApp;
 
 namespace MyAspNetMvcApp.Models
 {
+    // Uncomment this when using MySql Database
+    //[DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext() : base(System.Configuration.ConfigurationManager.AppSettings["AppDbContextDatabase"]) // Connection string name ex: "DbConnJetAccess"
         {
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUser>().Property(u => u.UserName).HasMaxLength(255);
+            modelBuilder.Entity<ApplicationUser>().Property(u => u.Email).HasMaxLength(255);
+            modelBuilder.Entity<IdentityRole>().Property(r => r.Name).HasMaxLength(255);
         }
 
         // DO NOT REMOVE THIS!

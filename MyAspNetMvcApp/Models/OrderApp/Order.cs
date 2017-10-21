@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using MyAspNetMvcApp.Areas.Account.Models;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyAspNetMvcApp.Models.OrderApp
 {

@@ -35,4 +35,5 @@ namespace MyAspNetMvcApp.Areas.Account.Models
         public DateTime? TokenExpiration { get; set; }
         public virtual UserProfile UserProfile { get; set; }
     }
+
 }
