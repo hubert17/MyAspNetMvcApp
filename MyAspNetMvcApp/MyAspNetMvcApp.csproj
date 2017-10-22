@@ -210,6 +210,7 @@
     <Compile Include="Areas\Account\Models\ApplicationUser.cs" />
     <Compile Include="Areas\Account\Controllers\AccountController.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
+    <Compile Include="Areas\App\Controllers\ExamplesController.cs" />
     <Compile Include="Areas\App\Controllers\LookupController.cs" />
     <Compile Include="Areas\App\Controllers\NotificationsController.cs" />
     <Compile Include="Areas\App\Models\AppControllerAction.cs" />
@@ -406,6 +407,7 @@
     <Content Include="Areas\Examples\Views\ImportExcel\BatchSubmit.cshtml" />
     <Content Include="Downloads\Students.xlsx" />
     <Content Include="Downloads\Students_XLS.xls" />
+    <Content Include="Areas\App\Views\Examples\Index.cshtml" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />

@@ -28,7 +28,7 @@ namespace MyAspNetMvcApp.Areas.App.Models
 
             foreach (var i in controlleractionlist)
             {
-                if(!i.Attributes.Contains("HttpPost"))
+                if(!i.Attributes.Contains("HttpPost") && i.Action.ToLower() == "index")
                     ConActList.Add(new AppControllerAction { Controller = i.Controller.Replace("Controller", string.Empty), Action = i.Action, ReturnType = i.ReturnType, Attributes = i.Attributes });
             }
 

@@ -78,25 +78,25 @@ else
                 @Html.ActionLink(MyAspNetMvcApp.AppSettings.AppTitle, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" id="myaspnetmvcapp-menu">
                     <li><a href="/home/index">Home</a></li>
                     <li><a href="/home/about">About</a></li>
                     <li><a href="/home/contact">Contact</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown Menu <span class="caret"></span></a>
+                    <li class="dropdown hidden">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Facebook <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Menu item 1</a></li>
-                            <li><a href="#">Menu item 2</a></li>
+                            <li><a href="https://www.facebook.com/groups/aspnetmvcgabs/" target="_blank">ASP.NET MVC Developers Group</a></li>
+                            <li><a href="https://www.facebook.com/hubert17academy/">Hubert17 Academy</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-header">Sub Menu Header</li>
                             <li><a href="#" target="_blank">Menu item 3</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Facebook <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown Menu <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="https://www.facebook.com/groups/aspnetmvcgabs/" target="_blank">ASP.NET MVC Developers Group</a></li>
-                            <li><a href="https://www.facebook.com/hubert17academy/">Hubert17 Academy</a></li>
+                            <li><a href="#">Menu item 1</a></li>
+                            <li><a href="#">Menu item 2</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-header">Sub Menu Header</li>
                             <li><a href="#" target="_blank">Menu item 3</a></li>
