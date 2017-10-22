@@ -68,3 +68,55 @@ footer {
 .dropdown-alerts > li > a {
     padding: 10px;
 }
+
+
+
+
+
+/* START OF AWESOMPLETE CUSTOM CSS */
+input.form-control::-webkit-calendar-picker-indicator {
+    display: none;
+}
+.awesomplete {
+    display: block;
+}
+/**
+* bootstrap's input groups modify the float & z-index of form-controls, this allows awesomplete
+* to assume the position of the form-control and reset the input
+*/
+.input-group div.awesomplete {
+    display: block; /*Bootstrap form-control*/
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.input-group div.awesomplete > input {
+    float: none;
+}
+
+.input-group div.awesomplete > ul {
+    z-index: 3; /* bootstrap sets .input-group .form-control to 2 */
+}
+
+/* reinstitute initial .form-control border radius when nested within .awesomeplete */
+.input-group .awesomplete .form-control {
+    border-radius: 4px;
+}
+/* reinstitute .border-radius squaring within form groups */
+.input-group .awesomplete:first-child .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group .awesomplete:not(:first-child) .form-control {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.input-group .awesomplete:not(:first-child):not(:last-child) .form-control {
+    border-radius: 0;
+}
+/* END OF AWESOMPLETE CUSTOM CSS */

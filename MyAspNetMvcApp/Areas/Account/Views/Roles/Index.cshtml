@@ -84,7 +84,7 @@
                                         _btnAction = "UnlockUser";
                                     }
                                 }
-                                <td><a href="/Roles/@_btnAction?UserName=@user.UserName" class="btn btn-danger @_disabled" title="@_btnLabel" @_disabled><span class="glyphicon @_btnIcon"></span></a></td>
+                                <td><a href="/Roles/@_btnAction?UserName=@user.UserName" class="btn btn-danger @_disabled btn-lock" title="@_btnLabel" @_disabled><span class="glyphicon @_btnIcon"></span></a></td>
                             </tr>
                         </table>
                         <div class="row">
@@ -97,16 +97,16 @@
                             }                            
                             <div class="user-@user.Id collapse @c_in col-md-6">
                                 Belongs to role
-                                <ul>
+                                <ul class="user-roles">
                                     @foreach (var roles in userRoles[user.Id])
                                     {
                                         string warning = string.Empty;
                                         <li>
-                                            <form action="/roles/DeleteRoleForUser/" method="post">
+                                            <form action="/roles/DeleteRoleForUser/" method="post" class="deleteRole">
                                                 @Html.AntiForgeryToken()
                                                 @Html.ValidationSummary(true)
-                                                <input type="hidden" name="UserName" id="UserName" value="@user.UserName" />
-                                                <input type="hidden" name="RoleName" id="RoleName" value="@roles" />
+                                                <input type="hidden" name="UserName" class="user-name" value="@user.UserName" />
+                                                <input type="hidden" name="RoleName" class="role-name" value="@roles" />
                                                 @if (user.UserName == System.Configuration.ConfigurationManager.AppSettings["AdminUsername"])
                                                 {
                                                     @roles <button type="button" class="btn btn-danger btn-xs disabled" disabled><span class="glyphicon glyphicon-remove"></span></button>
@@ -123,12 +123,11 @@
                                         </li>
                                     }
                                     <li>
-                                        <form action="/roles/RoleAddToUser/" method="post">
+                                        <form action="/roles/RoleAddToUser/" method="post" class="addRole">
                                             @Html.AntiForgeryToken()
-                                            @Html.ValidationSummary(true)
                                             <input type="hidden" name="UserName" id="UserName" value="@user.UserName" />
                                             <select name="RoleName" id="RoleName">
-                                                <option value="">Add Role</option>
+                                                <option value="-1">Add Role</option>
                                                 @foreach (var r in ViewBag.roles as IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>)
                                                 {
                                                     if (!userRoles[user.Id].Contains(r.Name))
@@ -153,7 +152,7 @@
                                     <dt>Registration Date</dt>
                                     <dd>@user.UserProfile.RegistrationDate</dd>
                                     <dt>Active</dt>
-                                    <dd>@((bool) user.UserProfile.IsActive ? "Yes" : "No") </dd>
+                                    <dd>@((bool) user.UserProfile.IsActive ? "Yes" : "No (Banned)") </dd>
                                     <dt>Last Login</dt>
                                     <dd>@user.UserProfile.LastLogin</dd>
                                 </dl>
@@ -183,7 +182,77 @@
 </div>
 
 
+@section Scripts {
+    <script>
+        $(document).on('submit', 'form.addRole', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            if (form.find("select").val() != "-1") {
+                var appendTo = form.parents('ul.user-roles');
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    success: function (data) {
+                        appendTo.prepend(data);
+                        form.find("select option:selected").remove();
+                    }
+                });
+            }
+        });
 
+        $(document).on('submit', 'form.deleteRole', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var role = form.find("input.role-name").val()
+            var appendTo = form.parents('ul.user-roles');
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function (result) {
+                    if (result) {
+                        form.parent().remove();
+                        appendTo.find('select').append('<option>' + role +'</option>');
+                    }
+                    else {
+                      BootstrapDialog.show({
+                          type: 'danger',
+                          title: '@MyAspNetMvcApp.AppSettings.AppTitle',
+                          message: 'Invalid action.'
+                      });
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-lock', function (e) {
+            e.preventDefault();
+            var button = $(this);
+            $.ajax({
+                url: button.attr('href'),
+                success: function (data) {
+                    if (data.result) {
+                        button.attr('href', '/roles/' + data.action + '?username=' + data.username);                            
+                        if (data.action === 'lockuser') {  
+                            button.attr('title', 'Click to deactivate this user.');
+                            button.find('span').removeClass('glyphicon-ban-circle');
+                            button.find('span').addClass('glyphicon-bookmark');
+                            button.parents('table').next('div.row').find('dl').children('dd').eq(2).text('Yes (Active)');
+                        }
+                        else if (data.action === 'unlockuser') {
+                            button.attr('title', 'Click to activate this user.');
+                            button.find('span').removeClass('glyphicon-bookmark');
+                            button.find('span').addClass('glyphicon-ban-circle');
+                            button.parents('table').next('div.row').find('dl').children('dd').eq(2).text('No (Banned)');
+                        }
+                    }
+                }
+            });
+        });
+
+    </script>
+}
 
 
 

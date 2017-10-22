@@ -1,6 +1,7 @@
 ﻿using MyAspNetMvcApp.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,9 @@ namespace MyAspNetMvcApp
     public class Lookup
     {
         public int Id { get; set; }
+        [Required]
         public string Type { get; set; }
+        [Required]
         [Index(IsUnique = true)] //Makes the property unique
         public int Key { get; set; }
         public string Value { get; set; }

@@ -111,7 +111,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     if (users.Count > 0)
                     {
                         TempData["roleFilter"] = thisRole.Name;
-                        TempData[BSMessage.PANEL] = RoleName + " cannot be deleted. It has members.";
+                        TempData[BSMessage.PANEL] = RoleName + " cannot be deleted. This role has members.";
                     }
                     else
                     {
@@ -132,7 +132,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult RoleAddToUser(string UserName, string RoleName)
         {
-            if(!string.IsNullOrEmpty(RoleName))
+            if (!string.IsNullOrEmpty(RoleName))
             {
                 ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
@@ -143,8 +143,12 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 //ViewBag.Roles = list;
             }
 
-            TempData["UserName"] = UserName;
-            return RedirectToAction("Index");
+            //TempData["UserName"] = UserName;
+            //return RedirectToAction("Index");
+
+            ViewBag.username = UserName;
+            ViewBag.rolename = RoleName;
+            return PartialView("~/Areas/Account/Views/Roles/_DeleteRole.cshtml");
         }
 
         [HttpPost]
@@ -173,8 +177,9 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         {
             if(System.Configuration.ConfigurationManager.AppSettings["AdminUsername"] == UserName)
             {
-                TempData[BSMessage.DIALOGBOX] = "Invalid action.";
-                return RedirectToAction("Index");
+                //TempData[BSMessage.DIALOGBOX] = "Invalid action.";
+                //return RedirectToAction("Index");
+                return Json(false);
             }
 
             var account = new AccountController();
@@ -189,44 +194,67 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             //var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
             //ViewBag.Roles = list;
 
-            TempData["UserName"] = UserName;
-            return RedirectToAction("Index");
+            //TempData["UserName"] = UserName;
+            //return RedirectToAction("Index");
+
+            return Json(true);
         }
 
         public async Task<ActionResult> LockUser(string UserName)
         {
-            ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            if (System.Configuration.ConfigurationManager.AppSettings["AdminUsername"] == UserName)
+            {
+                return Json(new { result = false }, JsonRequestBehavior.AllowGet);
+            }
 
-            //await userManager.SetLockoutEnabledAsync(user.Id, true);
-            //await userManager.SetLockoutEndDateAsync(user.Id, DateTime.Today.AddYears(10));
+            try
+            {
+                ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-            user.UserProfile.IsActive = false;
-            user.LockoutEnabled = true;
-            await userManager.UpdateAsync(user);
+                //await userManager.SetLockoutEnabledAsync(user.Id, true);
+                //await userManager.SetLockoutEndDateAsync(user.Id, DateTime.Today.AddYears(10));
 
-            TempData[BSMessage.DIALOGBOX] = UserName + " has been deactivated.";
+                user.UserProfile.IsActive = false;
+                user.LockoutEnabled = true;
+                await userManager.UpdateAsync(user);
 
-            TempData["UserName"] = UserName;
-            return RedirectToAction("Index");
+                //TempData[BSMessage.DIALOGBOX] = UserName + " has been deactivated.";
+
+                //TempData["UserName"] = UserName;
+                //return RedirectToAction("Index");
+
+                return Json(new { result = true, action = "unlockuser", username = UserName }, JsonRequestBehavior.AllowGet);
+            }
+            catch { }
+
+            return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> UnlockUser(string UserName)
         {
-            ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            try
+            {
+                ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-            //await userManager.SetLockoutEnabledAsync(user.Id, false);
-            //await userManager.SetLockoutEndDateAsync(user.Id, DateTime.Now);
+                //await userManager.SetLockoutEnabledAsync(user.Id, false);
+                //await userManager.SetLockoutEndDateAsync(user.Id, DateTime.Now);
 
-            user.UserProfile.IsActive = true;
-            user.LockoutEnabled = false;
-            await userManager.UpdateAsync(user);
+                user.UserProfile.IsActive = true;
+                user.LockoutEnabled = false;
+                await userManager.UpdateAsync(user);
 
-            TempData[BSMessage.DIALOGBOX] = UserName + " has been reactivated.";
+                //TempData[BSMessage.DIALOGBOX] = UserName + " has been reactivated.";
 
-            TempData["UserName"] = UserName;
-            return RedirectToAction("Index");
+                //TempData["UserName"] = UserName;
+                //return RedirectToAction("Index");
+                return Json(new { result = true, action = "lockuser", username = UserName }, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            { }
+
+            return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
     }
 

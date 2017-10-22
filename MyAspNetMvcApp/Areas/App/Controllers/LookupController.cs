@@ -14,9 +14,14 @@ namespace MyAspNetMvcApp.Areas.App.Controllers
     {
         ApplicationDbContext db = new ApplicationDbContext();
         // GET: App/Lookup
-        public ActionResult Index(bool showInactive = false)
+        public ActionResult Index(bool showInactive = false, string filterType = "")
         {
-            ViewBag.lookups = showInactive ? db.Lookups.ToList() : db.Lookups.Where(x => x.IsActive == true).ToList();
+            if(string.IsNullOrEmpty(filterType))
+                ViewBag.lookups = showInactive ? db.Lookups.ToList() : db.Lookups.Where(x => x.IsActive == true).ToList();
+            else
+                ViewBag.lookups = showInactive ? db.Lookups.Where(x=>x.Type == filterType).ToList() : db.Lookups.Where(x => x.IsActive == true && x.Type == filterType).ToList();
+
+            ViewBag.lookupTypes = db.Lookups.ToList().GroupBy(x => x.Type).Select(s => s.FirstOrDefault()).Select(l=>l.Type).ToList();
             return View();
         }
 
@@ -36,7 +41,7 @@ namespace MyAspNetMvcApp.Areas.App.Controllers
                 catch
                 { }
             }
-            return new HttpStatusCodeResult(400, "Oops! Something went wrong. Lookup Key must be unique.");
+            return new HttpStatusCodeResult(400, "Oops! Something went wrong. Please properly fill up the form.");
         }
 
         public ActionResult Edit(int Id)

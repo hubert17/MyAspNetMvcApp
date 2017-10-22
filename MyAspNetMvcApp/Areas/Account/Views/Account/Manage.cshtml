@@ -155,18 +155,11 @@
 
 
 
-
-
-
-
 @section Scripts {
     @{ Html.RenderPartial("~/Views/Shared/_ValidationScriptsPartial.cshtml"); }
     @{ Html.RenderPartial("~/Views/Shared/_SubmitAnimationScriptPartial.cshtml"); }
 
     <script>
-        $("#btnMoreProfile").click(function () {
-            $("#pnlMoreProfile").toggleClass('hidden');
-        });
         $("#btnChangePassword").click(function () {
             $("#pnlChangePassword").toggleClass('hidden');
         });

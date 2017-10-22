@@ -1,0 +1,21 @@
+﻿<li>
+    <form action="/roles/DeleteRoleForUser/" method="post"  class="deleteRole">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="UserName" class="user-name" value="@ViewBag.username" />
+        <input type="hidden" name="RoleName" class="role-name" value="@ViewBag.rolename" />
+        @if (ViewBag.username == System.Configuration.ConfigurationManager.AppSettings["AdminUsername"])
+        {
+            @ViewBag.rolename <button type="button" class="btn btn-danger btn-xs disabled" disabled><span class="glyphicon glyphicon-remove"></span></button>
+        }
+        else if (@ViewBag.rolename == System.Configuration.ConfigurationManager.AppSettings["AdminRolename"] && ViewBag.username == User.Identity.Name)
+        {
+            @ViewBag.rolename <button type="submit" class="btn btn-danger btn-xs" onClick="return confirm('Warning: You are about to remove yourself from the admin group. Continue?')"><span class="glyphicon glyphicon-remove"></span></button>
+        }
+        else
+        {
+            @ViewBag.rolename <button type="submit" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
+        }
+    </form>
+</li>
+
+
