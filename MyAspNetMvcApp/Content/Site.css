@@ -46,11 +46,24 @@ footer {
     height: 20px;
 }
 
-
+.navbar-nav > li > a.dropdown-notif {
+    padding-right: 0;
+}
+.dropdown-messages {
+    width: 400px;
+    min-width: 0;
+}
 .dropdown-alerts {
     width: 310px;
     min-width: 0;
 }
+.dropdown-alerts > li > a, .dropdown-messages > li > a {
+    white-space: normal;
+}
+.dropdown-messages > li > a > div:nth-child(2) {
+    font-size:small;
+}
+
 .badge-notify {
     background: red;
     position: relative;
@@ -60,7 +73,7 @@ footer {
     padding: 2px 5px;
     border-radius: 3px;
 }
-.dropdown-alerts .divider {
+.dropdown-alerts .divider, .dropdown-messages .divider {
     margin: 0;
     overflow: hidden;
     background-color: #e5e5e5;

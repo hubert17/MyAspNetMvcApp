@@ -4,7 +4,7 @@
     <form action="@Url.Action("LogOff", "Account", new { Area = "Account" })" method="post" id="logoutForm" class="navbar-right">
         @Html.AntiForgeryToken()
         <ul class="nav navbar-nav navbar-right">
-            @*@Html.Partial("_NotificationMenu")*@
+            @Html.Partial("_NotificationMenu")
             @if (Request.IsAuthenticated && (User.IsInRole(System.Configuration.ConfigurationManager.AppSettings["AdminRolename"])))
             {
                 <li class="dropdown">
