@@ -256,6 +256,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
 
             return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
+
     }
 
 }

@@ -17,6 +17,11 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
         [System.Web.Mvc.Remote("CheckExistingEmail", "Account", ErrorMessage = "Email already exists")]
         public string UserName { get; set; }
 
+        [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        [System.Web.Mvc.Remote("CheckExistingEmail", "Account", ErrorMessage = "Email already exists")]
+        public string Email { get; set; }
+
         [Required(ErrorMessage = "You can't leave this empty.")]
         [StringLength(20, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]

@@ -8,7 +8,7 @@
     <meta property="og:description" content="@MyAspNetMvcApp.AppSettings.AppDescription" />
     <title>@ViewBag.Title - @MyAspNetMvcApp.AppSettings.AppTitle</title>
     
-@if(TempData[BSMessage.TYPE] != null)
+@if(TempData[BSMessage.ALERT] != null)
 {
     <script>
         alert('@TempData[BSMessage.ALERT]')
@@ -37,7 +37,7 @@ else
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.4/css/bootstrap-dialog.min.css" rel="stylesheet" integrity="sha256-wstTM1F5dOf7cgnlRHIW3bmoRAAGh6jL7tMIvqTuFZE=" crossorigin="anonymous" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" integrity="sha256-yMjaV542P+q1RnH6XByCPDfUFhmOafWbeLPmqKh11zo=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.css" integrity="sha256-TQcHzEz3/ZJ8MeAoO1SRE5sa5q68U57dwZO/tArtNqk=" crossorigin="anonymous" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.css" rel="stylesheet" integrity="sha256-TQcHzEz3/ZJ8MeAoO1SRE5sa5q68U57dwZO/tArtNqk=" crossorigin="anonymous" />
     <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" integrity="sha256-0rguYS0qgS6L4qVzANq4kjxPLtvnp5nn2nB5G1lWRv4=" crossorigin="anonymous"></script>
 }
@@ -118,14 +118,14 @@ else
         {
             <div class="alert alert-@msgtype alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                @TempData[BSMessage.PANEL]
+                @Html.Raw(TempData[BSMessage.PANEL])
             </div>
         } 
         @if (ViewData[BSMessage.PANEL] != null)
         {
             <div class="alert alert-@msgtype alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                @ViewData[BSMessage.PANEL]
+                @Html.Raw(ViewData[BSMessage.PANEL])
             </div>
         }        
 
@@ -164,7 +164,7 @@ else
         BootstrapDialog.show({
               @messageType
               title: '@MyAspNetMvcApp.AppSettings.AppTitle',
-              message: '@ViewData[BSMessage.DIALOGBOX]'
+              message: '@Html.Raw(ViewData[BSMessage.DIALOGBOX])'
           });
     </script>
 }
@@ -174,7 +174,7 @@ else
         BootstrapDialog.show({
               @messageType
               title: '@MyAspNetMvcApp.AppSettings.AppTitle',
-              message: '@TempData[BSMessage.DIALOGBOX]'
+              message: '@Html.Raw(TempData[BSMessage.DIALOGBOX])'
           });
     </script>
 }

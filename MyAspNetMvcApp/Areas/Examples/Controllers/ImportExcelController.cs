@@ -36,6 +36,19 @@ namespace MyAspNetMvcApp.Areas.Examples.Controllers
 
                     output = import.ExcelToList<StudentExcelViewModel>(0, 1);
 
+                    var duplicates = output.GroupBy(x => x.IdNumber)
+                                .Select(g => new { Value = g.Key, Count = g.Count() })
+                                .Where(h => h.Count > 1)
+                                .Select(s => s.Value);
+
+                    if(duplicates.Count() > 0)
+                    {
+                        TempData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                        TempData[BSMessage.PANEL] = "The following duplicate record/s has been removed: " + string.Join(", ", duplicates);
+                    }
+
+                    output = output.GroupBy(x => x.IdNumber).Select(x => x.First()).ToList();
+
                     foreach (var stud in output)
                     {
                         Char[] separators = new Char[] { ',' }; // only the space character, in this case

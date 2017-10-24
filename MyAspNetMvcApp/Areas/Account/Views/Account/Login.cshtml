@@ -45,7 +45,7 @@
                         @Html.AntiForgeryToken()
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Email or Mobile Number", autofocus = "autofocus" })
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "UserID, Email or Mobile Number", autofocus = "autofocus" })
                         </div>
                         <p>
                             @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })

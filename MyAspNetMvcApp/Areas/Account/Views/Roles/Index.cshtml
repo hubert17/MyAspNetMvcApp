@@ -16,6 +16,14 @@
 <h2>User Roles Manager </h2>
 
 <div class="row">
+    <style scoped>
+        .panel {
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+        }
+    </style>
+
+
     <div class="col-sm-4">
         <div class="panel panel-info">
             <div class="panel-heading"><strong>Roles</strong></div>
@@ -64,8 +72,41 @@
 
     <div class="col-sm-5">
         <div class="panel panel-info">
-            <div class="panel-heading"><strong>Users</strong></div>
+            <div class="panel-heading"><strong>Users</strong><span class="pull-right" title="Import users from Excel file"><a href="#" data-toggle="collapse" data-target="#pnlImportExcel" style="text-decoration:none"><span class="fa fa-users"></span>&nbsp;<span class="fa fa-file-excel-o"></span></a></span></div>
             <div class="panel-body">
+                <div class="panel panel-primary collapse" id="pnlImportExcel">
+                    <div class="panel-body">
+                        <h3>Bulk import users from Excel</h3>
+                        <form action="/Account/ImportUsers" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <style scoped>
+                                p { 
+                                    font-size: smaller;
+                                }
+                            </style>
+                            <p>
+                                <strong>Step 1:</strong> <a href="@Url.Action("DownloadTemplate","ImportUsers", new {  area = "" })">Download Excel template.</a>
+                            </p>
+                            <p>
+                                <strong>Step 2:</strong> Encode users. Put <em>'End of record'</em> or <em>'Nothing follows'</em> right next to the last row. 
+                                Columns in Red indicate required input, green for optional. <br /><br />
+                                <em>You can also create your own custom template. Just ensure column name and sequence remain in order.</em>
+                            </p>
+                            <p>
+                                <strong>Step 3:</strong> Leave blank to make username the temporary password.
+                                <input type="text" name="temppass" pattern=".{6,20}" title="Temporary password must be least 6 characters" class="form-control" placeholder="temporary password" />
+                            </p>
+                            <p><strong>Step 4:</strong> Upload the Excel file.</p>
+                            <div class="input-group add-on col-sm-10">
+                                <input type="file" name="ExcelFile" class="form-control" />
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit">Upload</button>
+                                </div>
+                            </div>
+                            <p></p>
+                        </form>
+
+                    </div>
+                </div>
                 @foreach (var user in Model)
                 {
                         <table width="100%">
@@ -96,7 +137,7 @@
                                 }
                             }                            
                             <div class="user-@user.Id collapse @c_in col-md-6">
-                                Belongs to role
+                                Member of 
                                 <ul class="user-roles">
                                     @foreach (var roles in userRoles[user.Id])
                                     {
@@ -183,6 +224,8 @@
 
 
 @section Scripts {
+
+
     <script>
         $(document).on('submit', 'form.addRole', function (e) {
             e.preventDefault();

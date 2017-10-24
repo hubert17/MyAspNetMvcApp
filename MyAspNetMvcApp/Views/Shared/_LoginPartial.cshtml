@@ -18,9 +18,7 @@
             }
             else
             {
-                <li>
-                    @Html.ActionLink("Hello " + User.FirstName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
-                </li>
+                <li><a href="@Url.Action("Manage", "Account", new { Area = "" })">Hello @User.FirstName()!</a></li>
             }
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>

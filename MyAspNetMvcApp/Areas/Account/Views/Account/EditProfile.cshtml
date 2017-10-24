@@ -29,7 +29,7 @@
 
 
     <style>
-        .panel input[type=text], .panel input[type=date] {
+        .panel input[type=text], .panel input[type=date], .panel input[type=email] {
             width: 100%;
             border: none;
         }
@@ -44,7 +44,6 @@
     <style>
         div.img-delete {
             position: relative;
-            float: left;
         }
         div.img-delete:hover img {
             opacity: 0.5;
@@ -87,22 +86,43 @@
                             else
                             {
                                 <img alt="User Profile Photo" src="@Model.Picture.ResizeToThumbnail(200,200).ToBase64StringHTMLImgJpgSrc()" class="img-circle img-responsive">
-                                <input class="delete btn-danger btn-xs" type="button" value="X" title="Remove profile pic" />
+                                <input class="delete btn-danger btn-xs visible-xs" type="button" value="X" title="Remove profile pic" />
                             }
                         </div>
 
                         <div class=" col-md-9 col-lg-9 ">
                             <table class="table table-user-information">
                                 <tbody>
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>@Html.TextBoxFor(m => m.UserName, new { @readonly = "readonly" })</td>
-                                    </tr>
+                                    @if (Model.UserName != Model.Email)
+                                    {
+                                        <tr>
+                                            <td>Username</td>
+                                            <td>@Html.TextBoxFor(m => m.UserName, new { @readonly = "readonly" })</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            @if (User.IsInRole(System.Configuration.ConfigurationManager.AppSettings["AdminRolename"]))
+                                            {
+                                                <td>@Html.TextBoxFor(m => m.Email, new { @readonly = "readonly" })</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@Html.TextBoxFor(m => m.Email, new { type = "email" })</td>
+                                            }
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>@Html.TextBoxFor(m => m.Email, new { @readonly = "readonly" })</td>
+                                        </tr>
+                                    }
                                     <tr>
                                         <td>Mobile Number</td>
                                         <td>
-                                            @Html.TextBoxFor(m => m.CountryCode, new { placeholder = "##", @style = "width:15%" })
-                                            @Html.TextBoxFor(m => m.PhoneNumber, new { placeholder ="##########", @style = "width:55%" })
+                                            @Html.TextBoxFor(m => m.CountryCode, new { placeholder = "##", @style = "width:18%", title = "Country Code", maxlength = "3" })
+                                            @Html.TextBoxFor(m => m.PhoneNumber, new { placeholder ="##########", maxlength = "15", @style = "width:52%" })
                                         </td>
                                     </tr>
                                     <tr>
@@ -166,7 +186,7 @@
         $('input.delete').click(function () {
             $('#deletePic').val('true');
             $('.img-delete img').attr('src', '@Url.Content("~/Images/fb-noprofilepic.jpg")');
-            $('.img-delete input.delete').addClass('hidden');
+            $('.img-delete input.delete').removeClass('visible-xs').addClass('hidden');
         });
     </script>
 

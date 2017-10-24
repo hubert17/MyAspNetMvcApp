@@ -19,6 +19,8 @@ using System.IO;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json.Linq;
 using System.Security.Principal;
+using System.Collections.Generic;
+using SimpleExcelImport;
 
 namespace MyAspNetMvcApp.Areas.Account.Controllers
 {
@@ -33,6 +35,11 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         public AccountController(UserManager<ApplicationUser> userManager)
         {
             UserManager = userManager;
+
+            UserManager.UserValidator = new UserValidator<ApplicationUser>(UserManager)
+            {
+                AllowOnlyAlphanumericUserNames = false
+            };
         }
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
@@ -60,7 +67,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     using (var db = new ApplicationDbContext())
                     {
                         string myPhone = String.Join("", model.UserName.Split('(', '-', ')')).TrimStart('0');
-                        ApplicationUser myUser = db.Users.FirstOrDefault(u => u.UserName == model.UserName || (u.PhoneNumber == myPhone));
+                        ApplicationUser myUser = db.Users.FirstOrDefault(u => (u.UserName == model.UserName || u.Email == model.UserName) || u.PhoneNumber == myPhone);
                         if (myUser != null)
                         {
                             model.UserName = myUser.UserName;
@@ -113,6 +120,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 var user = new ApplicationUser()
                 {
                     UserName = model.UserName,
+                    Email = model.UserName,
                     PhoneNumber = string.IsNullOrEmpty(model.PhoneNumber) ? null : model.PhoneNumber.TrimStart('0'),
                     CountryCode = string.IsNullOrEmpty(model.PhoneNumber) ? null : model.CountryCode,
                     UserProfile = new UserProfile
@@ -180,6 +188,123 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        public async Task<ActionResult> ImportUsers(HttpPostedFileBase ExcelFile, string temppass)
+        {
+            var message = string.Empty;
+            try
+            {
+                var output = new List<RegisterExcelViewModel>();
+                if (ExcelFile != null)
+                {
+                    var data = ExcelFile.ToFileByteArray();
+                    ImportFromExcel import = new ImportFromExcel();
+                    if (Path.GetExtension(ExcelFile.FileName.ToLower()) == ".xlsx")
+                        import.LoadXlsx(data);
+                    else if (Path.GetExtension(ExcelFile.FileName.ToLower()) == ".xls")
+                        import.LoadXls(data);
+                    else
+                    {
+                        TempData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                        TempData[BSMessage.DIALOGBOX] = "Invalid Excel worksheet: " + Path.GetExtension(ExcelFile.FileName);
+                        return RedirectToAction("Index", "Roles", new { area = "" });
+                    }
+
+                    output = import.ExcelToList<RegisterExcelViewModel>(0, 1);
+                    if(output.Count == 0)
+                    {
+                        TempData[BSMessage.TYPE] = BSMessage.MessageType.WARNING;
+                        TempData[BSMessage.DIALOGBOX] = "Excel worksheet has no user records.";
+                        return RedirectToAction("Index", "Roles", new { area = "" });
+                    }
+
+                    var duplicates = output.GroupBy(x => x.UserName)
+                                .Select(g => new { Value = g.Key, Count = g.Count() })
+                                .Where(h => h.Count > 1)
+                                .Select(s => s.Value);
+
+                    if (duplicates.Count() > 0)
+                    {
+                        TempData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                        message = "<p>We have found the following duplicate records: " + string.Join(", ", duplicates) + " </p>";
+                    }
+
+                    //var users = output.GroupBy(x => x.UserName).Select(x => x.First()).ToList();
+
+                    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                    foreach (var s in output)
+                    {
+                        s.PhoneNumber = string.IsNullOrEmpty(s.PhoneNumber) ? null : s.PhoneNumber.TrimStart('0');
+                        using (var db = new ApplicationDbContext())
+                        {
+                            var phoneExist = db.Users.Where(x => (x.CountryCode + x.PhoneNumber) == (s.CountryCode + s.PhoneNumber)).FirstOrDefault() != null;
+                            var emailExist = db.Users.Where(u => u.UserName == s.Email || u.Email == s.Email).FirstOrDefault() != null;
+                            if (emailExist || phoneExist)
+                            {
+                                s.CountryCode = null;
+                                s.PhoneNumber = null;
+                                s.Email = null;
+                            }
+                        }
+
+                        DateTime? bdate;
+                        try
+                        {
+                            bdate = Convert.ToDateTime(s.BirthDate);
+                        }
+                        catch
+                        {
+                            bdate = null;
+                        }
+                        var user = new ApplicationUser()
+                        {
+                            UserName = s.UserName,
+                            Email = s.Email,
+                            PhoneNumber = s.PhoneNumber,
+                            CountryCode = string.IsNullOrEmpty(s.PhoneNumber) ? null : s.CountryCode,
+                            UserProfile = new UserProfile
+                            {
+                                UserName = s.UserName,
+                                RegistrationType = s.RegistrationType,
+                                LastName = textInfo.ToTitleCase(s.LastName.ToLower()),
+                                FirstName = textInfo.ToTitleCase(s.FirstName.ToLower()),
+                                BirthDate = bdate,
+                                Gender = string.IsNullOrEmpty(s.Gender) ? null : s.Gender[0].ToString().ToUpper(),
+                                RegistrationDate = DateTime.Now,
+                                IsActive = true
+                            }
+                        };
+                        var result = await UserManager.CreateAsync(user, string.IsNullOrEmpty(temppass) ? user.UserName : temppass);
+                        if (result.Succeeded)
+                        {
+                            if (!string.IsNullOrEmpty(user.UserProfile.RegistrationType))
+                            {
+                                RegisterViewModel.AddRole(user.UserName, user.UserProfile.RegistrationType);
+                            }
+                        }
+                        else
+                            message += user.UserName + " / " + user.UserProfile.LastName + ", " + user.UserProfile.FirstName + " was not added. <br>";
+                    }
+
+
+                }
+            }
+            catch(Exception ex)
+            {
+                TempData[BSMessage.TYPE] = BSMessage.MessageType.DANGER;
+                TempData[BSMessage.PANEL] = "Oops! Something went wrong. " + ex.GetBaseException();
+            }
+
+            if (!string.IsNullOrEmpty(message))
+                TempData[BSMessage.PANEL] = message;
+            return RedirectToAction("Index", "Roles", new { area = "" });
+        }
+
+        public ActionResult DownloadTemplate()
+        {
+            return File("~/Areas/Account/Views/Account/BulkImportExcelTemplate.xls", "application/vnd.ms-excel", "ImportUsersFromExcel_" + AppSettings.AppTitle + ".xls");
+        }
+
 
         [AllowAnonymous]
         public ActionResult FbSignIn(string RegType)
@@ -289,7 +414,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    ApplicationUser _user = UserManager.FindByName(FacebookEmail);
+                    ApplicationUser _user = UserManager.FindByEmail(FacebookEmail);
                     if (_user == null)
                     {
                         byte[] fbPhotoData;
@@ -306,6 +431,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                         var newUser = new ApplicationUser()
                         {
                             UserName = FacebookEmail,
+                            Email = FacebookEmail,
                             EmailConfirmed = true,
                             //PhoneNumber = ,
                             UserProfile = new UserProfile
@@ -415,7 +541,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    ApplicationUser myUser = db.Users.FirstOrDefault(u => u.UserName == UserName);
+                    ApplicationUser myUser = db.Users.FirstOrDefault(u => u.UserName == UserName || u.Email == UserName);
                     if (myUser != null) ifExist = true;
                 }
                 return Json(!ifExist, JsonRequestBehavior.AllowGet);
@@ -464,6 +590,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 ViewData["profile"] = new RegisterViewModel
                 {
                     UserName = user.UserName,
+                    Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     CountryCode = user.CountryCode,
                     RegistrationType = string.Join(", ", UserManager.GetRoles(user.Id)),
@@ -487,6 +614,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                 var profile = new RegisterViewModel
                 {
                     UserName = user.UserName,
+                    Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     CountryCode = user.CountryCode,
                     LastName = user.UserProfile.LastName,
@@ -506,6 +634,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         {
             var db = new ApplicationDbContext();
             var phoneExist = db.Users.Where(x => x.PhoneNumber == profile.PhoneNumber).FirstOrDefault() != null;
+            var emailExist = db.Users.Where(u => u.UserName == profile.Email || u.Email == profile.Email).FirstOrDefault() != null;
 
             var user = UserManager.FindByName(User.Identity.Name);
 
@@ -518,6 +647,9 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
             else if (deletePic)
                 user.UserProfile.Picture = null;
 
+            if(!emailExist && user.Email != user.UserName && !User.IsInRole(System.Configuration.ConfigurationManager.AppSettings["AdminRolename"]))
+                user.Email = profile.Email;
+
             if (!phoneExist)
             {
                 user.PhoneNumber = string.IsNullOrEmpty(profile.PhoneNumber) ? null : profile.PhoneNumber.TrimStart('0');
@@ -526,7 +658,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
 
             UserManager.Update(user);
 
-            TempData[BSMessage.PANEL] = "Your account has been successfully updated.";
+            TempData[BSMessage.PANEL] = "Your account has been successfully updated. ";
             return RedirectToAction("Manage");
 
         }
@@ -588,7 +720,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         [AllowAnonymous]
         public string ForgotPassword(string id = "", string email = "")
         {
-            var user = UserManager.FindByName(email);
+            var user = UserManager.FindByEmail(email);
             if (user != null && user.EmailConfirmed)
             {
                 char[] padding = { '=' };
@@ -638,7 +770,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         [HttpPost]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            ApplicationUser user = await UserManager.FindByNameAsync(model.Email);
+            ApplicationUser user = await UserManager.FindByEmailAsync(model.Email);
             if (user != null && user.TokenExpiration > DateTime.Now)
             {
                 user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.NewPassword);

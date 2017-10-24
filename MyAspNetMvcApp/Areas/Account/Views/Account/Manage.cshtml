@@ -77,7 +77,6 @@
                     <div class="col-md-3 col-lg-3 " align="center">
                         @if (string.IsNullOrEmpty(profile.Picture.ToBase64StringHTMLImgJpgSrc()))
                         {
-                            @*<img alt="User Profile Photo" src="@Url.Content("~/Images/fb-noprofilepic.jpg")" class="img-circle img-responsive">*@
                             <div class="gavatar">@profile.FirstName[0]@profile.LastName[0]</div>
                         }
                         else
@@ -93,9 +92,16 @@
                                     <td>Roles</td>
                                     <td>@profile.RegistrationType</td>
                                 </tr>
+                                @if (profile.UserName != profile.Email)
+                                {
+                                    <tr>
+                                        <td>Username</td>
+                                        <td>@profile.UserName</td>
+                                    </tr>
+                                }
                                 <tr>
                                     <td>Email</td>
-                                    <td><a href="mailto:@profile.UserName">@profile.UserName</a></td>
+                                    <td><a href="mailto:@profile.Email">@profile.Email</a></td>
                                 </tr>
                                 <tr>
                                     <td>Mobile Number</td>

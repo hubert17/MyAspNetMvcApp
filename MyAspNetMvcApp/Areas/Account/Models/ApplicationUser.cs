@@ -13,23 +13,10 @@ namespace MyAspNetMvcApp.Areas.Account.Models
     // please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        private string _userNameEmailBackingField;
-
-        public override string UserName
-        {
-            get { return _userNameEmailBackingField; }
-            set { _userNameEmailBackingField = value; }
-        }
-
-        public override string Email
-        {
-            get { return _userNameEmailBackingField; }
-            set { _userNameEmailBackingField = value; }
-        }
-
-        [MaxLength(20)]
         //[Index(IsUnique = true)]
+        [MaxLength(15)]
         public override string PhoneNumber { get; set; }
+        [MaxLength(3)]
         public string CountryCode { get; set; }
         public string Token { get; set; }
         public DateTime? TokenExpiration { get; set; }
