@@ -166,7 +166,7 @@
                 <div class="panel-footer">
                     <a href="/account/manage" class="btn btn-default">Cancel</a>
                     <span class="pull-right">
-                        <button type="submit" class="btn btn-primary">Update Account</button>
+                        <button type="submit" class="btn btn-primary btn-submit">Update Account</button>
                     </span>
                 </div>
             </div>
@@ -183,6 +183,9 @@
 
 @section Scripts {
     <script>
+    @{ Html.RenderPartial("~/Views/Shared/_ValidationScriptsPartial.cshtml"); }
+    @{ Html.RenderPartial("~/Views/Shared/_SubmitAnimationScriptPartial.cshtml"); }
+
         $('input.delete').click(function () {
             $('#deletePic').val('true');
             $('.img-delete img').attr('src', '@Url.Content("~/Images/fb-noprofilepic.jpg")');

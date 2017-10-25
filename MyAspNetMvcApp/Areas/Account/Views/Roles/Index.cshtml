@@ -77,14 +77,14 @@
                 <div class="panel panel-primary collapse" id="pnlImportExcel">
                     <div class="panel-body">
                         <h3>Bulk import users from Excel</h3>
-                        <form action="/Account/ImportUsers" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <form action="/Account/ImportUsers" method="post" enctype="multipart/form-data" class="form-horizontal dot-animate">
                             <style scoped>
                                 p { 
                                     font-size: smaller;
                                 }
                             </style>
                             <p>
-                                <strong>Step 1:</strong> <a href="@Url.Action("DownloadTemplate","ImportUsers", new {  area = "" })">Download Excel template.</a>
+                                <strong>Step 1:</strong> <a href="@Url.Action("DownloadTemplate","Account", new {  area = "" })">Download Excel template.</a>
                             </p>
                             <p>
                                 <strong>Step 2:</strong> Encode users. Put <em>'End of record'</em> or <em>'Nothing follows'</em> right next to the last row. 
@@ -224,7 +224,8 @@
 
 
 @section Scripts {
-
+@{ Html.RenderPartial("~/Views/Shared/_ValidationScriptsPartial.cshtml"); }
+@{ Html.RenderPartial("~/Views/Shared/_SubmitAnimationScriptPartial.cshtml"); }
 
     <script>
         $(document).on('submit', 'form.addRole', function (e) {

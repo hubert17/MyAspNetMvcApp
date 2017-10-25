@@ -1,5 +1,5 @@
 ﻿// Disable button and start dot animation
-var form = $('form');
+var form = $('form.dot-animate');
 form.submit(function () {
     if (form.valid()) {
         //alert('The form is valid!!');

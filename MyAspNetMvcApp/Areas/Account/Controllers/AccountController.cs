@@ -250,7 +250,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                         DateTime? bdate;
                         try
                         {
-                            bdate = Convert.ToDateTime(s.BirthDate);
+                            bdate = DateTime.ParseExact(s.BirthDate, "M/d/yyyy", new CultureInfo("en-US"));
                         }
                         catch
                         {

@@ -76,7 +76,7 @@ else
                 <div style="float:right; font-size: 80%; position: relative; top:-15px"><a id="signinlink" href="@Url.Action("Login","Account")">Log in</a></div>
             </div>
             <div class="panel-body">
-                <form action="@Url.Action("Register", "Account", new { area = "Account" })" method="post" id="signupform" class="form-horizontal" role="form">
+                <form action="@Url.Action("Register", "Account", new { area = "Account" })" method="post" id="signupform" class="form-horizontal dot-animate" role="form">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="@nameof(Model.RegistrationType)" value="@ViewBag.RegType" />
 

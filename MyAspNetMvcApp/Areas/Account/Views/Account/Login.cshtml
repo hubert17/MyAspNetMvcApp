@@ -41,7 +41,7 @@
                         </div>
                     }
 
-                    <form action="@Url.Action("Login", "Account", new { @ReturnUrl = ViewBag.ReturnUrl })" method="post" class="form-horizontal" role="form">
+                    <form action="@Url.Action("Login", "Account", new { @ReturnUrl = ViewBag.ReturnUrl })" method="post" class="form-horizontal dot-animate" role="form">
                         @Html.AntiForgeryToken()
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -68,7 +68,7 @@
                         <div style="margin-top:10px" class="form-group">
                             <!-- Button -->
                             <div class="col-sm-12 controls">
-                                <input type="submit" value="Log in" class="btn btn-primary submit" />
+                                <input type="submit" value="Log in" class="btn btn-primary" />
                             </div>
                         </div>
 
