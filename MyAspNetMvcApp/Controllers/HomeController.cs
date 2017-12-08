@@ -22,9 +22,8 @@ namespace MyAspNetMvcApp.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            var ViewName = "AboutMe";
+            return View(ViewName);
         }
 
         public ActionResult Contact()

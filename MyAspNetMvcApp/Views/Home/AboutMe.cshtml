@@ -1,0 +1,219 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+@section Head {
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        body {
+            font: 20px Montserrat, sans-serif;
+            line-height: 1.8;
+            color: #f5f6f7;
+            background-color: #474e5d;
+        }
+
+        p {
+            font-size: 16px;
+        }
+
+        .margin {
+            margin-bottom: 45px;
+        }
+
+        .bg-1 {
+            background-color: #1abc9c; /* Green */
+            color: #ffffff;
+        }
+
+        .bg-2 {
+            background-color: #474e5d; /* Dark Blue */
+            color: #ffffff;
+        }
+
+        .bg-3 {
+            background-color: #ffffff; /* White */
+            color: #555555;
+        }
+
+        .bg-4 {
+            background-color: #2f2f2f; /* Black Gray */
+            color: #fff;
+        }
+
+        .container-fluid {
+            padding-top: 70px;
+            padding-bottom: 70px;
+        }
+
+        .footer {
+            height: 36px;
+        }
+
+        input, select, textarea {
+            max-width: 100%;
+        }
+
+        .has-feedback label ~ .form-control-feedback {
+            top: 40px;
+        }
+    </style>
+}
+
+@section Nocontainer
+{
+    <!-- First Container -->
+    <div class="container-fluid bg-1 text-center">
+        <img src="@Url.Content("~/Images/profile.jpg")" class="img-responsive img-circle margin" style="display:inline" alt="Bird" width="350" height="350">
+        <h1>Hi, I am Bernard Gabon</h1>
+        <h3>a .NET web developer</h3>
+    </div>
+
+    <!-- Second Container -->
+    <div class="container-fluid bg-2 text-center">
+        <h3 class="margin">What I Do</h3>
+        <p>
+            I have more than 12 years of experience, proficient in ASP.NET MVC/WebApi/WebForms development using C#. My previous ASP.NET project integrates my skills in Web Design, HTML5, CSS3, Javascript/jQuery, AngularJS, Bootstrap, Visual Studio, SQL, Entity Framework, Azure app service, Web Administration and Search Engine Optimization with Google and Bing Webmaster Tools.
+        </p>
+        <p>I work with passion and attitude.</p>
+        <p class="text-center"><a class="btn btn-default btn-lg" href="#contact"><i class="fa fa-arrow-down"></i> Hire Me</a></p>
+    </div>
+
+    <!-- Third Container (Grid) -->
+    <div class="container-fluid bg-3 text-center">
+        <h3>My Works</h3>
+        <p>See a collection of works I am proud of!</p>
+        <br>
+        <div class="row">
+            <div class="col-sm-4">
+                <p><strong>DFW Wholesale Granite</strong></p>
+                <img src="@Url.Content("~/Images/portfolio1.JPG")" class="img-responsive img-thumbnail margin" style="width:100%" alt="Image">
+            </div>
+            <div class="col-sm-4">
+                <p><strong>Patient Care</strong></p>
+                <img src="@Url.Content("~/Images/portfolio2.JPG")" class="img-responsive img-thumbnail margin" style="width:100%" alt="Image">
+            </div>
+            <div class="col-sm-4">
+                <p><strong>Poordooytify</strong></p>
+                <img src="@Url.Content("~/Images/portfolio3.JPG")" class="img-responsive img-thumbnail margin" style="width:100%" alt="Image">
+            </div>
+        </div>
+    </div>
+
+    <div id="contact" class="container-fluid bg-2 text-center">
+        <h3>Drop Me a Line</h3>
+        <p>I am available for freelance. </p>
+        <br>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                @* https://github.com/formspree/formspree *@
+                @{
+                    string emailto;
+                    if (!string.IsNullOrEmpty(AppSettings.AppDevEmail) && AppSettings.AppDevEmail == "hewbertgabon@gmail.com")
+                    {
+                        emailto = "yuberto.gabon@gmx.us";
+                    }
+                    else
+                    {
+                        emailto = AppSettings.AppDevEmail;
+                    }
+                }
+                <form action="https://formspree.io/@emailto" method="post" id="contact-form">
+                    <input type="hidden" name="_subject" value="[@AppSettings.AppTitle] Contact Form" />
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="form-control">
+                    </div>
+                    <div class="form-group ">
+                        <label for="message">Your Message</label>
+                        <textarea name="message" id="message" class="form-control"></textarea>
+                    </div>
+                    <input type="text" name="_gotcha" style="display:none" />
+                    <button type="submit" id="submit-contact" class="btn btn-default">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+}
+
+
+
+@section Scripts
+{
+    <!-- form validation -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script>
+    <script>
+        $(document).ready(
+            function () {
+                var contactForm = $('#contact-form');
+
+                contactForm.bootstrapValidator({
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        name: {
+                            validators: {
+                                stringLength: { min: 2 },
+                                notEmpty: { message: 'Please supply your Name' }
+                            }
+                        },
+                        email: {
+                            validators: {
+                                notEmpty: { message: 'Please supply your Email Address' },
+                                emailAddress: { message: 'Please supply a valid email address' }
+                            }
+                        },
+                        message: {
+                            validators: {
+                                stringLength: {
+                                    min: 10,
+                                    max: 1000,
+                                    message: 'Please enter at least 10 characters and no more than 200'
+                                },
+                                notEmpty: { message: 'Please write us a Message.' }
+                            }
+                        }
+                    }
+                });
+
+                contactForm.on('success.form.bv', function (e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: contactForm.attr('action'),
+                        method: contactForm.attr('method'),
+                        data: contactForm.serialize(),
+                        dataType: 'json',
+                        beforeSend: function () {
+                            $('#submit-contact').attr('disabled', 'disabled');
+                            $("#submit-contact").val('Sending...');
+                        },
+                        success: function (data) {
+                            alert("Thank you for contacting me. I will get back to you soonest.");
+                            $("#contact").remove();
+                            $("html, body").animate({
+                                scrollTop: 0
+                            }, 600);
+                            return false;
+                        },
+                        error: function (err) {
+                            alert("Oops! Please try again. Make sure you have entered a valid email address.");
+                            $('#submit-contact').prop("disabled", false);
+                            $("#submit-contact").html('Send Message');
+                        }
+                    });
+                });
+
+            });
+
+    </script>
+
+}

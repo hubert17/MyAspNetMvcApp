@@ -21,6 +21,7 @@ x64/
 x86/
 bld/
 # [Bb]in/
+[Bb]in/MyAspNetMvcApp.dll.config
 [Oo]bj/
 [Ll]og/
 [Mm]edia/
