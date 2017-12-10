@@ -5,27 +5,31 @@
 }
 
 @section Head {
-<style>
-    .table-user-information > tbody > tr {
-        border-top: 1px solid rgb(221, 221, 221);
-    }
-    .table-user-information > tbody > tr:first-child {
-        border-top: 0;
-    }
-    .table-user-information > tbody > tr > td {
-        border-top: 0;
-    }
-    .table-user-information > tbody > tr > td:first-child {
-        min-width: 120px;
-    }
-    .table-user-information > tbody > tr > td:nth-child(2) {
-        color: #337ab7;
-    }
+    <style>
+        .table-user-information > tbody > tr {
+            border-top: 1px solid rgb(221, 221, 221);
+        }
 
-    .toppad {
-        margin-top: 20px;
-    }
-</style>
+            .table-user-information > tbody > tr:first-child {
+                border-top: 0;
+            }
+
+            .table-user-information > tbody > tr > td {
+                border-top: 0;
+            }
+
+                .table-user-information > tbody > tr > td:first-child {
+                    min-width: 120px;
+                }
+
+                .table-user-information > tbody > tr > td:nth-child(2) {
+                    color: #337ab7;
+                }
+
+        .toppad {
+            margin-top: 20px;
+        }
+    </style>
 
 
     <style>
@@ -33,9 +37,11 @@
             width: 100%;
             border: none;
         }
+
         .panel input[type=file] {
             width: 150px;
-        } 
+        }
+
         .radio-inline {
             padding-top: 0px !important;
         }
@@ -45,20 +51,24 @@
         div.img-delete {
             position: relative;
         }
-        div.img-delete:hover img {
-            opacity: 0.5;
-        }
-        div.img-delete:hover input {
-            display: block;
-        }
-        div.img-delete input {
-            position: absolute;
-            display: none;
-        }
-        div.img-delete input.delete {
-            top: 0;
-            left: 72%;
-        }
+
+            div.img-delete:hover img {
+                opacity: 0.5;
+            }
+
+            div.img-delete:hover input {
+                display: block;
+            }
+
+            div.img-delete input {
+                position: absolute;
+                display: none;
+            }
+
+                div.img-delete input.delete {
+                    top: 0;
+                    left: 72%;
+                }
     </style>
 }
 
@@ -70,7 +80,7 @@
 
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
 
-        <form action="@Url.Action("EditProfile", "Account", new { area = "Account" })" method="post"  enctype="multipart/form-data" class="form-horizontal" role="form">
+        <form action="@Url.Action("EditProfile", "Account", new { area = "Account" })" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
             @Html.AntiForgeryToken()
             <div class="panel panel-info">
                 <div class="panel-heading">
@@ -122,7 +132,7 @@
                                         <td>Mobile Number</td>
                                         <td>
                                             @Html.TextBoxFor(m => m.CountryCode, new { placeholder = "##", @style = "width:18%", title = "Country Code", maxlength = "3" })
-                                            @Html.TextBoxFor(m => m.PhoneNumber, new { placeholder ="##########", maxlength = "15", @style = "width:52%" })
+                                            @Html.TextBoxFor(m => m.PhoneNumber, new { placeholder = "##########", maxlength = "15", @style = "width:52%" })
                                         </td>
                                     </tr>
                                     <tr>
@@ -141,7 +151,7 @@
                                         <td>Gender</td>
                                         <td>
                                             <label class="radio-inline">
-                                                <input type="radio" name="@nameof(Model.Gender)" id="GMale" value="M" @(Model.Gender == "M" ? "Checked" : string.Empty) >Male
+                                                <input type="radio" name="@nameof(Model.Gender)" id="GMale" value="M" @(Model.Gender == "M" ? "Checked" : string.Empty)>Male
                                             </label>
                                             <label class="radio-inline">
                                                 <input type="radio" name="@nameof(Model.Gender)" id="GFemale" value="F" @(Model.Gender == "F" ? "Checked" : string.Empty)>Female
@@ -182,10 +192,9 @@
 
 
 @section Scripts {
-    <script>
     @{ Html.RenderPartial("~/Views/Shared/_ValidationScriptsPartial.cshtml"); }
     @{ Html.RenderPartial("~/Views/Shared/_SubmitAnimationScriptPartial.cshtml"); }
-
+    <script>
         $('input.delete').click(function () {
             $('#deletePic').val('true');
             $('.img-delete img').attr('src', '@Url.Content("~/Images/fb-noprofilepic.jpg")');

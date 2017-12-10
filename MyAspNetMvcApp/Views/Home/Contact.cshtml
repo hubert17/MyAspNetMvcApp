@@ -1,19 +1,135 @@
 ﻿@{
     ViewBag.Title = "Contact";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+@section Head
+{
+    <style>
+        .map {
+            min-width: 300px;
+            min-height: 300px;
+            width: 100%;
+            height: 100%;
+        }
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+        .header {
+            background-color: #F5F5F5;
+            color: #36A0FF;
+            height: 70px;
+            font-size: 27px;
+            padding: 10px;
+            padding-bottom: 0;
+        }
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+        input, select, textarea {
+            max-width: 100%;
+        }
+    </style>
+}
 
-@Html.DropDownList("Sample", MyAspNetMvcApp.Lookup.DropDownList("order_status"), new { @class = "form-control" })
+
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="well">
+                <form action="https://formspree.io/@AppSettings.AppDevEmail" method="post" id="contact-form" class="form-horizontal">
+                    <input type="hidden" name="_subject" value="[@AppSettings.AppTitle] Contact Form" />
+                    <fieldset>
+                        <legend class="text-center header">Contact Me</legend>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="name">
+                                    Name
+                                </label>
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <label for="email">
+                                    Email Address
+                                </label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">
+                                    Subject
+                                </label>
+                                <select name="subject" id="subject" class="form-control" required="required">
+                                    <option value="N/A" selected="">Choose One:</option>
+                                    <option value="General Inquiry">General inquiry</option>
+                                    <option value="Technical Help">Technical help</option>
+                                    <option value="Hiring">We want to hire you</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">
+                                    Message
+                                </label>
+                                <textarea name="message" id="message" class="form-control" rows="5" required="required"
+                                          placeholder="Message"></textarea>
+                            </div>
+                            <input type="text" name="_gotcha" style="display:none" />
+                            <input type="hidden" name="_next" value="@AppSettings.AppDomainName" />
+                            <div class="form-group text-right">
+                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <div class="panel panel-default">
+                    <div class="text-center header">My Office</div>
+                    <div class="panel-body text-center">
+                        <h4>Address</h4>
+                        <div>
+                            Marigold st., Carmen<br />
+                            Cagayan De Oro City, Philippines<br />
+                            +639999999999<br />
+                            @AppSettings.AppDevEmail<br />
+                        </div>
+                        <hr />
+                        <div id="map1" class="map">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts
+{
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBdGLnTy8c0StlHlprF1-PwOD97FcPu1ZE"></script>
+
+    <script type="text/javascript">
+    jQuery(function ($) {
+        function init_map1() {
+            var myLocation = new google.maps.LatLng(8.483252, 124.636509);
+            var mapOptions = {
+                center: myLocation,
+                zoom: 16
+            };
+            var marker = new google.maps.Marker({
+                position: myLocation,
+                title: "Property Location"
+            });
+            var map = new google.maps.Map(document.getElementById("map1"),
+                mapOptions);
+            marker.setMap(map);
+        }
+        init_map1();
+    });
+    </script>
+
+
+
+}
