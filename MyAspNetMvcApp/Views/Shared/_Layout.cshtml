@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    var bootstrapTheme = "slate"; // Set you website theme here. Choose from a variety of themes below.
+    if (string.IsNullOrEmpty(bootstrapTheme))
+    {
+        var themes = new List<string> { "default", "Cerulean", "Cosmo", "Cyborg", "Darkly", "Flatly", "Journal", "Lumen", "Paper", "Readable", "Sandstone", "Simplex", "Slate", "Spacelab", "Superhero", "United", "Yeti" };
+        var rand = new Random();
+        bootstrapTheme = themes.Skip(rand.Next(0, themes.Count)).Take(1).FirstOrDefault();
+    }
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -7,49 +17,63 @@
     <meta property="og:url" content="@MyAspNetMvcApp.AppSettings.AppDomainName" />
     <meta property="og:description" content="@MyAspNetMvcApp.AppSettings.AppDescription" />
     <title>@ViewBag.Title - @MyAspNetMvcApp.AppSettings.AppTitle</title>
-    
-@if(TempData[BSMessage.ALERT] != null)
-{
-    <script>
-        alert('@TempData[BSMessage.ALERT]')
-    </script>
-}
-@if(ViewData[BSMessage.ALERT] != null)
-{
-    <script>
-        alert('@ViewData[BSMessage.ALERT]')
-    </script>
-}
 
-@if (HttpContext.Current.Request.IsLocal)
-{
-    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
-    <link href="@Url.Content("~/Content/font-awesome.min.css")" rel="stylesheet">
-    <link href="@Url.Content("~/Content/bootstrap-dialog.css")" rel = "stylesheet" />
-    <link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel = "stylesheet" />
-    <link href="@Url.Content("~/Content/awesomplete.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
-    <script src="@Url.Content("~/Scripts/modernizr-2.8.3.js")"></script>
-}
-else
-{
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.4/css/bootstrap-dialog.min.css" rel="stylesheet" integrity="sha256-wstTM1F5dOf7cgnlRHIW3bmoRAAGh6jL7tMIvqTuFZE=" crossorigin="anonymous" />
-    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" integrity="sha256-yMjaV542P+q1RnH6XByCPDfUFhmOafWbeLPmqKh11zo=" crossorigin="anonymous" />
-    <link href="//cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.css" rel="stylesheet" integrity="sha256-TQcHzEz3/ZJ8MeAoO1SRE5sa5q68U57dwZO/tArtNqk=" crossorigin="anonymous" />
-    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" integrity="sha256-0rguYS0qgS6L4qVzANq4kjxPLtvnp5nn2nB5G1lWRv4=" crossorigin="anonymous"></script>
-}
+    @if (TempData[BSMessage.ALERT] != null)
+    {
+        <script>
+        alert('@TempData[BSMessage.ALERT]')
+        </script>
+    }
+    @if (ViewData[BSMessage.ALERT] != null)
+    {
+        <script>
+        alert('@ViewData[BSMessage.ALERT]')
+        </script>
+    }
+
+    @if (HttpContext.Current.Request.IsLocal)
+    {
+        if (string.IsNullOrEmpty(bootstrapTheme) || bootstrapTheme == "default")
+        {
+            <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+        }
+        else
+        {
+            <link href="@Url.Content("~/Content/bootstrap-theme/" + bootstrapTheme.ToLower() + ".css")" rel="stylesheet">
+        }
+        <link href="@Url.Content("~/Content/font-awesome.min.css")" rel="stylesheet">
+        <link href="@Url.Content("~/Content/bootstrap-dialog.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/awesomplete.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
+        <script src="@Url.Content("~/Scripts/modernizr-2.8.3.js")"></script>
+    }
+    else
+    {
+        if (string.IsNullOrEmpty(bootstrapTheme) || bootstrapTheme == "default")
+        {
+            <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        }
+        else
+        {
+            <link href="https://bootswatch.com/3/@bootstrapTheme.ToLower()/bootstrap.min.css" rel="stylesheet">
+        }
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.4/css/bootstrap-dialog.min.css" rel="stylesheet" integrity="sha256-wstTM1F5dOf7cgnlRHIW3bmoRAAGh6jL7tMIvqTuFZE=" crossorigin="anonymous" />
+        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" integrity="sha256-yMjaV542P+q1RnH6XByCPDfUFhmOafWbeLPmqKh11zo=" crossorigin="anonymous" />
+        <link href="//cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.css" rel="stylesheet" integrity="sha256-TQcHzEz3/ZJ8MeAoO1SRE5sa5q68U57dwZO/tArtNqk=" crossorigin="anonymous" />
+        <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" integrity="sha256-0rguYS0qgS6L4qVzANq4kjxPLtvnp5nn2nB5G1lWRv4=" crossorigin="anonymous"></script>
+    }
 
     @{ Html.RenderPartial("_InternalLayoutCSS"); }
 
     @RenderSection("Head", required: false)
 
-@if (!HttpContext.Current.Request.IsLocal)
-{
-    Html.RenderPartial("_GoogleAnalytics");
-}
+    @if (!HttpContext.Current.Request.IsLocal)
+    {
+        Html.RenderPartial("_GoogleAnalytics");
+    }
 
 </head>
 
@@ -133,7 +157,7 @@ else
     </div>
 
     <footer id="footer" class="footer text-center navbar-inverse hidden-print">
-        <small class="text-muted">&copy; @DateTime.Now.Year - <a href="mailto:@MyAspNetMvcApp.AppSettings.AppDevEmail" class="text-muted">@MyAspNetMvcApp.AppSettings.AppDeveloper</a></small>
+        <small class="navbar-text">&copy; @DateTime.Now.Year - <a href="mailto:@MyAspNetMvcApp.AppSettings.AppDevEmail" class="navbar-text">@MyAspNetMvcApp.AppSettings.AppDeveloper</a></small>
     </footer>
 
 

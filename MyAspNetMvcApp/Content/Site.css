@@ -45,6 +45,17 @@ footer {
     /* Set the fixed height of the footer here */
     height: 20px;
 }
+#footer.footer .navbar-text {
+    float: none;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
+
+
 
 .navbar-nav > li > a.dropdown-notif {
     padding-right: 0;

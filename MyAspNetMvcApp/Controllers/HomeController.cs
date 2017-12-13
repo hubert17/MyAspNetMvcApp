@@ -22,14 +22,12 @@ namespace MyAspNetMvcApp.Controllers
 
         public ActionResult About()
         {
-            var ViewName = "AboutMe";
+            var ViewName = "AboutMe"; // or "About"
             return View(ViewName);
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
