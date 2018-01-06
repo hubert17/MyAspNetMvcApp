@@ -9,7 +9,7 @@ using MyAspNetMvcApp.Models.OrderApp;
 
 namespace MyAspNetMvcApp.Models
 {
-    // Uncomment this when using MySql Database
+    // Uncomment the line below when using MySql Database
     //[DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
