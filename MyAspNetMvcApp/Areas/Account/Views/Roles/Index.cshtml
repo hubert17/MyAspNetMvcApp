@@ -148,7 +148,7 @@
                                                 @Html.ValidationSummary(true)
                                                 <input type="hidden" name="UserName" class="user-name" value="@user.UserName" />
                                                 <input type="hidden" name="RoleName" class="role-name" value="@roles" />
-                                                @if (user.UserName == System.Configuration.ConfigurationManager.AppSettings["AdminUsername"])
+                                                @if (user.UserName == System.Configuration.ConfigurationManager.AppSettings["AdminUsername"] && roles == System.Configuration.ConfigurationManager.AppSettings["AdminRolename"])
                                                 {
                                                     @roles <button type="button" class="btn btn-danger btn-xs disabled" disabled><span class="glyphicon glyphicon-remove"></span></button>
                                                 }

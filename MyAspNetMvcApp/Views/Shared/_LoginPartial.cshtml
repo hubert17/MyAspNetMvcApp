@@ -1,9 +1,25 @@
 ﻿@using Microsoft.AspNet.Identity
+
+@helper DisplayCart()
+{
+        @*@if(Request.ApplicationPath.ToLower().Contains("/store"))*@
+        var currentArea = ViewContext.RouteData.DataTokens["area"];
+        if (currentArea != null && currentArea.ToString() == "OrderFramework")
+        {
+            <li class="active">@{Html.RenderAction("CartSummary", "ShoppingCart", new { area = "OrderFramework" });}</li>
+        }
+        else
+        {
+            <li><a href="/store"><span class="hidden-sm">Store </span><span class="fa fa-shopping-cart hidden visible-sm"></span></a></li>
+        }
+}
+
 @if (Request.IsAuthenticated)
 {
     <form action="@Url.Action("LogOff", "Account", new { Area = "Account" })" method="post" id="logoutForm" class="navbar-right">
         @Html.AntiForgeryToken()
         <ul class="nav navbar-nav navbar-right">
+            @DisplayCart()
             @Html.Partial("_NotificationMenu")
             @if (Request.IsAuthenticated && (User.IsInRole(System.Configuration.ConfigurationManager.AppSettings["AdminRolename"])))
             {
@@ -27,6 +43,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
+        @DisplayCart()
         @if (AppSettings.FacebookLoginEnabled)
         {
             <li class="dropdown">

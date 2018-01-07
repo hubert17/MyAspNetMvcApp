@@ -116,8 +116,8 @@
     <Reference Include="Plivo, Version=2.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Plivo.3.0.7\lib\net40\Plivo.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=100.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharpSigned.105.2.3\lib\net452\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=106.2.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.2.0\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
@@ -126,11 +126,17 @@
       <HintPath>..\packages\SimpleExcelImport.0.0.1.5\lib\net35\SimpleExcelImport.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -187,6 +193,15 @@
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
+    <Reference Include="X.PagedList, Version=7.2.0.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.7.2.0\lib\netstandard1.2\X.PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="X.PagedList.Mvc, Version=7.2.0.0, Culture=neutral, PublicKeyToken=c6e0b5b21f916f4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.Mvc.7.2.0\lib\net452\X.PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="X.PagedList.Mvc.Common, Version=7.2.0.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.Mvc.7.2.0\lib\net452\X.PagedList.Mvc.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
@@ -239,12 +254,30 @@
     <Compile Include="Areas\Examples\ViewModels\StudentExcelViewModel.cs" />
     <Compile Include="Areas\Geocities\Controllers\GeocitiesController.cs" />
     <Compile Include="Areas\Geocities\GeocitiesAreaRegistration.cs" />
+    <Compile Include="Areas\OrderFramework\Configuration\AppConfigurations.cs" />
+    <Compile Include="Areas\OrderFramework\Configuration\IConfiguration.cs" />
+    <Compile Include="Areas\OrderFramework\Controllers\AnalyticsController.cs" />
+    <Compile Include="Areas\OrderFramework\Controllers\CategoriesController.cs" />
+    <Compile Include="Areas\OrderFramework\Controllers\CheckoutController.cs" />
+    <Compile Include="Areas\OrderFramework\Controllers\ItemsController.cs" />
+    <Compile Include="Areas\OrderFramework\Controllers\OrdersController.cs" />
+    <Compile Include="Areas\OrderFramework\Controllers\ShoppingCartController.cs" />
+    <Compile Include="Areas\OrderFramework\Models\Cart.cs" />
+    <Compile Include="Areas\OrderFramework\Models\Category.cs" />
+    <Compile Include="Areas\OrderFramework\Models\Customer.cs" />
+    <Compile Include="Areas\OrderFramework\Models\Item.cs" />
+    <Compile Include="Areas\OrderFramework\Models\Order.cs" />
+    <Compile Include="Areas\OrderFramework\Models\OrderDetail.cs" />
+    <Compile Include="Areas\OrderFramework\OrderFrameworkAreaRegistration.cs" />
+    <Compile Include="Areas\OrderFramework\ViewModels\AnalyticsViewModel.cs" />
+    <Compile Include="Areas\OrderFramework\ViewModels\OrderDateGroup.cs" />
+    <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCart.cs" />
+    <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCartRemoveViewModel.cs" />
+    <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCartViewModel.cs" />
     <Compile Include="Areas\Poordooytify\Controllers\PoordooytifyController.cs" />
     <Compile Include="Areas\Poordooytify\PoordooytifyAreaRegistration.cs" />
-    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Account\Controllers\RolesController.cs" />
-    <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -260,11 +293,6 @@
     <Compile Include="Areas\Account\Models\UserProfile.cs" />
     <Compile Include="Areas\Account\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Faculty.cs" />
-    <Compile Include="Models\OrderApp\Category.cs" />
-    <Compile Include="Models\OrderApp\Customer.cs" />
-    <Compile Include="Models\OrderApp\Order.cs" />
-    <Compile Include="Models\OrderApp\OrderItem.cs" />
-    <Compile Include="Models\OrderApp\Product.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\_ApplicationDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -385,6 +413,7 @@
     <Content Include="Content\geo-bs-swatch\test-full.html" />
     <Content Include="Content\geo-bs-swatch\test.html" />
     <Content Include="Content\intlTelInput.css" />
+    <Content Include="Content\order-framework\card.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -434,6 +463,15 @@
     <Content Include="Areas\App\Views\Examples\Index.cshtml" />
     <Content Include="Areas\Account\Views\Roles\_DeleteRole.cshtml" />
     <Content Include="Areas\Account\Views\Account\BulkImportExcelTemplate.xls" />
+    <Content Include="Areas\OrderFramework\Views\web.config" />
+    <Content Include="Areas\OrderFramework\Views\ShoppingCart\CartSummary.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\ShoppingCart\Index.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Items\Create.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Items\Delete.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Items\Details.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Items\Edit.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Items\Index.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
@@ -473,6 +511,9 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\order-framework\card.js" />
+    <Content Include="Scripts\order-framework\d3.min.js" />
+    <Content Include="Scripts\order-framework\d3pie.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -510,12 +551,6 @@
     <Content Include="Views\Shared\_GoogleAnalytics.cshtml" />
     <Content Include="Views\Shared\_PdfLayout.cshtml" />
     <Content Include="Views\Shared\_Register.cshtml" />
-    <Content Include="Views\Cart\Index.cshtml" />
-    <Content Include="Views\Products\Create.cshtml" />
-    <Content Include="Views\Products\Delete.cshtml" />
-    <Content Include="Views\Products\Details.cshtml" />
-    <Content Include="Views\Products\Edit.cshtml" />
-    <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Shared\_InternalLayoutCSS.cshtml" />
     <Content Include="Views\Shared\_NotificationMenu.cshtml" />
     <Content Include="Views\Home\AboutMe.cshtml" />
@@ -529,6 +564,7 @@
     <Folder Include="Areas\Examples\Views\Shared\" />
     <Folder Include="Areas\Geocities\Models\" />
     <Folder Include="Areas\Geocities\Views\Shared\" />
+    <Folder Include="Areas\OrderFramework\Views\Shared\" />
     <Folder Include="Areas\Poordooytify\Models\" />
     <Folder Include="Areas\Poordooytify\Views\Shared\" />
     <Folder Include="img\" />

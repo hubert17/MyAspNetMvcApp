@@ -5,7 +5,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MyAspNetMvcApp.Areas.Account.Models;
 using MyAspNetMvcApp.Areas.App.Models;
-using MyAspNetMvcApp.Models.OrderApp;
 
 namespace MyAspNetMvcApp.Areas.BernardGabonDotCom.Models
 {

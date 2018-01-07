@@ -1,5 +1,15 @@
 ﻿@{ 
-    var bootstrapTheme = "slate"; // Set you website theme here. Choose from a variety of themes below.
+    string bootstrapTheme;
+    var currentArea = ViewContext.RouteData.DataTokens["area"];
+    if (currentArea != null && currentArea.ToString() == "OrderFramework")
+    {
+        bootstrapTheme = "spacelab"; // Theme for the Online Store
+    }
+    else
+    {
+        bootstrapTheme = "slate"; // Set you website theme here. Choose from a variety of themes below.
+    }
+
     if (string.IsNullOrEmpty(bootstrapTheme))
     {
         var themes = new List<string> { "default", "Cerulean", "Cosmo", "Cyborg", "Darkly", "Flatly", "Journal", "Lumen", "Paper", "Readable", "Sandstone", "Simplex", "Slate", "Spacelab", "Superhero", "United", "Yeti" };
@@ -21,7 +31,7 @@
     @if (TempData[BSMessage.ALERT] != null)
     {
         <script>
-        alert('@TempData[BSMessage.ALERT]')
+            alert('@TempData[BSMessage.ALERT]')
         </script>
     }
     @if (ViewData[BSMessage.ALERT] != null)
@@ -105,15 +115,17 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" id="myaspnetmvcapp-menu">
-                    <li><a href="/home/index">Home</a></li>
-                    <li><a href="/home/about">About</a></li>
-                    <li><a href="/home/contact">Contact</a></li>
+                    <li class="hidden-sm"><a href="/home/index">Home</a></li>
+                    <li><a href="/home/about"><span class="hidden-sm">About </span><span class="fa fa-info-circle hidden visible-sm"></span></a></li>
+                    <li><a href="/home/contact"><span class="hidden-sm">Contact </span><span class="fa fa-address-card hidden visible-sm"></span></a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pages<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="hidden-sm">Pages </span><span class="fa fa-external-link hidden visible-sm"></span><span class="caret hidden-sm"></span>
+                        </a>
                         <ul class="dropdown-menu">
-                            <li role="separator" class="divider"></li>
                             <li><a href="https://youtubek.azurewebsites.net" target="_blank">Youtube-K</a></li>
                             <li><a href="https://poordooytify.azurewebsites.net" target="_blank">Poordooytify</a></li>
+                            <li role="separator" class="divider"></li>
                             <li class="dropdown-header">Facebook</li>
                             <li><a href="https://www.facebook.com/groups/aspnetmvcgabs/" target="_blank">ASP.NET MVC Developers Group</a></li>
                             <li><a href="https://www.facebook.com/hubert17academy/">Hubert17 Academy</a></li>

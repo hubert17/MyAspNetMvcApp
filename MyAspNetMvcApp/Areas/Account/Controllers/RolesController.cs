@@ -175,7 +175,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteRoleForUser(string UserName, string RoleName)
         {
-            if(System.Configuration.ConfigurationManager.AppSettings["AdminUsername"] == UserName)
+            if(System.Configuration.ConfigurationManager.AppSettings["AdminUsername"] == UserName && RoleName == System.Configuration.ConfigurationManager.AppSettings["AdminRolename"])
             {
                 //TempData[BSMessage.DIALOGBOX] = "Invalid action.";
                 //return RedirectToAction("Index");

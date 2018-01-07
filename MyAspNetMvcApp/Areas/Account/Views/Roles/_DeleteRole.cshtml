@@ -3,7 +3,7 @@
         @Html.AntiForgeryToken()
         <input type="hidden" name="UserName" class="user-name" value="@ViewBag.username" />
         <input type="hidden" name="RoleName" class="role-name" value="@ViewBag.rolename" />
-        @if (ViewBag.username == System.Configuration.ConfigurationManager.AppSettings["AdminUsername"])
+        @if (ViewBag.username == System.Configuration.ConfigurationManager.AppSettings["AdminUsername"] && @ViewBag.rolename == System.Configuration.ConfigurationManager.AppSettings["AdminRolename"])
         {
             @ViewBag.rolename <button type="button" class="btn btn-danger btn-xs disabled" disabled><span class="glyphicon glyphicon-remove"></span></button>
         }
