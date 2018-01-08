@@ -42,7 +42,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 items = items.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper())
-                                       || s.Catagory.Name.ToUpper().Contains(searchString.ToUpper()));
+                                       || s.Category.Name.ToUpper().Contains(searchString.ToUpper()));
             }
             switch (sortOrder)
             {
@@ -85,7 +85,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         }
 
         // GET: Items/Create
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             ViewBag.CatagorieId = new SelectList(db.Categories, "ID", "Name");
@@ -95,7 +95,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         // POST: Items/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult> Create(Item item)
         {
             if (ModelState.IsValid)
@@ -110,7 +110,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         }
 
         // GET: Items/Edit/5
-         [Authorize(Roles = "Admin")]
+         [Authorize(Roles = "admin")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -129,7 +129,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         // POST: Items/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult> Edit(Item item)
         {
             if (ModelState.IsValid)
@@ -143,7 +143,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         }
 
         // GET: Items/Delete/5
-         [Authorize(Roles = "Admin")]
+         [Authorize(Roles = "admin")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -161,7 +161,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         // POST: Items/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Item item = await db.Items.FindAsync(id);

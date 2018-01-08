@@ -14,6 +14,6 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         public int ItemId { get; set; }
         public int Count { get; set; }
         public DateTime DateCreated { get; set; }
-        public virtual Item Item { get; set; }
+        public virtual Product Item { get; set; }
     }
 }

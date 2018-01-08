@@ -17,7 +17,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework
             context.MapRoute(
                 "OrderFramework_default",
                 "store/{controller}/{action}/{id}",
-                new { controller = "Items", action = "Index", id = UrlParameter.Optional }
+                new { controller = "Products", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

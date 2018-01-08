@@ -1,0 +1,52 @@
+﻿@model X.PagedList.IPagedList<MyAspNetMvcApp.Areas.OrderFramework.Models.Product>
+@using X.PagedList.Mvc;
+
+@using Gabs.Helpers
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="text-center">
+    <form action="/products/index">
+        <input type="text" name="keyword" />
+        <button type="submit">Search</button>
+    </form>
+</div>
+<p>
+
+</p>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <div class="thumbnail">
+                <a href="/store/products/details?id=@item.Id">
+                    <img src="@item.Picture.ToBase64StringHTMLImgJpgSrc()" />
+                </a>
+                <div class="caption">
+                    <h4 class="pull-right">@string.Format("{0:C}", item.UnitPrice)</h4>
+                    <h4>
+                        <a href="/store/products/details?id=@item.Id">@item.Name</a>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</div>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+

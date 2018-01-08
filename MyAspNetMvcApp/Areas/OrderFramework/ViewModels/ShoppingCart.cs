@@ -27,7 +27,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
             return GetCart(controller.HttpContext);
         }
 
-        public int AddToCart(Item item)
+        public int AddToCart(Product item)
         {
             // Get the matching cart and item instances
             var cartItem = storeDB.Carts.SingleOrDefault(
@@ -129,7 +129,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
             //decimal? total = (from cartItems in storeDB.Carts
             //                  where cartItems.CartId == ShoppingCartId
             //                  select (int?)cartItems.Count *
-            //                  cartItems.Item.Price).Sum();
+            //                  cartItems.Product.Price).Sum();
             //return total ?? decimal.Zero;
 
             var cartItems = storeDB.Carts.Where(x => x.CartId == ShoppingCartId);

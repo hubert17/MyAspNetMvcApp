@@ -16,7 +16,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         public int ItemId { get; set; }
         public int Quantity { get; set; }
         public double UnitPrice { get; set; }
-        public virtual Item Item { get; set; }
+        public virtual Product Item { get; set; }
         public virtual Order Order { get; set; }
     }
 }

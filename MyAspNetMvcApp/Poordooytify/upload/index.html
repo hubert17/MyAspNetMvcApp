@@ -1,24 +1,4 @@
-﻿
-@{
-    Layout = null;
-}
-<!DOCTYPE html>
-@{
-    var redirectUrl = "http://poordooytify.azurewebsites.net";
-    switch (ViewBag.Redirect as string)
-    {
-        case "upload":
-            redirectUrl = "http://poordooytify.azurewebsites.net/Songlib/Create";
-            break;
-        case "mood":
-            redirectUrl = "http://poordooytify.azurewebsites.net/mood";
-            break;
-        case "dropbox":
-            redirectUrl = "https://www.dropbox.com/referrals/AABPsojWd_9sDleX_K0kkdrCOKNAJct_VDQ?src=global9";
-            break;
-    }
-}
-<html>
+﻿<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -36,7 +16,7 @@
   ga('send', 'pageview');
 
     </script>
-    <meta http-equiv="refresh" content="0;URL='@redirectUrl'" />
+    <meta http-equiv="refresh" content="0;URL='http://poordooytify.azurewebsites.net/Songlib/Create'" />
 
     <style>
         * {

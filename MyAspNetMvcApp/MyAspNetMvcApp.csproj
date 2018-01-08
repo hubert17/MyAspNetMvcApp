@@ -261,6 +261,7 @@
     <Compile Include="Areas\OrderFramework\Controllers\CheckoutController.cs" />
     <Compile Include="Areas\OrderFramework\Controllers\ItemsController.cs" />
     <Compile Include="Areas\OrderFramework\Controllers\OrdersController.cs" />
+    <Compile Include="Areas\OrderFramework\Controllers\ProductsController.cs" />
     <Compile Include="Areas\OrderFramework\Controllers\ShoppingCartController.cs" />
     <Compile Include="Areas\OrderFramework\Models\Cart.cs" />
     <Compile Include="Areas\OrderFramework\Models\Category.cs" />
@@ -268,14 +269,13 @@
     <Compile Include="Areas\OrderFramework\Models\Item.cs" />
     <Compile Include="Areas\OrderFramework\Models\Order.cs" />
     <Compile Include="Areas\OrderFramework\Models\OrderDetail.cs" />
+    <Compile Include="Areas\OrderFramework\Models\Product.cs" />
     <Compile Include="Areas\OrderFramework\OrderFrameworkAreaRegistration.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\AnalyticsViewModel.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\OrderDateGroup.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCart.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCartRemoveViewModel.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCartViewModel.cs" />
-    <Compile Include="Areas\Poordooytify\Controllers\PoordooytifyController.cs" />
-    <Compile Include="Areas\Poordooytify\PoordooytifyAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Account\Controllers\RolesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -443,8 +443,6 @@
     <Content Include="Areas\Docs\Views\Docs\_template.cshtml" />
     <Content Include="Areas\App\Views\web.config" />
     <Content Include="Areas\App\Views\Lookup\Index.cshtml" />
-    <Content Include="Areas\Poordooytify\Views\web.config" />
-    <Content Include="Areas\Poordooytify\Views\Poordooytify\Index.cshtml" />
     <Content Include="Areas\Geocities\Views\web.config" />
     <Content Include="Content\geo-bs-swatch\pages.zip" />
     <Content Include="Areas\Geocities\Views\Geocities\Index.cshtml" />
@@ -466,12 +464,13 @@
     <Content Include="Areas\OrderFramework\Views\web.config" />
     <Content Include="Areas\OrderFramework\Views\ShoppingCart\CartSummary.cshtml" />
     <Content Include="Areas\OrderFramework\Views\ShoppingCart\Index.cshtml" />
-    <Content Include="Areas\OrderFramework\Views\Items\Create.cshtml" />
-    <Content Include="Areas\OrderFramework\Views\Items\Delete.cshtml" />
-    <Content Include="Areas\OrderFramework\Views\Items\Details.cshtml" />
-    <Content Include="Areas\OrderFramework\Views\Items\Edit.cshtml" />
-    <Content Include="Areas\OrderFramework\Views\Items\Index.cshtml" />
     <Content Include="Areas\OrderFramework\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Checkout\AddressAndPayment.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Checkout\Complete.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Products\Create.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Products\Details.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Products\Edit.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Products\Index.cshtml" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
@@ -564,9 +563,6 @@
     <Folder Include="Areas\Examples\Views\Shared\" />
     <Folder Include="Areas\Geocities\Models\" />
     <Folder Include="Areas\Geocities\Views\Shared\" />
-    <Folder Include="Areas\OrderFramework\Views\Shared\" />
-    <Folder Include="Areas\Poordooytify\Models\" />
-    <Folder Include="Areas\Poordooytify\Views\Shared\" />
     <Folder Include="img\" />
     <Folder Include="Media\" />
   </ItemGroup>
