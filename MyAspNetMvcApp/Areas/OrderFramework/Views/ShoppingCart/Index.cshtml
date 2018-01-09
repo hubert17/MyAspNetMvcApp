@@ -45,10 +45,8 @@
                                 @item.Count
                             </td>
                             <td>
-                                <a href="#" class="RemoveLink"
-                                   data-id="@item.ItemId">
-                                    Remove
-                                    from cart
+                                <a href="#" class="RemoveLink" data-id="@item.ItemId">
+                                    Remove from cart
                                 </a>
                             </td>
                         </tr>
@@ -89,8 +87,8 @@
                 // Get the id from the link
                 var recordToDelete = $(this).attr("data-id");
                 if (recordToDelete != '') {
-                    // Perform the ajax post
-                    $.post("/ShoppingCart/RemoveFromCart", { "id": recordToDelete },
+                    // Perform the ajax post                    
+                    $.post('@Url.Action("RemoveFromCart", "ShoppingCart", new { area = "OrderFramework" })', { "id": recordToDelete },
                         function (data) {
                             // Successful requests get here
                             // Update the page elements

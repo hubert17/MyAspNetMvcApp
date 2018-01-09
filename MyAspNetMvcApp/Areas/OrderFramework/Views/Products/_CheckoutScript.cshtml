@@ -1,0 +1,17 @@
+﻿<script type="text/javascript">
+        $(function () {
+            // Document.ready -> link up remove event handler
+            $(".AddLink").click(function () {
+                // Get the id from the link
+                var recordToAdd = $(this).attr("data-id");
+                if (recordToAdd != '') {
+                    // Perform the ajax post
+                    $.post('@Url.Action("AddToCart", "ShoppingCart", new { area = "OrderFramework" })', { "id": recordToAdd },
+                        function (data) {
+                            $('.cart-status').text(data.CartCount);
+                        });
+                }
+            });
+        });
+</script>
+

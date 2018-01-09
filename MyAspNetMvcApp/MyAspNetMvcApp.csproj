@@ -471,6 +471,8 @@
     <Content Include="Areas\OrderFramework\Views\Products\Details.cshtml" />
     <Content Include="Areas\OrderFramework\Views\Products\Edit.cshtml" />
     <Content Include="Areas\OrderFramework\Views\Products\Index.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Products\_CheckoutModal.cshtml" />
+    <Content Include="Areas\OrderFramework\Views\Products\_CheckoutScript.cshtml" />
     <None Include="Properties\PublishProfiles\bernardgabon - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\bernardgabon - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />

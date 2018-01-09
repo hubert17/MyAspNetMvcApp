@@ -8,45 +8,178 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+@section Head
+{
+    <style>
+        input, select, textarea {
+            max-width: none;
+        }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+        .carousel-holder {
+            margin-bottom: 20px;
+        }
 
-<div class="text-center">
-    <form action="/products/index">
-        <input type="text" name="keyword" />
-        <button type="submit">Search</button>
-    </form>
-</div>
-<p>
+        div.thumbnail > .ratings {
+            padding: 0 8px;
+        }
 
-</p>
+        .thumbnail > a img {
+            max-height: 200px;
+        }
+
+        .thumbnail {
+            border: 1px solid rgba(0, 0, 0, 0.00);
+            position: relative;
+        }
+
+            .thumbnail:hover {
+                border: 1px solid #dddddd;
+            }
+
+                .thumbnail:hover div.btn-addcart {
+                    visibility: visible;
+                }
+
+        div.btn-addcart {
+            visibility: hidden;
+            padding: 12px;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+
+        #btn-cartpadding {
+            height: 50px;
+        }
+    </style>
+}
 
 <div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-sm-4 col-lg-4 col-md-4">
-            <div class="thumbnail">
-                <a href="/store/products/details?id=@item.Id">
-                    <img src="@item.Picture.ToBase64StringHTMLImgJpgSrc()" />
-                </a>
-                <div class="caption">
-                    <h4 class="pull-right">@string.Format("{0:C}", item.UnitPrice)</h4>
-                    <h4>
-                        <a href="/store/products/details?id=@item.Id">@item.Name</a>
-                    </h4>
+    <div class="col-md-3">
+        <h2 class="lead">Gabs Sari-sari Store</h2>
+        <p>
+            <a href="@Url.Action("Create")" class="btn btn-success">Add New Product</a>
+        </p>
+        <div class="list-group">
+            <a href="#" class="list-group-item">Category 1</a>
+            <a href="#" class="list-group-item">Category 2</a>
+            <a href="#" class="list-group-item">Category 3</a>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-xs-8 col-xs-offset-2">
+                            <form action="@Url.Action("Index")">
+                                <div class="input-group">
+                                    <div class="input-group-btn search-panel">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <span id="search_concept">Search</span> <span class="caret hidden"></span>
+                                        </button>
+                                        <ul class="dropdown-menu hidden" role="menu">
+                                            <li><a href="#contains">Contains</a></li>
+                                            <li><a href="#its_equal">It's equal</a></li>
+                                            <li><a href="#greather_than">Greather than ></a></li>
+                                            <li><a href="#less_than">Less than < </a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#all">Anything</a></li>
+                                        </ul>
+                                    </div>
+                                    <input type="hidden" name="search_param" value="all" id="search_param">
+                                    <input type="text" class="form-control" name="SearchString" value="@(ViewBag.CurrentFilter as string)" autofocus>
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row carousel-holder">
+            <div class="col-md-12">
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                        </div>
+                        <div class="item">
+                            <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                        </div>
+                        <div class="item">
+                            <img class="slide-image" src="http://placehold.it/800x300" alt="">
+                        </div>
+                    </div>
+                    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
                 </div>
             </div>
         </div>
-    }
 
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-4 col-lg-4 col-md-4">
+                    <div class="thumbnail" data-mh="mh">
+                        <a href="/store/products/details?id=@item.Id">
+                            <img src="@item.Picture.ToBase64StringHTMLImgJpgSrc()" />
+                        </a>
+                        <div class="caption">
+                            <h4 class="pull-right">@string.Format("{0:C}", item.UnitPrice)</h4>
+                            <h4>
+                                <a href="@Url.Action("Details","Products", new { id = item.Id, area = "OrderFramework" })">@item.Name</a>
+                            </h4>
+                        </div>
+                        <div class="ratings">
+                            <p class="pull-right">15 reviews</p>
+                            <p>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                            </p>
+                        </div>
+                        <div id="btn-cartpadding"></div>
+                        <div class="btn-addcart">
+                            <a href="#" class="AddLink btn btn-block btn-warning" data-id="@item.Id" data-toggle="modal" data-target="#myModal">ADD TO CART</a>
+                        </div>
+                    </div>
+                </div>
+            }
 
+            <div class="col-md-12">
+                <br />
+                @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount*@
+                @Html.PagedListPager(Model, page => Url.Action("Index",
+                                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+            </div>
+        </div>
+    </div>
 </div>
 
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
+@{ Html.RenderPartial("_CheckoutModal"); }
+
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery.matchHeight-min.js")"></script>
+    @{ Html.RenderPartial("_CheckoutScript"); }
+}

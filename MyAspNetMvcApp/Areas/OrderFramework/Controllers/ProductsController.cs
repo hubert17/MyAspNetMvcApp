@@ -18,7 +18,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Products
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int pageSize = 3)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int pageSize = 6)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -94,7 +94,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             product.Picture = fileUpload.ToImageByteArray();
             db.Products.Add(product);
             db.SaveChanges();
-            return RedirectToAction("Index", "Products", new { area = "store" });
+            return RedirectToAction("Index", "Products", new { area = "OrderFramework" });
         }
 
 
@@ -133,7 +133,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
 
             db.SaveChanges();
 
-            return RedirectToAction("Index", "Products", new { area = "store" });
+            return RedirectToAction("Index", "Products", new { area = "OrderFramework" });
         }
 
         // GET: Products/Delete/5
@@ -159,7 +159,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             Product product = db.Products.Find(id);
             db.Products.Remove(product);
             db.SaveChanges();
-            return RedirectToAction("Index", "Products", new { area = "store" });
+            return RedirectToAction("Index", "Products", new { area = "OrderFramework" });
         }
 
         protected override void Dispose(bool disposing)
