@@ -270,6 +270,7 @@
     <Compile Include="Areas\OrderFramework\Models\Order.cs" />
     <Compile Include="Areas\OrderFramework\Models\OrderDetail.cs" />
     <Compile Include="Areas\OrderFramework\Models\Product.cs" />
+    <Compile Include="Areas\OrderFramework\Models\Review.cs" />
     <Compile Include="Areas\OrderFramework\OrderFrameworkAreaRegistration.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\AnalyticsViewModel.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\OrderDateGroup.cs" />

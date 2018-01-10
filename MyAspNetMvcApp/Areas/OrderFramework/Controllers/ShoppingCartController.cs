@@ -46,10 +46,11 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 Message = Server.HtmlEncode(addedItem.Name) +
                     " has been added to your shopping cart.",
-                CartTotal = cart.GetTotal(),
                 CartCount = cart.GetCount(),
-                ItemCount = count,
-                DeleteId = id
+                //DeleteId = id
+                //CartTotal = cart.GetTotal(),
+                //CartTotalFormatted = string.Format("{0:C}", cart.GetTotal()),
+                //ItemCount = count,
             };
             return Json(results);
 
@@ -79,10 +80,33 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
                 Message = "One (1) "+ Server.HtmlEncode(itemName) +
                     " has been removed from your shopping cart.",
                 CartTotal = cart.GetTotal(),
+                CartTotalFormatted = string.Format("{0:C}", cart.GetTotal()),
                 CartCount = cart.GetCount(),
                 ItemCount = itemCount,
                 DeleteId = id
             };
+            return Json(results);
+        }
+
+        // AJAX: /ShoppingCart/UpdateQtyFromCart/5
+        [HttpPost]
+        public ActionResult UpdateQtyFromCart(int id, int newQty)
+        {
+            // Remove the item from the cart
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+
+            // Get the name of the item to display confirmation
+
+            // Remove from cart
+            int itemCount = cart.UpdateQtyFromCart(id, newQty);
+
+            // Display the confirmation message
+            var results = new ShoppingCartRemoveViewModel
+            {
+                CartTotalFormatted = string.Format("{0:C}", cart.GetTotal()),
+                ItemCount = itemCount
+            };
+
             return Json(results);
         }
         //

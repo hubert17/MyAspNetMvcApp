@@ -5,22 +5,184 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+@section Head
+{
+    <style>
+        .hide-bullets {
+            list-style: none;
+            margin-left: -40px;
+            margin-top: 20px;
+        }
 
+        .thumbnail {
+            padding: 0;
+        }
 
-<div class="thumbnail">
-    <img class="img-responsive" src="@Model.Picture.ToBase64StringHTMLImgJpgSrc()" width="800" />
+        .carousel-inner > .item > img, .carousel-inner > .item > a > img {
+            width: 100%;
+        }
 
-    <div class="caption-full">
-        <h4 class="pull-right">@Model.UnitPrice</h4>
-        <h4>
-            <a href="#">@Model.Name</a>
-        </h4>
-        <a href="#" class="AddLink" data-id="@Model.Id" data-toggle="modal" data-target="#myModal">
-            Add to cart
-        </a>
+        #slider-thumbs {
+            height: 565px;
+            overflow-y: scroll;
+            white-space: nowrap;
+        }
+
+        #price-cart {
+            margin: 0 0 20px 40px;
+        }
+
+        #slider-thumbs {
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+        }
+        /*#carousel-bounding-box, #myCarousel, .carousel-inner, .carousel-inner > .item {
+            max-height: calc(100vh - 150px);
+        }*/
+
+        .carousel-inner img {
+            margin: auto;
+        }
+        .carousel-inner > .item > img {
+            height: calc(100vh - 250px);
+            width: auto;
+        }
+
+    </style>
+}
+
+<h2>Gabs Sari-sari Store</h2>
+
+<!-- Slider -->
+<div class="row">
+    <div class="col-sm-3 hidden-xs" id="slider-thumbs">
+        <!-- Bottom switcher of slider -->
+        <ul class="hide-bullets">
+            @for (int i = 0; i <= 12; i++)
+            {
+                <li class="col-sm-12">
+                    <a class="thumbnail" id="carousel-selector-@i"><img src="http://placehold.it/150x150&text=@i"></a>
+                </li>
+            }
+        </ul>
     </div>
+    <div class="col-sm-8">
+        <div class="col-xs-12" id="slider">
+            <!-- Top part of the slider -->
+            <div class="row">
+                <div class="col-sm-12" id="carousel-bounding-box">
+                    <div class="carousel slide" id="myCarousel">
+                        <!-- Carousel items -->
+                        <div class="carousel-inner">
+                            <div class="active item" data-slide-number="0">
+                                <img src="@Model.Picture.ToBase64StringHTMLImgJpgSrc()">
+                            </div>
+                            <div class="item" data-slide-number="1">
+                                <img src="https://www.bayanmall.com/image/cache/data/jojo,7,17,13/IMG_4129%20copy-700x700_0.jpg">
+                            </div>
+                            @for (int i = 2; i <= 12; i++)
+    {
+                        <div class="item" data-slide-number="@i">
+                            <img src="http://placehold.it/800x300&text=@i">
+                        </div>
+}
+                        </div>
+                        <!-- Carousel nav -->
+                        <a class="left carousel-control hidden visible-xs" href="#myCarousel" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control hidden visible-xs" href="#myCarousel" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <div class="caption-full">                    
+                    <h4>
+                        <a href="#">@Model.Name</a>
+                        <span class="pull-right">@string.Format("{0:C}", Model.UnitPrice)</span>
+                    </h4>
+                    <p class="pull-right text-right" id="price-cart">
+                        Before ₱ 2,250.00,<br />
+                        You save 15%<br />
+                        <a href="#" class="AddLink btn btn-warning" data-id="@Model.Id" data-toggle="modal" data-target="#myModal">
+                            ADD TO CART
+                        </a>
+                    </p>
+                    <p>
+                        Want to make these reviews work? Check out
+                        <strong>
+                            <a href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">this building a review system tutorial</a>
+                        </strong>over at maxoffsky.com!
+                    </p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                </div>
+                <div class="ratings hidden">
+                    <p class="pull-right">3 reviews</p>
+                    <p>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star-empty"></span>
+                        4.0 stars
+                    </p>
+                </div>
+            </div>
+            <div class="well hidden">
+                <div class="text-right">
+                    <a class="btn btn-success">Leave a Review</a>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star-empty"></span>
+                        Anonymous
+                        <span class="pull-right">10 days ago</span>
+                        <p>This product was great in terms of quality. I would definitely buy another!</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star-empty"></span>
+                        Anonymous
+                        <span class="pull-right">12 days ago</span>
+                        <p>I've alredy ordered another one!</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star-empty"></span>
+                        Anonymous
+                        <span class="pull-right">15 days ago</span>
+                        <p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--/Slider-->
 </div>
+
 
 
 @{ Html.RenderPartial("_CheckoutModal"); }
@@ -28,4 +190,30 @@
 
 @section Scripts {
     @{ Html.RenderPartial("_CheckoutScript"); }
+
+<script>
+        jQuery(document).ready(function($) {
+
+        $('#myCarousel').carousel({
+                interval: 0
+        });
+
+        //Handles the carousel thumbnails
+        $('[id^=carousel-selector-]').click(function () {
+        var id_selector = $(this).attr("id");
+        try {
+            var id = /-(\d+)$/.exec(id_selector)[1];
+            console.log(id_selector, id);
+            jQuery('#myCarousel').carousel(parseInt(id));
+        } catch (e) {
+            console.log('Regex failed!', e);
+        }
+    });
+        // When the carousel slides, auto update the text
+        $('#myCarousel').on('slid.bs.carousel', function (e) {
+                 var id = $('.item.active').data('slide-number');
+                $('#carousel-text').html($('#slide-content-'+id).html());
+        });
+});
+</script>
 }

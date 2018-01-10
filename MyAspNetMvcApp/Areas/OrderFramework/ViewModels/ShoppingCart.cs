@@ -60,14 +60,10 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
 
         public int RemoveFromCart(int id)
         {
-
-
             // Get the cart
-
             var cartItem = storeDB.Carts.Single(
                 cart => cart.CartId == ShoppingCartId
                 && cart.ItemId == id);
-
 
             int itemCount = 0;
 
@@ -86,6 +82,24 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
                 storeDB.SaveChanges();
             }
             return itemCount;
+        }
+
+        public int UpdateQtyFromCart(int id, int newQty)
+        {
+            // Get the cart
+            var cartItem = storeDB.Carts.Single(
+                cart => cart.CartId == ShoppingCartId
+                && cart.ItemId == id);
+
+            if (cartItem != null)
+            {
+                cartItem.Count = newQty;
+                storeDB.Entry(cartItem).State = System.Data.Entity.EntityState.Modified;
+                // Save changes
+                storeDB.SaveChanges();
+            }
+
+            return cartItem.Count;
         }
 
         public void EmptyCart()

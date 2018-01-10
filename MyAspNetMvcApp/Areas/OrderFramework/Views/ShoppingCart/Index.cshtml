@@ -3,6 +3,47 @@
     ViewBag.Title = "Shopping Cart";
 }
 
+@section Head {
+    <style>
+        input, select, textarea {
+            max-width: 60px;
+        }
+
+        .input-xs {
+            height: 22px !important;
+            padding: 2px 5px;
+            font-size: 12px;
+            line-height: 1.5;
+            border-radius: 3px;
+        }
+        .input-group-xs {
+            max-width: 100px;
+        } 
+        .input-group-xs > .form-control,
+        .input-group-xs > .input-group-addon,
+        .input-group-xs > .input-group-btn > .btn {
+            height: 20px;
+            padding: 1px 5px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .number-spinner {
+            display: none;
+        }
+        tr:hover .number-spinner {
+            display: table;
+        }
+        tr:hover .number-static {
+            display: none;
+        }
+        .td-qty {
+            width:110px;
+            text-align: center;
+        }
+    </style>
+}
+
 <h3>
     <em>Review</em> your cart:
 </h3>
@@ -26,7 +67,7 @@
                             <th>
                                 Price (each)
                             </th>
-                            <th>
+                            <th class="td-qty">
                                 Quantity
                             </th>
                             <th></th>
@@ -39,10 +80,23 @@
                                 @Html.ActionLink(item.Item.Name, "Details", "Store", new { id = item.Id }, null)
                             </td>
                             <td>
-                                @item.Item.UnitPrice
+                                @string.Format("{0:C}", item.Item.UnitPrice)
                             </td>
-                            <td id="item-count-@item.ItemId">
-                                @item.Count
+                            <td id="item-count-@item.ItemId" class="td-qty">
+                                <span class="number-static">@item.Count</span>
+                                <div class="input-group input-group-xs number-spinner">
+                                    <span class="input-group-btn data-dwn">
+                                        <button class="btn btn-info" data-dir="dwn" data-id="@item.ItemId">
+                                            <i class="glyphicon glyphicon-minus"></i>
+                                        </button>
+                                    </span>
+                                    <input type="text" class="form-control text-center" value="@item.Count" min="1" max="9999" readonly />
+                                    <span class="input-group-btn data-up">
+                                        <button class="btn btn-info" data-dir="up" data-id="@item.ItemId">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </button>
+                                    </span>
+                                </div>                            
                             </td>
                             <td>
                                 <a href="#" class="RemoveLink" data-id="@item.ItemId">
@@ -58,7 +112,7 @@
                         <td></td>
                         <td></td>
                         <td id="cart-total">
-                            @Model.CartTotal
+                            @string.Format("{0:C}", Model.CartTotal)
                         </td>
                     </tr>
                 </table>
@@ -72,7 +126,7 @@
     {
         <div>
             <p>
-                There are no items in your cart currently. Please shop for something and add items..
+                There are no items in your cart currently. Please <a href="@Url.Action("Index","Products",new { area = "OrderFramework" })">shop</a> for something and add items..
             </p>
         </div>
     }
@@ -80,30 +134,74 @@
 
 
 @section Scripts {
-    <script type="text/javascript">
+        <script type="text/javascript">
         $(function () {
             // Document.ready -> link up remove event handler
             $(".RemoveLink").click(function () {
                 // Get the id from the link
                 var recordToDelete = $(this).attr("data-id");
+                var thisRow = $(this).parent().parent();
                 if (recordToDelete != '') {
-                    // Perform the ajax post                    
+                    // Perform the ajax post
                     $.post('@Url.Action("RemoveFromCart", "ShoppingCart", new { area = "OrderFramework" })', { "id": recordToDelete },
                         function (data) {
                             // Successful requests get here
                             // Update the page elements
                             if (data.ItemCount == 0) {
-                                $('#row-' + data.DeleteId).fadeOut('slow');
+                                thisRow.fadeOut('slow');
                             } else {
-                                $('#item-count-' + data.DeleteId).text(data.ItemCount);
+                                thisRow.find('td.td-qty > span.number-static').text(data.ItemCount);
+                                thisRow.find('td.td-qty > .number-spinner > input').val(data.ItemCount);
                             }
-                            $('#cart-total').text(data.CartTotal);
+                            $('#cart-total').text(data.CartTotalFormatted);
                             $('#update-message').text(data.Message);
-                            $('.cart-status').text(data.CartCount);
+                            if (data.CartCount > 0) {
+                                $('.cart-status').text(data.CartCount);
+                            } else {
+                                location.reload();
+                            }
                         });
                 }
             });
         });
-    </script>
+
+        $(function () {
+            var action;
+            $(".number-spinner button").click(function () {
+                btn = $(this);
+                input = btn.closest('.number-spinner').find('input');
+                tdInput = input.parent().parent().find('span.number-static');
+                btn.closest('.number-spinner').find('button').prop("disabled", false);
+
+                var newQty = 0;
+                if (btn.attr('data-dir') == 'up') {
+                    if (input.attr('max') === undefined || parseInt(input.val()) < parseInt(input.attr('max'))) {
+                        newQty = parseInt(input.val()) + 1;
+                    } else {
+                        btn.prop("disabled", true);
+                    }
+                } else {
+                    if (input.attr('min') === undefined || parseInt(input.val()) > parseInt(input.attr('min'))) {
+                        newQty = parseInt(input.val()) - 1;
+                    } else {
+                        btn.prop("disabled", true);
+                    }
+                }
+
+                var recordToUpdateQty = btn.attr("data-id");
+                if (recordToUpdateQty != '' && newQty > 0) {
+                    // Perform the ajax post
+                    $.post('@Url.Action("UpdateQtyFromCart", "ShoppingCart", new { area = "OrderFramework" })', { "id": recordToUpdateQty, "newQty": newQty },
+                        function (data) {
+                            // Successful requests get here
+                            // Update the page elements
+                            input.val(data.ItemCount);
+                            tdInput.text(data.ItemCount);
+                            $('#cart-total').text(data.CartTotalFormatted);
+                        });
+                }
+            });
+        });
+        </script>
 
 }
