@@ -113,6 +113,9 @@
     <Reference Include="NPOI.OpenXmlFormats, Version=2.0.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.0.6\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="PayPal, Version=1.9.1.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
+    </Reference>
     <Reference Include="Plivo, Version=2.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Plivo.3.0.7\lib\net40\Plivo.dll</HintPath>
     </Reference>
@@ -259,14 +262,13 @@
     <Compile Include="Areas\OrderFramework\Controllers\AnalyticsController.cs" />
     <Compile Include="Areas\OrderFramework\Controllers\CategoriesController.cs" />
     <Compile Include="Areas\OrderFramework\Controllers\CheckoutController.cs" />
-    <Compile Include="Areas\OrderFramework\Controllers\ItemsController.cs" />
     <Compile Include="Areas\OrderFramework\Controllers\OrdersController.cs" />
+    <Compile Include="Areas\OrderFramework\Controllers\PaypalController.cs" />
     <Compile Include="Areas\OrderFramework\Controllers\ProductsController.cs" />
     <Compile Include="Areas\OrderFramework\Controllers\ShoppingCartController.cs" />
     <Compile Include="Areas\OrderFramework\Models\Cart.cs" />
     <Compile Include="Areas\OrderFramework\Models\Category.cs" />
     <Compile Include="Areas\OrderFramework\Models\Customer.cs" />
-    <Compile Include="Areas\OrderFramework\Models\Item.cs" />
     <Compile Include="Areas\OrderFramework\Models\Order.cs" />
     <Compile Include="Areas\OrderFramework\Models\OrderDetail.cs" />
     <Compile Include="Areas\OrderFramework\Models\Product.cs" />
@@ -274,8 +276,10 @@
     <Compile Include="Areas\OrderFramework\OrderFrameworkAreaRegistration.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\AnalyticsViewModel.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\OrderDateGroup.cs" />
+    <Compile Include="Areas\OrderFramework\ViewModels\OrderViewModel.cs" />
+    <Compile Include="Areas\OrderFramework\ViewModels\PaypalViewModel.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCart.cs" />
-    <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCartRemoveViewModel.cs" />
+    <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCartResponseViewModel.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCartViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Account\Controllers\RolesController.cs" />
@@ -566,6 +570,7 @@
     <Folder Include="Areas\Examples\Views\Shared\" />
     <Folder Include="Areas\Geocities\Models\" />
     <Folder Include="Areas\Geocities\Views\Shared\" />
+    <Folder Include="Areas\OrderFramework\Views\Paypal\" />
     <Folder Include="img\" />
     <Folder Include="Media\" />
   </ItemGroup>

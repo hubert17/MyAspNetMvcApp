@@ -130,26 +130,26 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Configuration
 
 
 
-        public List<string> CreditCardType
-        {
-            get
-            {
-                if ( (_creditCardtype != null) )
-                    return _creditCardtype;
-                else
-                {
+        //public List<string> CreditCardType
+        //{
+        //    get
+        //    {
+        //        if ( (_creditCardtype != null) )
+        //            return _creditCardtype;
+        //        else
+        //        {
 
-                    NameValueCollection appSettings =
-                       ConfigurationManager.AppSettings;
+        //            NameValueCollection appSettings =
+        //               ConfigurationManager.AppSettings;
 
-                    _creditCardtype = appSettings["AcceptedCreditCardTypes"].Split(',').ToList();
-                    return _creditCardtype;
-                }
-            }
-            set
-            {
-                _creditCardtype = value;
-            }
-        }
+        //            _creditCardtype = appSettings["AcceptedCreditCardTypes"].Split(',').ToList();
+        //            return _creditCardtype;
+        //        }
+        //    }
+        //    set
+        //    {
+        //        _creditCardtype = value;
+        //    }
+        //}
     }
 }

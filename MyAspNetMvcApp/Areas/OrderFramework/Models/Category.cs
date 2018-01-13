@@ -17,6 +17,6 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         [DisplayName("Catagory Name")]
         public string Name { get; set; }
 
-        public virtual ICollection<Item> Items { get; set; }
+        public virtual ICollection<Product> Items { get; set; }
     }
 }

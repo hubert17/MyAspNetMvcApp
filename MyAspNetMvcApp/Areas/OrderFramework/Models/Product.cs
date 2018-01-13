@@ -7,6 +7,7 @@ using System.Web;
 
 namespace MyAspNetMvcApp.Areas.OrderFramework.Models
 {
+    [Table("OF_Products")]
     public class Product
     {
         public int Id { get; set; }
@@ -20,7 +21,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
 
         //[Range(0.01, 999.99, ErrorMessage = "Price must be between 0.01 and 999.99")]
         [Required(ErrorMessage = "Price is required")]
-        public double UnitPrice { get; set; }
+        public decimal UnitPrice { get; set; }
 
         public string Unit { get; set; }
 

@@ -11,6 +11,6 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
     {
         [Key]
         public List<Cart> CartItems { get; set; }
-        public double CartTotal { get; set; }
+        public decimal CartTotal { get; set; }
     }
 }

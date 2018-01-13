@@ -91,9 +91,12 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Product product, HttpPostedFileBase fileUpload)
         {
-            product.Picture = fileUpload.ToImageByteArray();
-            db.Products.Add(product);
-            db.SaveChanges();
+            if(ModelState.IsValid)
+            {
+                product.Picture = fileUpload.ToImageByteArray();
+                db.Products.Add(product);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index", "Products", new { area = "OrderFramework" });
         }
 

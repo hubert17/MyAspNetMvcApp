@@ -1,14 +1,12 @@
-﻿using MyAspNetMvcApp.Areas.Account.Models;
+﻿using MyAspNetMvcApp.Areas.OrderFramework.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace MyAspNetMvcApp.Areas.OrderFramework.Models
+namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
 {
-    public class Customer
+    public class ShoppingOrderViewModel
     {
         public int Id { get; set; }
         public string UserName { get; set; }
@@ -21,7 +19,11 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         public string Phone { get; set; }
 
         public string CCNumber { get; set; }
-        public DateTime CCExpiry { get; set; }
         public string CCHolderName { get; set; }
+        public int CCExpiryMonth { get; set; }
+        public int CCExpiryYear { get; set; }
+        public int CCV { get; set; }
+
+        public ShoppingCartViewModel ShoppingCart { get; set; }
     }
 }

@@ -38,24 +38,14 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
 
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
+            cart.AddToCart(addedItem);
 
-            int count = cart.AddToCart(addedItem);
-
-            // Display the confirmation message
-            var results = new ShoppingCartRemoveViewModel
+            // Send response for updated cart data
+            var results = new ShoppingCartResponseViewModel
             {
-                Message = Server.HtmlEncode(addedItem.Name) +
-                    " has been added to your shopping cart.",
-                CartCount = cart.GetCount(),
-                //DeleteId = id
-                //CartTotal = cart.GetTotal(),
-                //CartTotalFormatted = string.Format("{0:C}", cart.GetTotal()),
-                //ItemCount = count,
+                CartCount = cart.GetCount()
             };
             return Json(results);
-
-            // Go back to the main store page for more shopping
-           // return RedirectToAction("Index");
         }
         //
         // AJAX: /ShoppingCart/RemoveFromCart/5
@@ -72,22 +62,21 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
                 .Single(item => item.Id == id).Name;
 
             // Remove from cart
-            int itemCount = cart.RemoveFromCart(id);
+            int itemQty = cart.RemoveFromCart(id);
 
-            // Display the confirmation message
-            var results = new ShoppingCartRemoveViewModel
+            // Send response for updated cart data
+            var results = new ShoppingCartResponseViewModel
             {
-                Message = "One (1) "+ Server.HtmlEncode(itemName) +
-                    " has been removed from your shopping cart.",
+                ItemName = itemName,
                 CartTotal = cart.GetTotal(),
                 CartTotalFormatted = string.Format("{0:C}", cart.GetTotal()),
                 CartCount = cart.GetCount(),
-                ItemCount = itemCount,
+                ItemQty = itemQty,
                 DeleteId = id
             };
             return Json(results);
         }
-
+        //
         // AJAX: /ShoppingCart/UpdateQtyFromCart/5
         [HttpPost]
         public ActionResult UpdateQtyFromCart(int id, int newQty)
@@ -98,13 +87,14 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             // Get the name of the item to display confirmation
 
             // Remove from cart
-            int itemCount = cart.UpdateQtyFromCart(id, newQty);
+            int itemQty = cart.UpdateQtyFromCart(id, newQty);
 
-            // Display the confirmation message
-            var results = new ShoppingCartRemoveViewModel
+            // Send response for updated cart data
+            var results = new ShoppingCartResponseViewModel
             {
+                CartTotal = cart.GetTotal(),
                 CartTotalFormatted = string.Format("{0:C}", cart.GetTotal()),
-                ItemCount = itemCount
+                ItemQty = itemQty
             };
 
             return Json(results);

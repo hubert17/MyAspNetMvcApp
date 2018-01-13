@@ -18,7 +18,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Configuration
 
         String FromEmail { get; set; }
 
-        List<String> CreditCardType { get; set; }
+        //List<String> CreditCardType { get; set; }
 
     }
 }

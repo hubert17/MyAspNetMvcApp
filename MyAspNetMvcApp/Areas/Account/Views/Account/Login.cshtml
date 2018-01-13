@@ -85,6 +85,16 @@
                             </div>
                         </div>
 
+                        @if(ViewBag.AllowGuest == true)
+                        {
+                             <div style="margin-top:10px" class="form-group">
+                                <!-- Button -->
+                                <div class="col-sm-12 controls">
+                                    <a href="#" class="btn btn-primary">Sign in as Guest</a>
+                                </div>
+                            </div>
+                        }
+
                     </form>
 
                 </div>

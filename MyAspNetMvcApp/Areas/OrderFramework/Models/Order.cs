@@ -21,7 +21,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         public DateTime OrderStatus { get; set; }
 
         [ScaffoldColumn(false)]
-        public double OrderTotal { get; set; }
+        public decimal OrderTotal { get; set; }
 
         public List<OrderDetail> OrderDetails { get; set; }
 
