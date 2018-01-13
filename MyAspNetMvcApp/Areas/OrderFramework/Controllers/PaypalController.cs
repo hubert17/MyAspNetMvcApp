@@ -1,4 +1,5 @@
-﻿using MyAspNetMvcApp.Areas.OrderFramework.ViewModels;
+﻿using MyAspNetMvcApp.Areas.OrderFramework.Paypal;
+using MyAspNetMvcApp.Areas.OrderFramework.ViewModels;
 using PayPal.Api;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,14 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
 {
     public class PaypalController : Controller
     {
-        public ActionResult PaymentWithCreditCard()
+        public ActionResult GetPaypalVault(string CreditCardId)
+        {
+            var vault = PaypalVault.GetCreditCardDetailsFromVault(CreditCardId);
+            return Json(vault, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult PaymentWithCreditCard(string CreditCardId = "")
         {
             var pvm = PaypalViewModel.GetSamplePayment("yuberto.gabon@outlook.com");
 
@@ -59,7 +67,15 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             var payer = new Payer()
             {
                 payment_method = "credit_card",
-                funding_instruments = new List<FundingInstrument>()
+                payer_info = new PayerInfo
+                {
+                    email = pvm.Payer.PayerInfo.Email
+                }
+            };
+
+            if(String.IsNullOrEmpty(CreditCardId))
+            {
+                payer.funding_instruments = new List<FundingInstrument>()
                 {
                     new FundingInstrument()
                     {
@@ -82,12 +98,26 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
                             type = pvm.Payer.FundingInstrument.CreditCard.CcType
                         }
                     }
-                },
-                payer_info = new PayerInfo
+                };
+
+                CreditCardId = PaypalVault.StoreCreditCardInPaypal(pvm.Payer.FundingInstrument.CreditCard);
+            }
+            else
+            {
+                //Here, we are assigning the User's Credit Card ID which we saved in Database
+                payer.funding_instruments = new List<FundingInstrument>()
                 {
-                    email = pvm.Payer.PayerInfo.Email
-                }
-            };
+                    new FundingInstrument()
+                    {
+                        credit_card_token = new CreditCardToken
+                        {
+                            credit_card_id = CreditCardId
+                        }
+                    }
+                };
+
+            }
+
 
             // A Payment resource; create one using the above types and intent as `sale` or `authorize`
             var payment = new PayPal.Api.Payment()
@@ -116,7 +146,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
                 return Content("Failed");
             }
 
-            return Content("Success");
+            return Content("Success Id: " + CreditCardId);
 
             // For more information, please visit [PayPal Developer REST API Reference](https://developer.paypal.com/docs/api/).
         }
@@ -190,7 +220,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
 
                     if (executedPayment.state.ToLower() != "approved")
                     {
-                        return View("FailureView");
+                        return Content("Failed");
                     }
                 }
             }
@@ -278,46 +308,6 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
 
         }
 
-        // https://www.codeproject.com/Tips/886187/PayPal-REST-API-Recurring-Payment-via-Stored-Credi
-        // https://code.tutsplus.com/articles/paypal-integration-part-2-paypal-rest-api--cms-22917
-        private bool StoreCreditCardInPaypal(PaypalViewModel._Payer._FundingInstrument._CreditCard ccmodel)
-        {
-            //Creating the CreditCard Object and assigning values
-            CreditCard credtCard = new CreditCard
-            {
-                expire_month = ccmodel.ExpireMonth,
-                expire_year = ccmodel.ExpireYear,
-                number = ccmodel.CcNumber,
-                type = ccmodel.CcType,
-                cvv2 = ccmodel.Cvv2
-            };
-
-            try
-            {
-                //Getting the API Context to authenticate the call to Paypal Server
-                APIContext apiContext = PayPalConfig.GetAPIContext();
-                // Storing the Credit Card Info in the PayPal Vault Server
-                CreditCard createdCreditCard = credtCard.Create(apiContext);
-
-                //Saving the User's Credit Card ID returned by the PayPal
-                //You can use this ID for future payments via User's Credit Card
-                //SaveCardID(User.Identity.Name, createdCreditCard.id);
-
-            }
-            catch (PayPal.PayPalException ex)
-            {
-                //Logger.LogError("Error: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                //Logger.LogError("Error: " + ex.Message);
-            }
-
-            return true;
-        }
-
-
         /// <summary>
         /// Gets a random invoice number to be used with a sample request that requires an invoice number.
         /// </summary>
@@ -329,6 +319,10 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         #endregion
     }
 
+}
+
+namespace MyAspNetMvcApp.Areas.OrderFramework.Paypal
+{
     public static class PayPalConfig
     {
         public readonly static string ClientId;
@@ -381,6 +375,93 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             return apiContext;
         }
 
+    }
+
+    public static class PaypalVault
+    {
+        // https://www.codeproject.com/Tips/886187/PayPal-REST-API-Recurring-Payment-via-Stored-Credi
+        // https://code.tutsplus.com/articles/paypal-integration-part-2-paypal-rest-api--cms-22917
+
+        public static string StoreCreditCardInPaypal(PaypalViewModel._Payer._FundingInstrument._CreditCard cc)
+        {
+            //Creating the CreditCard Object and assigning values
+            var creditCard = new CreditCard
+            {
+                expire_month = cc.ExpireMonth,
+                expire_year = cc.ExpireYear,
+                number = cc.CcNumber,
+                type = cc.CcType,
+                cvv2 = cc.Cvv2
+            };
+
+            try
+            {
+                //Getting the API Context to authenticate the call to Paypal Server
+                APIContext apiContext = PayPalConfig.GetAPIContext();
+                // Storing the Credit Card Info in the PayPal Vault Server
+                CreditCard createdCreditCard = creditCard.Create(apiContext);
+
+                //Saving the User's Credit Card ID returned by the PayPal
+                //You can use this ID for future payments via User's Credit Card
+                //SaveCardID(User.Identity.Name, createdCreditCard.id);
+
+                return createdCreditCard.id;
+
+            }
+            catch (PayPal.PayPalException ex)
+            {
+                //Logger.LogError("Error: " + ex.Message);
+                return ex.Message;
+            }
+            catch (Exception ex)
+            {
+                //Logger.LogError("Error: " + ex.Message);
+                return ex.Message;
+            }
+
+        }
+
+        public static CreditCard GetCreditCardDetailsFromVault(string creditCardId)
+        {
+            try
+            {
+                //Getting the API Context to authenticate the call
+                APIContext apiContext = PayPalConfig.GetAPIContext();
+
+                //Getting the Credit Card Details from paypal
+                //By sending the Card ID saved at our end
+                CreditCard card = CreditCard.Get(apiContext, creditCardId); // "CARD-00N04036H5458422MKRIAWHY"
+                return card;
+            }
+            catch (PayPal.PayPalException ex)
+            {
+                //Logger.LogError("Error: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public static bool DeleteCreditCardFromVault(string creditCardId)
+        {
+            try
+            {
+                // Getting the API Context for authentication the call to paypal server
+                APIContext apiContext = PayPalConfig.GetAPIContext();
+
+                //get the credit card from the vault to delete
+                CreditCard card = CreditCard.Get(apiContext, creditCardId); // "CARD-00N04036H5458422MKRIAWHY"
+
+                // Delete the credit card
+                card.Delete(apiContext);
+
+                return true;
+            }
+            catch (PayPal.PayPalException ex)
+            {
+                //Logger.LogError("Error: " + ex.Message);
+                return false;
+            }
+        }
     }
 
 }

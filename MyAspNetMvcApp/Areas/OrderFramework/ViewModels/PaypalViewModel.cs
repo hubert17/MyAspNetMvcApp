@@ -23,6 +23,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
             public class _FundingInstrument
             {
                 public _CreditCard CreditCard { get; set; }
+                public _CreditCardToken CreditCardToken { get; set; }
                 public class _CreditCard
                 {
                     public string FirstName { get; set; }
@@ -42,6 +43,10 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
                         public string PostalCode { get; set; }
                         public string State { get; set; }
                     }
+                }
+                public class _CreditCardToken
+                {
+                    public string CreditCardId { get; set; }
                 }
             }
 
@@ -89,7 +94,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
 
         public static PaypalViewModel GetSamplePayment(string buyerEmail = "")
         {
-            var pvm = new PaypalViewModel()
+            var pvm = new PaypalViewModel
             {
                 Payer = new _Payer
                 {
