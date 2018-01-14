@@ -51,7 +51,7 @@
         }
 
             .intl-tel-input .flag-container {
-                z-index: 4;
+                z-index: 20;
             }
 
         .input-group .intl-tel-input .form-control {
@@ -65,159 +65,447 @@
             width: 768px;
         }
     </style>
+
+    <style>
+
+        @@media(max-width:767px) {
+            div.bhoechie-tab-container {
+                margin-left: 0;
+            }
+
+            div.bhoechie-tab-content {
+                padding-left: 0;
+                padding-top: 0;
+            }
+
+            .bhoechie-tab {
+                padding-left: 0;
+                padding-right: 0;
+                margin: 0;
+            }
+        }
+
+        @@media(min-width:768px) {
+            div.bhoechie-tab-container {
+                margin-left: 40px;
+            }
+
+            div.bhoechie-tab-content {
+                background-color: #ffffff;
+                /* border: 1px solid #eeeeee; */
+                padding-left: 20px;
+                padding-top: 10px;
+            }
+        }
+
+        /*  bhoechie tab */
+        div.bhoechie-tab-container {
+            z-index: 0;
+            background-color: #ffffff;
+            padding: 0 !important;
+            border-radius: 4px;
+            -moz-border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+            box-shadow: 0 6px 12px rgba(0,0,0,.175);
+            -moz-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+            background-clip: padding-box;
+            opacity: 0.97;
+            filter: alpha(opacity=97);
+        }
+
+        div.bhoechie-tab-menu {
+            padding-right: 0;
+            padding-left: 0;
+            padding-bottom: 0;
+        }
+
+            div.bhoechie-tab-menu div.list-group {
+                margin-bottom: 0;
+            }
+
+                div.bhoechie-tab-menu div.list-group > a {
+                    margin-bottom: 0;
+                }
+
+                    div.bhoechie-tab-menu div.list-group > a .glyphicon,
+                    div.bhoechie-tab-menu div.list-group > a .fa {
+                        color: #446e9b;
+                    }
+
+                    div.bhoechie-tab-menu div.list-group > a:first-child {
+                        border-top-right-radius: 0;
+                        -moz-border-top-right-radius: 0;
+                    }
+
+                    div.bhoechie-tab-menu div.list-group > a:last-child {
+                        border-bottom-right-radius: 0;
+                        -moz-border-bottom-right-radius: 0;
+                    }
+
+                    div.bhoechie-tab-menu div.list-group > a.active,
+                    div.bhoechie-tab-menu div.list-group > a.active .glyphicon,
+                    div.bhoechie-tab-menu div.list-group > a.active .fa {
+                        background-color: #446e9b;
+                        color: #ffffff;
+                    }
+
+                        div.bhoechie-tab-menu div.list-group > a.active:after {
+                            content: '';
+                            position: absolute;
+                            left: 100%;
+                            top: 50%;
+                            margin-top: -13px;
+                            border-left: 0;
+                            border-bottom: 13px solid transparent;
+                            border-top: 13px solid transparent;
+                            border-left: 10px solid #446e9b;
+                        }
+
+
+        div.bhoechie-tab div.bhoechie-tab-content:not(.active) {
+            display: none;
+        }
+    </style>
 }
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="col-md-9">
-            <form action="@Url.Action("AddressAndPayment")" method="post" class="form-horizontal" role="form" id="frm-shopping-order">
-                <fieldset>
-                    <!-- Form Name -->
-                    <legend>Address Details</legend>
-                    <!-- Text input-->
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Ship To:</label>
-                        <div class="col-sm-8">
-                            <input type="text" name="@nameof(Model.FullName)" placeholder="First and Last Name" class="form-control">
-                        </div>
-                    </div>
-                    <!-- Text input-->
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Address</label>
-                        <div class="col-sm-8">
-                            <textarea name="@nameof(Model.Address)" style="max-width:100%" placeholder="Complete Address (House Number, Building and Street Name)" class="form-control"></textarea>
-                        </div>
-                    </div>
-                    <!-- Text input-->
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Municipality/City</label>
-                        <div class="col-sm-8">
-                            <input type="text" name="@nameof(Model.City)" placeholder="Municipality or City" class="form-control">
-                        </div>
-                    </div>
-                    <!-- Text input-->
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">State/Province</label>
-                        <div class="col-sm-8">
-                            <input type="text" name="@nameof(Model.State)" placeholder="State or Province" class="form-control">
-                        </div>
-                    </div>
-                    <!-- Text input-->
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label" for="Country">Country</label>
-                        <div class="col-sm-8">
-                            <input type="hidden" name="@nameof(Model.CountryCode)" id="CountryCode" value="63" />
-                            <input type="text" name="Country" id="Country" class="form-control" value="Philippines">
-                        </div>
-                    </div>
-                    <!-- Text input-->
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Postal/Zip Code</label>
-                        <div class="col-sm-3">
-                            <input type="text" name="@nameof(Model.Zip)" placeholder="Postal or Zip Code" class="form-control">
-                        </div>
-                        <label class="col-sm-1 control-label">Phone</label>
-                        <div class="col-sm-4">
-                            <input type="text" name="@nameof(Model.Phone)" placeholder="Phone Number" class="form-control">
-                        </div>
-                    </div>
-
-                </fieldset>
-            </form>
-        </div>
-
-        <div class="col-md-7 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Payment Details
-                    </h3>
-                    <div class="checkbox pull-right">
-                        <img src="http://i76.imgup.net/accepted_c22e0.png" height="30">
-                    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-7 bhoechie-tab-container">
+                <div class="col-md-12">
+                    <h3>Address Details</h3>
+                    <hr />
                 </div>
-                <div class="panel-body">
-                    <style scoped>
-                        .panel-title {
-                            display: inline;
-                            font-weight: bold;
-                        }
 
-                        .checkbox.pull-right {
-                            margin: 0;
-                        }
-
-                        .pl-ziro {
-                            padding-left: 0px;
-                        }
-
-                        input {
-                            max-width: none;
-                        }
-
-                        label {
-                            display: block;
-                            /*margin-top: 15px;*/
-                        }
-                    </style>
-
-
-                    <div class="form-group">
-                        <label for="cardNumber">
-                            CARD NUMBER
-                        </label>
-                        <div class="input-group">
-                            <input type="text" name="@nameof(Model.CCNumber)" class="form-control" required form="frm-shopping-order" />
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                        </div>
-                    </div>
-                    <!-- Name -->
-                    <div class="control-group">
-                        <label class="control-label" for="username">CARD HOLDER'S NAME</label>
-                        <div class="controls">
-                            <input type="text" name="@nameof(Model.CCHolderName)" class="form-control" required form="frm-shopping-order" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-7 col-md-7">
+                <div class="col-md-11">
+                    <form action="@Url.Action("AddressAndPayment")" method="post" class="form-horizontal" role="form" id="frm-shopping-order">
+                        <fieldset>
+                            <!-- Text input-->
                             <div class="form-group">
-                                <label for="expityMonth">
-                                    EXPIRY DATE
-                                </label>
-                                <div class="col-xs-6 col-lg-6 pl-ziro">
-                                    <input type="text" name="@nameof(Model.CCExpiryMonth)" class="form-control" id="expiryMonth" placeholder="MM" required form="frm-shopping-order" />
-                                </div>
-                                <div class="col-xs-6 col-lg-6 pl-ziro">
-                                    <input type="text" name="@nameof(Model.CCExpiryYear)" class="form-control" id="expiryYear" placeholder="YY" required form="frm-shopping-order" />
+                                <label class="col-sm-4 control-label">Full Name:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="@nameof(Model.FullName)" placeholder="First and Last Name" class="form-control">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xs-5 col-md-5 pull-right">
+                            <!-- Text input-->
                             <div class="form-group">
-                                <label for="cvCode">
-                                    CVV2 CODE
-                                </label>
-                                <input type="password" name="@nameof(Model.CCV)" class="form-control" id="cvCode" placeholder="CVV2" required form="frm-shopping-order" />
+                                <label class="col-sm-4 control-label">Address</label>
+                                <div class="col-sm-8">
+                                    <textarea name="@nameof(Model.Address)" style="max-width:100%" placeholder="Complete Address (House Number, Building and Street Name)" class="form-control"></textarea>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Municipality/City</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="@nameof(Model.City)" placeholder="Municipality or City" class="form-control">
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">State/Province</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="@nameof(Model.State)" placeholder="State or Province" class="form-control">
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label" for="Country">Country</label>
+                                <div class="col-sm-8">
+                                    <input type="hidden" name="@nameof(Model.CountryCode)" id="CountryCode" value="63" />
+                                    <input type="text" name="Country" id="Country" class="form-control" value="Philippines">
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Zip Code</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="@nameof(Model.Zip)" placeholder="Postal or Zip Code" class="form-control">
+                                </div>
+                                <label class="col-sm-1 control-label">Phone</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="@nameof(Model.Phone)" placeholder="Phone Number" class="form-control">
+                                </div>
+                            </div>
 
+                        </fieldset>
+                    </form>
                 </div>
             </div>
-            <ul class="nav nav-pills nav-stacked">
-                <li class="active">
-                    <a href="#"><span class="badge pull-right"><span class="glyphicon glyphicon-usd"></span>4200</span> Order Total</a>
-                </li>
-            </ul>
-            <br />
-            <button type="submit" class="btn btn-success btn-lg btn-block" form="frm-shopping-order">Pay</button>
+
+
+            <div class="col-xs-12 col-sm-11 col-md-4 pull-right bhoechie-tab-container">
+                <div class="col-md-12">
+                    <div>
+                        <h3>Order Summary <small>(3 items)</small></h3>
+                        <hr />
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th style="text-align: center">#</th>
+                                <th class="text-right">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-md-9"><em>Baked Rodopa Sheep Feta</em></td>
+                                <td class="col-md-1" style="text-align: center"> 2 </td>
+                                <td class="col-md-1 text-right">$13</td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-9"><em>Lebanese Cabbage Salad</em></td>
+                                <td class="col-md-1" style="text-align: center"> 1 </td>
+                                <td class="col-md-1 text-right">$8</td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-9"><em>Baked Tart with Thyme and Garlic</em></td>
+                                <td class="col-md-1" style="text-align: center"> 3 </td>
+                                <td class="col-md-1 text-right">$16</td>
+                            </tr>
+                            <tr>
+                                <td>   </td>
+                                <td class="text-right">
+                                    <p>
+                                        <strong>Subtotal: </strong>
+                                    </p>
+                                    <p>
+                                        <strong>Tax: </strong>
+                                    </p>
+                                </td>
+                                <td class="text-right">
+                                    <p>
+                                        <strong>$6.94</strong>
+                                    </p>
+                                    <p>
+                                        <strong>$6.94</strong>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>   </td>
+                                <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                                <td class="text-right text-danger"><h4><strong>$31.53</strong></h4></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         </div>
-
 
     </div>
 
-</div>
+
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-7 bhoechie-tab-container">
+                <div class="hidden-xs col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item  text-center">
+                            <h4 class="fa fa-ship"></h4><br />Shipping Info
+                        </a>
+                        <a href="#" class="list-group-item active text-center">
+                            <h4 class="fa fa-credit-card"></h4><br />Credit Card
+                        </a>
+                        <a href="#" class="list-group-item text-center">
+                            <h4 class="fa fa-paypal"></h4><br />Paypal
+                        </a>
+                        <a href="#" class="list-group-item text-center disabled">
+                            <h4 class="fa fa-bank"></h4><br />Bank Deposit
+                        </a>
+                        <a href="#" class="list-group-item text-center disabled">
+                            <h4 class="fa fa-money"></h4><br />Cash on delivery
+                        </a>
+                        <a href="#" class="list-group-item text-center disabled">
+                            <h4 class="fa fa-info-circle"></h4><br />Other methods
+                        </a>
+                    </div>
+                </div>
+
+                <center class="col-xs-12 hidden visible-xs bhoechie-tab-menu-xs">
+                    <h3>Payment options</h3>
+                    <div class="btn-group" data-toggle="buttons-radio">
+                        <a href="#" class="btn btn-large btn-info" data-toggle="tab">Shipping Info</a>
+                        <a href="#" class="btn btn-large btn-info active" data-toggle="tab">Credit Card</a>
+                        <a href="#" class="btn btn-large btn-info" data-toggle="tab">Paypal</a>
+                    </div>
+                </center>
+                <center class="col-xs-12 hidden visible-xs bhoechie-tab-menu-xs">
+                    <div class="btn-group" data-toggle="buttons-radio">
+                        <a href="#" class="btn btn-large btn-info disabled" data-toggle="tab">Bank Deposit</a>
+                        <a href="#" class="btn btn-large btn-info disabled" data-toggle="tab">Cash on delivery</a>
+                    </div>
+                </center>
+
+
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 bhoechie-tab">
+                    <div class="bhoechie-tab-content">
+                        <div class="panel panel-default" style="margin: 20px 0;">
+                            <div class="panel-heading" role="tab" id="headingTwo_reg">
+                                <h3 class="panel-title">Shipping Details</h3>
+                            </div>
+                            <div class="panel-body">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- flight section -->
+                    <div class="bhoechie-tab-content active">
+                        <center style="padding: 20px 0;">
+                            <img style="width:70%" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppppcmcvdam.png" alt="Credit Card Badges">
+                        </center>
+
+                        <div class="panel-group" id="accordion_reg" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading" role="tab" id="headingOne_reg">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion_reg" href="#collapseOne_reg" aria-expanded="true" aria-controls="collapseOne_reg">
+                                            Your credit or debit card ending 2345
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne_reg" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_reg">
+                                    <div class="panel-body">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Card number</th>
+                                                    <th>Name on card</th>
+                                                    <th>Expires on</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="fa fa-cc-mastercard"></span> ending 2345</td>
+                                                    <td>Bernard S Gabon</td>
+                                                    <td>08/2021</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="submit" class="btn btn-success btn-lg btn-block" form="frm-shopping-order">Pay</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading" role="tab" id="headingThree_reg">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_reg" href="#collapseThree_reg" aria-expanded="false" aria-controls="collapseThree_reg">
+                                            Use new credit card
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree_reg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree_reg">
+                                    <div class="panel-body">
+                                        <div>
+                                            <style scoped>
+                                                .checkbox.pull-right {
+                                                    margin: 0;
+                                                }
+
+                                                .pl-ziro {
+                                                    padding-left: 0px;
+                                                }
+
+                                                input {
+                                                    max-width: none;
+                                                }
+
+                                                label {
+                                                    display: block;
+                                                    /*margin-top: 15px;*/
+                                                }
+                                            </style>
+
+                                            <p></p>
+                                            <div class="form-group">
+                                                <label for="cardNumber">
+                                                    CARD NUMBER
+                                                </label>
+                                                <div class="input-group">
+                                                    <input type="text" name="@nameof(Model.CCNumber)" class="form-control" required form="frm-shopping-order" />
+                                                    <span class="input-group-addon" title="Use previous Credit Card detail from Paypal"><span class="glyphicon glyphicon-lock"></span></span>
+                                                </div>
+                                            </div>
+                                            <!-- Name -->
+                                            <div class="control-group">
+                                                <label class="control-label" for="username">CARD HOLDER'S NAME</label>
+                                                <div class="controls">
+                                                    <input type="text" name="@nameof(Model.CCHolderName)" class="form-control" required form="frm-shopping-order" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-7 col-md-7">
+                                                    <div class="form-group">
+                                                        <label for="expityMonth">
+                                                            EXPIRY DATE
+                                                        </label>
+                                                        <div class="col-xs-6 col-lg-6 pl-ziro">
+                                                            <input type="text" name="@nameof(Model.CCExpiryMonth)" class="form-control" id="expiryMonth" placeholder="MM" required form="frm-shopping-order" />
+                                                        </div>
+                                                        <div class="col-xs-6 col-lg-6 pl-ziro">
+                                                            <input type="text" name="@nameof(Model.CCExpiryYear)" class="form-control" id="expiryYear" placeholder="YY" required form="frm-shopping-order" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-5 col-md-5 pull-right">
+                                                    <div class="form-group">
+                                                        <label for="cvCode">
+                                                            CVV2 CODE
+                                                        </label>
+                                                        <input type="password" name="@nameof(Model.CCV)" class="form-control" id="cvCode" placeholder="CVV2" required form="frm-shopping-order" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ul class="nav nav-pills nav-stacked">
+                                                <li class="active">
+                                                    <a href="#"><span class="badge pull-right"><span class="glyphicon glyphicon-usd"></span>4200</span> Order Total</a>
+                                                </li>
+                                            </ul>
+                                            <br />
+                                            <button type="submit" class="btn btn-success btn-lg btn-block" form="frm-shopping-order">Pay</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- train section -->
+                    <div class="bhoechie-tab-content">
+                        <center style="padding: 70px 0;">
+                            <p>You will need to login to your Paypal account</p>
+                            <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="Check out with PayPal" />
+                        </center>
+                    </div>
+
+                    <!-- Disabled -->
+                    <div class="bhoechie-tab-content">
+                        <center>
+                        </center>
+                    </div>
+                    <div class="bhoechie-tab-content">
+                        <center>
+                        </center>
+                    </div>
+                    <div class="bhoechie-tab-content">
+                        <center>
+                        </center>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
 
 @section Scripts {
     @{ Html.RenderPartial("~/Views/Shared/_ValidationScriptsPartial.cshtml"); }
@@ -267,5 +555,18 @@
         });
     </script>
 
-
+    <script>
+        $(document).ready(function () {
+            $("div.bhoechie-tab-menu>div.list-group>a, .bhoechie-tab-menu-xs>.btn-group>a").click(function (e) {
+                e.preventDefault();
+                var index = $(this).index();
+                if (!$(this).hasClass('disabled')) {
+                    $(this).siblings('a.active').removeClass("active");
+                    $(this).addClass("active");
+                    $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+                    $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+                }
+            });
+        });
+    </script>
 }
