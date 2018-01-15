@@ -179,53 +179,74 @@
                 </div>
 
                 <div class="col-md-11">
-                    <form action="@Url.Action("AddressAndPayment")" method="post" class="form-horizontal" role="form" id="frm-shopping-order">
+                    <form class="form-horizontal" role="form" id="frm-shopping-order">
                         <fieldset>
                             <!-- Text input-->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Full Name:</label>
                                 <div class="col-sm-8">
-                                    <input type="text" name="@nameof(Model.FullName)" placeholder="First and Last Name" class="form-control">
+                                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                                    <span class="help-block">
+                                        @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                                    </span>
                                 </div>
                             </div>
                             <!-- Text input-->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Address</label>
                                 <div class="col-sm-8">
-                                    <textarea name="@nameof(Model.Address)" style="max-width:100%" placeholder="Complete Address (House Number, Building and Street Name)" class="form-control"></textarea>
+                                    @Html.TextAreaFor(m => m.Address, new { @class = "form-control", style = "max-width:100%" })
+                                    <span class="help-block">
+                                        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                                    </span>
                                 </div>
                             </div>
                             <!-- Text input-->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Municipality/City</label>
                                 <div class="col-sm-8">
-                                    <input type="text" name="@nameof(Model.City)" placeholder="Municipality or City" class="form-control">
+                                    @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                                    <span class="help-block">
+                                        @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+                                    </span>
                                 </div>
                             </div>
                             <!-- Text input-->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">State/Province</label>
                                 <div class="col-sm-8">
-                                    <input type="text" name="@nameof(Model.State)" placeholder="State or Province" class="form-control">
+                                    @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                                    <span class="help-block">
+                                        @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
+                                    </span>
                                 </div>
                             </div>
                             <!-- Text input-->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" for="Country">Country</label>
                                 <div class="col-sm-8">
-                                    <input type="hidden" name="@nameof(Model.CountryCode)" id="CountryCode" value="63" />
+                                    @Html.HiddenFor(m => m.CountryCode, new { @class = "form-control", Value = "63" })
                                     <input type="text" name="Country" id="Country" class="form-control" value="Philippines">
+                                    <span class="help-block">
+                                        @Html.ValidationMessageFor(m => m.CountryCode, "", new { @class = "text-danger" })
+                                    </span>
                                 </div>
                             </div>
                             <!-- Text input-->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Zip Code</label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="@nameof(Model.Zip)" placeholder="Postal or Zip Code" class="form-control">
+                                    @Html.TextBoxFor(m => m.Zip, new { @class = "form-control" })
+                                    <span class="help-block">
+                                        @Html.ValidationMessageFor(m => m.Zip, "", new { @class = "text-danger" })
+                                    </span>
                                 </div>
                                 <label class="col-sm-1 control-label">Phone</label>
                                 <div class="col-sm-4">
-                                    <input type="text" name="@nameof(Model.Phone)" placeholder="Phone Number" class="form-control">
+                                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                                    <span class="help-block">
+                                        @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                                    </span>
                                 </div>
                             </div>
 
@@ -238,7 +259,7 @@
             <div class="col-xs-12 col-sm-11 col-md-4 pull-right bhoechie-tab-container">
                 <div class="col-md-12">
                     <div>
-                        <h3>Order Summary <small>(3 items)</small></h3>
+                        <h3>Order Summary <small>(@Model.ShoppingCart.CartItems.Count items)</small></h3>
                         <hr />
                     </div>
                     <table class="table table-hover">
@@ -250,21 +271,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="col-md-9"><em>Baked Rodopa Sheep Feta</em></td>
-                                <td class="col-md-1" style="text-align: center"> 2 </td>
-                                <td class="col-md-1 text-right">$13</td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-9"><em>Lebanese Cabbage Salad</em></td>
-                                <td class="col-md-1" style="text-align: center"> 1 </td>
-                                <td class="col-md-1 text-right">$8</td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-9"><em>Baked Tart with Thyme and Garlic</em></td>
-                                <td class="col-md-1" style="text-align: center"> 3 </td>
-                                <td class="col-md-1 text-right">$16</td>
-                            </tr>
+                            @foreach(var item in Model.ShoppingCart.CartItems)
+                            {
+                                <tr>
+                                    <td class="col-md-9"><em>@item.Item.Name</em></td>
+                                    <td class="col-md-1" style="text-align: center"> @item.Quantity </td>
+                                    <td class="col-md-1 text-right">@string.Format("{0:C}", item.Item.UnitPrice)</td>
+                                </tr>
+                            }
                             <tr>
                                 <td>   </td>
                                 <td class="text-right">
@@ -277,17 +291,17 @@
                                 </td>
                                 <td class="text-right">
                                     <p>
-                                        <strong>$6.94</strong>
+                                        <strong></strong>
                                     </p>
                                     <p>
-                                        <strong>$6.94</strong>
+                                        <strong></strong>
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>   </td>
                                 <td class="text-right"><h4><strong>Total: </strong></h4></td>
-                                <td class="text-right text-danger"><h4><strong>$31.53</strong></h4></td>
+                                <td class="text-right text-danger"><h4><strong>@string.Format("{0:C}", Model.ShoppingCart.CartTotal)</strong></h4></td>
                             </tr>
                         </tbody>
                     </table>
@@ -364,7 +378,7 @@
                                 <div class="panel-heading" role="tab" id="headingOne_reg">
                                     <h4 class="panel-title">
                                         <a role="button" data-toggle="collapse" data-parent="#accordion_reg" href="#collapseOne_reg" aria-expanded="true" aria-controls="collapseOne_reg">
-                                            Your credit or debit card ending 2345
+                                            Use credit or debit card ending 2345
                                         </a>
                                     </h4>
                                 </div>
@@ -386,6 +400,12 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <li class="active">
+                                                <a href="#"><span class="badge pull-right"><span class="glyphicon glyphicon-usd"></span>@String.Format("{0:C}", Model.ShoppingCart.CartTotal)</span> Order Total</a>
+                                            </li>
+                                        </ul>
+                                        <br />
                                         <button type="submit" class="btn btn-success btn-lg btn-block" form="frm-shopping-order">Pay</button>
                                     </div>
                                 </div>
@@ -400,7 +420,7 @@
                                 </div>
                                 <div id="collapseThree_reg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree_reg">
                                     <div class="panel-body">
-                                        <div>
+                                        <form>
                                             <style scoped>
                                                 .checkbox.pull-right {
                                                     margin: 0;
@@ -426,7 +446,7 @@
                                                     CARD NUMBER
                                                 </label>
                                                 <div class="input-group">
-                                                    <input type="text" name="@nameof(Model.CCNumber)" class="form-control" required form="frm-shopping-order" />
+                                                    <input type="text" name="@nameof(Model.CCNumber)" class="form-control" form="frm-shopping-order" />
                                                     <span class="input-group-addon" title="Use previous Credit Card detail from Paypal"><span class="glyphicon glyphicon-lock"></span></span>
                                                 </div>
                                             </div>
@@ -434,7 +454,7 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="username">CARD HOLDER'S NAME</label>
                                                 <div class="controls">
-                                                    <input type="text" name="@nameof(Model.CCHolderName)" class="form-control" required form="frm-shopping-order" />
+                                                    <input type="text" name="@nameof(Model.CCHolderName)" class="form-control" form="frm-shopping-order" />
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -444,10 +464,10 @@
                                                             EXPIRY DATE
                                                         </label>
                                                         <div class="col-xs-6 col-lg-6 pl-ziro">
-                                                            <input type="text" name="@nameof(Model.CCExpiryMonth)" class="form-control" id="expiryMonth" placeholder="MM" required form="frm-shopping-order" />
+                                                            <input type="text" name="@nameof(Model.CCExpiryMonth)" class="form-control" id="expiryMonth" placeholder="MM" form="frm-shopping-order" />
                                                         </div>
                                                         <div class="col-xs-6 col-lg-6 pl-ziro">
-                                                            <input type="text" name="@nameof(Model.CCExpiryYear)" class="form-control" id="expiryYear" placeholder="YY" required form="frm-shopping-order" />
+                                                            <input type="text" name="@nameof(Model.CCExpiryYear)" class="form-control" id="expiryYear" placeholder="YY" form="frm-shopping-order" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -456,22 +476,32 @@
                                                         <label for="cvCode">
                                                             CVV2 CODE
                                                         </label>
-                                                        <input type="password" name="@nameof(Model.CCV)" class="form-control" id="cvCode" placeholder="CVV2" required form="frm-shopping-order" />
+                                                        <input type="password" name="@nameof(Model.CCV)" class="form-control" id="cvCode" placeholder="CVV2" form="frm-shopping-order" />
                                                     </div>
                                                 </div>
                                             </div>
                                             <ul class="nav nav-pills nav-stacked">
                                                 <li class="active">
-                                                    <a href="#"><span class="badge pull-right"><span class="glyphicon glyphicon-usd"></span>4200</span> Order Total</a>
+                                                    <a href="#"><span class="badge pull-right"><span class="glyphicon glyphicon-usd"></span>@String.Format("{0:C}", Model.ShoppingCart.CartTotal)</span> Order Total</a>
                                                 </li>
                                             </ul>
                                             <br />
                                             <button type="submit" class="btn btn-success btn-lg btn-block" form="frm-shopping-order">Pay</button>
 
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading" role="tab"  id="headingPaypal_reg">
+                                    <h4 class="panel-title">
+                                        <a id="panel-paypal" role="button" data-toggle="collapse" href="#" aria-expanded="true">
+                                            Pay with Paypal
+                                        </a>
+                                    </h4>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
@@ -509,25 +539,6 @@
 
 @section Scripts {
     @{ Html.RenderPartial("~/Views/Shared/_ValidationScriptsPartial.cshtml"); }
-
-    <script src="~/Scripts/card.js"></script>
-    <link rel="stylesheet" href="~/Content/card.css">
-    <script>
-        $('.active form').card({ container: $('.card-wrapper') })
-        $('form').card({
-            // a selector or jQuery object for the container
-            // where you want the card to appear
-            container: '.card-wrapper', // *required*
-            numberInput: 'input#number', // optional — default input[name="number"]
-            expiryInput: 'input#expiry', // optional — default input[name="expiry"]
-            cvcInput: 'input#cvc', // optional — default input[name="cvc"]
-            nameInput: 'input#name', // options - defaults input[name="name"]
-
-            width: 200, // optional — default 350px
-            formatting: true // optional - default true
-        });
-    </script>
-
 
     @if (HttpContext.Current.Request.IsLocal)
     {
@@ -567,6 +578,32 @@
                     $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
                 }
             });
+
+            $("a#panel-paypal").bind("click", (function () {
+                $("div.bhoechie-tab-menu>div.list-group>a").trigger("click");
+            }));
         });
+    </script>
+
+    <script>
+
+        $('form').submit(function (e) {
+            e.preventDefault();
+            var IsValid = $('form').valid();
+            if (IsValid == true) {
+                $.ajax({
+                    processData: false,
+                    contentType: false,
+                    data: new FormData(this),
+                    type: 'POST',
+                    url: '@Url.Action("AddressAndPayment")',
+                    success: function (data) {
+                        console.log(JSON.stringify(data));
+                    }
+                });
+            }
+            return false;
+        });
+
     </script>
 }

@@ -44,20 +44,20 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         [HttpPost]
         public ActionResult AddressAndPayment(ShoppingOrderViewModel shoppingOrder)
         {
-            var customer = new Customer
-            {
-                FullName = shoppingOrder.FullName,
-                Address = shoppingOrder.Address,
-                City = shoppingOrder.City,
-                State = shoppingOrder.State,
-                CountryCode = shoppingOrder.CountryCode,
-                Zip = shoppingOrder.Zip,
-                Phone = shoppingOrder.Phone,
-                CCNumber = shoppingOrder.CCNumber,
-                CCHolderName = shoppingOrder.CCHolderName,                
-            };
+            //var customer = new Customer
+            //{
+            //    FullName = shoppingOrder.FullName,
+            //    Address = shoppingOrder.Address,
+            //    City = shoppingOrder.City,
+            //    State = shoppingOrder.State,
+            //    CountryCode = shoppingOrder.CountryCode,
+            //    Zip = shoppingOrder.Zip,
+            //    Phone = shoppingOrder.Phone,
+            //    CCNumber = shoppingOrder.CCNumber,
+            //    CCHolderName = shoppingOrder.CCHolderName,                
+            //};
 
-            return Json(customer);
+            return Json(shoppingOrder);
 
             ////ViewBag.CreditCardTypes = CreditCardTypes;
             //string result =  values[9];
