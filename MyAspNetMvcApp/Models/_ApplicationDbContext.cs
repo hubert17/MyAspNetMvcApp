@@ -32,11 +32,14 @@ namespace MyAspNetMvcApp.Models
         // Put your database tables here...
         // public DbSet<Class> TableName { get; set; }
 
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Cart> Carts { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Cart> OF_Carts { get; set; }
+        public DbSet<Category> OF_Categories { get; set; }
+        public DbSet<Customer> OF_Customers { get; set; }
+        public DbSet<Order> OF_Orders { get; set; }
+        public DbSet<OrderDetail> OF_OrderDetails { get; set; }
+        public DbSet<Product> OF_Products { get; set; }
+        public DbSet<Review> OF_Reviews { get; set; }
+        public DbSet<ShippingDetail> OF_ShippingDetails { get; set; }
 
     }
 

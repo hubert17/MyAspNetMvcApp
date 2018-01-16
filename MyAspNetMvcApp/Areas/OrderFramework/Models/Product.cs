@@ -17,6 +17,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        [ForeignKey("Category")]
         public int? CategoryId { get; set; } // Nullable
 
         //[Range(0.01, 999.99, ErrorMessage = "Price must be between 0.01 and 999.99")]
@@ -32,7 +34,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         public string PictureFilename { get; set; }
 
         public virtual Category Category { get; set; }
-        public virtual List<OrderDetail> OrderDetails { get; set; }
+        //public virtual List<OrderDetail> OrderDetails { get; set; }
 
     }
 }

@@ -1,5 +1,4 @@
-﻿using MyAspNetMvcApp.Areas.Account.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,8 +7,8 @@ using System.Web;
 
 namespace MyAspNetMvcApp.Areas.OrderFramework.Models
 {
-    [Table("OF_Customers")]
-    public class Customer
+    [Table("OF_ShippingDetails")]
+    public class ShippingDetail
     {
         public int Id { get; set; }
         public string UserName { get; set; }
@@ -21,5 +20,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         public string CountryCode { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+
+        public string Notes { get; set; }
+        public string Status { get; set; }
     }
 }

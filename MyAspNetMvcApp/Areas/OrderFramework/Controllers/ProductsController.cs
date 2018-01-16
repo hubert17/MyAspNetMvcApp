@@ -35,7 +35,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var items = db.Products.AsEnumerable();
+            var items = db.OF_Products.AsEnumerable();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -69,7 +69,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         // GET: Products/Details/5
         public ActionResult Details(int? id)
         {
-            Product product = db.Products.Find(id);
+            Product product = db.OF_Products.Find(id);
             return View(product);
         }
 
@@ -77,7 +77,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         //[Authorize(Roles = "staff")]
         public ActionResult Create()
         {
-            var categories = db.Categories
+            var categories = db.OF_Categories
                 .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name })
                 .ToList();
 
@@ -94,7 +94,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             if(ModelState.IsValid)
             {
                 product.Picture = fileUpload.ToImageByteArray();
-                db.Products.Add(product);
+                db.OF_Products.Add(product);
                 db.SaveChanges();
             }
             return RedirectToAction("Index", "Products", new { area = "OrderFramework" });
@@ -104,7 +104,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         // GET: Products/Edit/5
         public ActionResult Edit(int? id)
         {
-            Product product = db.Products.Find(id);
+            Product product = db.OF_Products.Find(id);
 
             if (product == null)
             {
@@ -146,7 +146,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
+            Product product = db.OF_Products.Find(id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -159,8 +159,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Product product = db.Products.Find(id);
-            db.Products.Remove(product);
+            Product product = db.OF_Products.Find(id);
+            db.OF_Products.Remove(product);
             db.SaveChanges();
             return RedirectToAction("Index", "Products", new { area = "OrderFramework" });
         }

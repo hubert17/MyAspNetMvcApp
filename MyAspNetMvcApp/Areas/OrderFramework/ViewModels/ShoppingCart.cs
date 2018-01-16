@@ -30,7 +30,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
         public int AddToCart(Product item)
         {
             // Get the matching cart and item instances
-            var cartItem = storeDb.Carts.SingleOrDefault(
+            var cartItem = storeDb.OF_Carts.SingleOrDefault(
                 c => c.CartId == ShoppingCartId
                 && c.ItemId == item.Id);
 
@@ -44,7 +44,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
                     Quantity = 1,
                     DateCreated = DateTime.Now
                 };
-                storeDb.Carts.Add(cartItem);
+                storeDb.OF_Carts.Add(cartItem);
             }
             else
             {
@@ -61,7 +61,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
         public int RemoveFromCart(int id)
         {
             // Get the cart
-            var cartItem = storeDb.Carts.Single(
+            var cartItem = storeDb.OF_Carts.Single(
                 cart => cart.CartId == ShoppingCartId
                 && cart.ItemId == id);
 
@@ -76,7 +76,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
                 }
                 else
                 {
-                    storeDb.Carts.Remove(cartItem);
+                    storeDb.OF_Carts.Remove(cartItem);
                 }
                 // Save changes
                 storeDb.SaveChanges();
@@ -87,7 +87,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
         public int UpdateQtyFromCart(int id, int newQty)
         {
             // Get the cart
-            var cartItem = storeDb.Carts.Single(
+            var cartItem = storeDb.OF_Carts.Single(
                 cart => cart.CartId == ShoppingCartId
                 && cart.ItemId == id);
 
@@ -104,12 +104,12 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
 
         public void EmptyCart()
         {
-            var cartItems = storeDb.Carts.Where(
+            var cartItems = storeDb.OF_Carts.Where(
                 cart => cart.CartId == ShoppingCartId);
 
             foreach (var cartItem in cartItems)
             {
-                storeDb.Carts.Remove(cartItem);
+                storeDb.OF_Carts.Remove(cartItem);
             }
             // Save changes
             storeDb.SaveChanges();
@@ -117,18 +117,18 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
 
         public List<Cart> GetCartItems()
         {
-            return storeDb.Carts.Where(
+            return storeDb.OF_Carts.Where(
                 cart => cart.CartId == ShoppingCartId).ToList();
         }
 
         public int GetCount()
         {
             // Get the count of each item in the cart and sum them up
-            //int? count = (from cartItems in storeDB.Carts
+            //int? count = (from cartItems in storeDb.OF_Carts
             //              where cartItems.CartId == ShoppingCartId
             //              select (int?)cartItems.Count).Sum();
 
-            int? count = storeDb.Carts.Where(x => x.CartId == ShoppingCartId).Count();
+            int? count = storeDb.OF_Carts.Where(x => x.CartId == ShoppingCartId).Count();
 
             // Return 0 if all entries are null
             return count ?? 0;
@@ -142,19 +142,9 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
 
             decimal Total = decimal.Zero; 
 
-            var cartItems = storeDb.Carts.Where(x => x.CartId == ShoppingCartId);
+            var cartItems = storeDb.OF_Carts.Where(x => x.CartId == ShoppingCartId);
             if (cartItems.Count() > 0)
-            {
-                // Recommended: Kindly uncomment when using SQL EF Provider
-                // Total = storeDb.Carts.Where(x => x.CartId == ShoppingCartId).Sum(t => t.Quantity * t.Item.UnitPrice);
-
-                // This is for compatibility when using JetEntityFrameworkProvider
-                var items = storeDb.Carts.Where(x => x.CartId == ShoppingCartId);
-                foreach (var item in items)
-                {
-                    Total += item.Quantity * item.Item.UnitPrice;
-                }
-            }
+                Total = storeDb.OF_Carts.Where(x => x.CartId == ShoppingCartId).ToList().Sum(t => t.Quantity * t.Item.UnitPrice);
 
             return Total;
         }
@@ -179,7 +169,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
                 // Set the order total of the shopping cart
                 orderTotal += (item.Quantity * item.Item.UnitPrice);
                 order.OrderDetails.Add(orderDetail);
-                storeDb.OrderDetails.Add(orderDetail);
+                storeDb.OF_OrderDetails.Add(orderDetail);
 
             }
             // Set the order's total to the orderTotal count
@@ -221,7 +211,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
         // be associated with their username
         public void MigrateCart(string userName)
         {
-            var shoppingCart = storeDb.Carts.Where(
+            var shoppingCart = storeDb.OF_Carts.Where(
                 c => c.CartId == ShoppingCartId);
 
             foreach (Cart item in shoppingCart)

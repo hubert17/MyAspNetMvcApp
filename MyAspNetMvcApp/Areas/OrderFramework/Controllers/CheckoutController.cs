@@ -18,7 +18,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
 {
     public class CheckoutController : Controller
     {
-        ApplicationDbContext storeDB = new ApplicationDbContext();
+        ApplicationDbContext storeDb = new ApplicationDbContext();
         AppConfigurations appConfig = new AppConfigurations();
 
         //public List<String> CreditCardTypes { get { return appConfig.CreditCardType;} }
@@ -125,7 +125,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         public ActionResult Complete(int id)
         {
             // Validate customer owns this order
-            bool isValid = storeDB.Orders.Any(
+            bool isValid = storeDb.OF_Orders.Any(
                 o => o.OrderId == id &&
                 o.UserName == User.Identity.Name);
 

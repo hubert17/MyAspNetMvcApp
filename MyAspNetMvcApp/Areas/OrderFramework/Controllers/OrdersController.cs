@@ -36,18 +36,17 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var orders = from o in db.Orders
+            var orders = from o in db.OF_Orders
                         select o;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                orders = orders.Where(s => s.FirstName.ToUpper().Contains(searchString.ToUpper())
-                                       || s.LastName.ToUpper().Contains(searchString.ToUpper()));
+                orders = orders.Where(s => s.Customer.FullName.ToUpper().Contains(searchString.ToUpper()));
             }
             switch (sortOrder)
             {
                 case "name_desc":
-                    orders = orders.OrderByDescending(s => s.FirstName);
+                    orders = orders.OrderByDescending(s => s.Customer.FullName);
                     break;
                 case "Price":
                     orders = orders.OrderBy(s => s.OrderTotal);
@@ -56,7 +55,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
                     orders = orders.OrderByDescending(s => s.OrderTotal);
                     break;
                 default:  // Name ascending 
-                    orders = orders.OrderBy(s => s.FirstName);
+                    orders = orders.OrderBy(s => s.Customer.FullName);
                     break;
             }
 
@@ -64,7 +63,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             int pageNumber = (page ?? 1);
             return View(orders.ToPagedList(pageNumber, pageSize));
 
-            //return View(await db.Orders.ToListAsync());
+            //return View(await db.OF_Orders.ToListAsync());
         }
 
         // GET: Orders/Details/5
@@ -74,8 +73,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await db.Orders.FindAsync(id);
-            var orderDetails = db.OrderDetails.Where(x => x.OrderId == id );
+            Order order = await db.OF_Orders.FindAsync(id);
+            var orderDetails = db.OF_OrderDetails.Where(x => x.OrderId == id );
 
             order.OrderDetails = await orderDetails.ToListAsync();
             if (order == null)
@@ -98,7 +97,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Orders.Add(order);
+                db.OF_Orders.Add(order);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -113,7 +112,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await db.Orders.FindAsync(id);
+            Order order = await db.OF_Orders.FindAsync(id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -142,7 +141,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await db.Orders.FindAsync(id);
+            Order order = await db.OF_Orders.FindAsync(id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -155,8 +154,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Order order = await db.Orders.FindAsync(id);
-            db.Orders.Remove(order);
+            Order order = await db.OF_Orders.FindAsync(id);
+            db.OF_Orders.Remove(order);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

@@ -33,7 +33,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         public ActionResult AddToCart(int id)
         {
             // Retrieve the item from the database
-            var addedItem = storeDB.Products
+            var addedItem = storeDB.OF_Products
                 .Single(item => item.Id == id);
 
             // Add it to the shopping cart
@@ -58,7 +58,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             // Get the name of the item to display confirmation
 
             // Get the name of the album to display confirmation
-            string itemName = storeDB.Products
+            string itemName = storeDB.OF_Products
                 .Single(item => item.Id == id).Name;
 
             // Remove from cart

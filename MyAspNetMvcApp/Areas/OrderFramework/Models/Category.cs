@@ -14,7 +14,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         [ScaffoldColumn(false)]
         public int Id { get; set; }
 
-        [DisplayName("Catagory Name")]
+        [Required(ErrorMessage = "Category Name is required")]
+        [StringLength(160)]
         public string Name { get; set; }
 
         public virtual ICollection<Product> Items { get; set; }

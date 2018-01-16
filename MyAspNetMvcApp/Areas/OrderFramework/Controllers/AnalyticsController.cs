@@ -21,7 +21,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         // GET: Analytics
         public async Task<ActionResult> Index()
         {
-            var data = (from orders in db.Orders
+            var data = (from orders in db.OF_Orders
                        group orders by orders.OrderDate into dateGroup
                        select new OrderDateGroup()
                        {
@@ -29,7 +29,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
                             OrderCount = dateGroup.Count()
                        }).Take(10);
 
-            var allData = (from orders in db.Orders
+            var allData = (from orders in db.OF_Orders
                         group orders by orders.OrderDate into dateGroup
                         select new OrderDateGroup()
                         {
@@ -68,7 +68,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await db.Orders.FindAsync(id);
+            Order order = await db.OF_Orders.FindAsync(id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -89,7 +89,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Orders.Add(order);
+                db.OF_Orders.Add(order);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -104,7 +104,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await db.Orders.FindAsync(id);
+            Order order = await db.OF_Orders.FindAsync(id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -133,7 +133,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = await db.Orders.FindAsync(id);
+            Order order = await db.OF_Orders.FindAsync(id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -146,8 +146,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Order order = await db.Orders.FindAsync(id);
-            db.Orders.Remove(order);
+            Order order = await db.OF_Orders.FindAsync(id);
+            db.OF_Orders.Remove(order);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -162,7 +162,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
 
         private List<OrderDateGroup> GetData()
         {
-            var allData = (from orders in db.Orders
+            var allData = (from orders in db.OF_Orders
                            group orders by orders.OrderDate into dateGroup
                            select new OrderDateGroup()
                            {

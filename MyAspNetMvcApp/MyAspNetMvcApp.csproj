@@ -273,10 +273,11 @@
     <Compile Include="Areas\OrderFramework\Models\OrderDetail.cs" />
     <Compile Include="Areas\OrderFramework\Models\Product.cs" />
     <Compile Include="Areas\OrderFramework\Models\Review.cs" />
+    <Compile Include="Areas\OrderFramework\Models\ShippingDetail.cs" />
     <Compile Include="Areas\OrderFramework\OrderFrameworkAreaRegistration.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\AnalyticsViewModel.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\OrderDateGroup.cs" />
-    <Compile Include="Areas\OrderFramework\ViewModels\OrderViewModel.cs" />
+    <Compile Include="Areas\OrderFramework\ViewModels\ShoppingOrderViewModel.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\PaypalViewModel.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCart.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\ShoppingCartResponseViewModel.cs" />

@@ -20,7 +20,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         // GET: Categories
         public async Task<ActionResult> Index()
         {
-            return View(await db.Categories.ToListAsync());
+            return View(await db.OF_Categories.ToListAsync());
         }
 
         // GET: Categories/Details/5
@@ -30,7 +30,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category catagorie = await db.Categories.FindAsync(id);
+            Category catagorie = await db.OF_Categories.FindAsync(id);
             if (catagorie == null)
             {
                 return HttpNotFound();
@@ -55,7 +55,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Categories.Add(catagorie);
+                db.OF_Categories.Add(catagorie);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -70,7 +70,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category catagorie = await db.Categories.FindAsync(id);
+            Category catagorie = await db.OF_Categories.FindAsync(id);
             if (catagorie == null)
             {
                 return HttpNotFound();
@@ -101,7 +101,7 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category catagorie = await db.Categories.FindAsync(id);
+            Category catagorie = await db.OF_Categories.FindAsync(id);
             if (catagorie == null)
             {
                 return HttpNotFound();
@@ -114,8 +114,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Category catagorie = await db.Categories.FindAsync(id);
-            db.Categories.Remove(catagorie);
+            Category catagorie = await db.OF_Categories.FindAsync(id);
+            db.OF_Categories.Remove(catagorie);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
