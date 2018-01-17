@@ -1,4 +1,5 @@
-﻿using MyAspNetMvcApp.Areas.OrderFramework.Models;
+﻿using Foolproof;
+using MyAspNetMvcApp.Areas.OrderFramework.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -34,12 +35,36 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.ViewModels
         [Required(ErrorMessage = "Phone is required")]
         public string Phone { get; set; }
 
-        [Required(ErrorMessage = "Email is required")]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Email is is not valid.")]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        //[Required(ErrorMessage = "Email is required")]
+        //[RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Email is is not valid.")]
+        //[DataType(DataType.EmailAddress)]
+        //public string Email { get; set; }
+
+        public bool ShipToDifferentAddress { get; set; }
+
+        [RequiredIfTrue("ShipToDifferentAddress")]
+        public string ShipFullName { get; set; }
+
+        [RequiredIfTrue("ShipToDifferentAddress")]
+        public string ShipAddress { get; set; }
+
+        [RequiredIfTrue("ShipToDifferentAddress")]
+        public string ShipCity { get; set; }
+
+        [RequiredIfTrue("ShipToDifferentAddress")]
+        public string ShipState { get; set; }
+
+        public string ShipPostalCode { get; set; }
+
+        [RequiredIfTrue("ShipToDifferentAddress")]
+        public string ShipCountryCode { get; set; }
+
+        [RequiredIfTrue("ShipToDifferentAddress")]
+        public string ShipPhone { get; set; }
+
 
         public string CCNumber { get; set; }
+        [RequiredIfNotEmpty("CCNumber")]
         public string CCHolderName { get; set; }
         public int CCExpiryMonth { get; set; }
         public int CCExpiryYear { get; set; }

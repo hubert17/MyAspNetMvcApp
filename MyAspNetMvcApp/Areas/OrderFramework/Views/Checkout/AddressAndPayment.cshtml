@@ -168,26 +168,214 @@
             display: none;
         }
     </style>
+
 }
 
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-7 bhoechie-tab-container">
-                <div class="col-md-12">
-                    <h3>Address Details</h3>
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-7 bhoechie-tab-container">
+            <div class="col-md-12">
+                <h3>Address Details</h3>
+                <hr />
+            </div>
+
+            <div class="col-md-11">
+                <form class="form-horizontal" role="form" id="frm-shopping-order">
+                    <fieldset>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Full Name:</label>
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                                <span class="help-block">
+                                    @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Address</label>
+                            <div class="col-sm-8">
+                                @Html.TextAreaFor(m => m.Address, new { @class = "form-control", style = "max-width:100%" })
+                                <span class="help-block">
+                                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Municipality/City</label>
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                                <span class="help-block">
+                                    @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">State/Province</label>
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                                <span class="help-block">
+                                    @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="Country">Country</label>
+                            <div class="col-sm-8">
+                                @Html.HiddenFor(m => m.CountryCode, new { @class = "form-control", Value = "63" })
+                                <input type="text" name="Country" id="Country" class="form-control" value="Philippines">
+                                <span class="help-block">
+                                    @Html.ValidationMessageFor(m => m.CountryCode, "", new { @class = "text-danger" })
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Zip Code</label>
+                            <div class="col-sm-3">
+                                @Html.TextBoxFor(m => m.PostalCode, new { @class = "form-control" })
+                                <span class="help-block">
+                                    @Html.ValidationMessageFor(m => m.PostalCode, "", new { @class = "text-danger" })
+                                </span>
+                            </div>
+                            <label class="col-sm-1 control-label">Phone</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                                <span class="help-block">
+                                    @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                                </span>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="col-xs-12 col-sm-11 col-md-4 pull-right bhoechie-tab-container">
+            <div class="col-md-12">
+                <div>
+                    <h3>Order Summary <small>(@Model.ShoppingCart.CartItems.Count items)</small></h3>
                     <hr />
                 </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th style="text-align: center">#</th>
+                            <th class="text-right">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ShoppingCart.CartItems)
+                        {
+                            <tr>
+                                <td class="col-md-9"><em>@item.Item.Name</em></td>
+                                <td class="col-md-1" style="text-align: center"> @item.Quantity </td>
+                                <td class="col-md-1 text-right">@string.Format("{0:C}", item.Item.UnitPrice)</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td>   </td>
+                            <td class="text-right">
+                                <p>
+                                    <strong>Subtotal: </strong>
+                                </p>
+                                <p>
+                                    <strong>Tax: </strong>
+                                </p>
+                            </td>
+                            <td class="text-right">
+                                <p>
+                                    <strong></strong>
+                                </p>
+                                <p>
+                                    <strong></strong>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td class="text-right"><h4><strong>Total: </strong></h4></td>
+                            <td class="text-right text-danger"><h4><strong>@string.Format("{0:C}", Model.ShoppingCart.CartTotal)</strong></h4></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                <div class="col-md-11">
-                    <form class="form-horizontal" role="form" id="frm-shopping-order">
+    </div>
+
+</div>
+
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-7 bhoechie-tab-container">
+            <div class="hidden-xs col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+                <div class="list-group">
+                    <a href="#" class="list-group-item  text-center">
+                        <h4 class="fa fa-ship"></h4><br />Shipping Info
+                    </a>
+                    <a href="#" class="list-group-item active text-center">
+                        <h4 class="fa fa-credit-card"></h4><br />Credit Card
+                    </a>
+                    <a href="#" class="list-group-item text-center">
+                        <h4 class="fa fa-paypal"></h4><br />Paypal
+                    </a>
+                    <a href="#" class="list-group-item text-center disabled">
+                        <h4 class="fa fa-bank"></h4><br />Bank Deposit
+                    </a>
+                    <a href="#" class="list-group-item text-center disabled">
+                        <h4 class="fa fa-money"></h4><br />Cash on delivery
+                    </a>
+                    <a href="#" class="list-group-item text-center disabled">
+                        <h4 class="fa fa-info-circle"></h4><br />Other methods
+                    </a>
+                </div>
+            </div>
+
+            <center class="col-xs-12 hidden visible-xs bhoechie-tab-menu-xs">
+                <h3>Payment options</h3>
+                <div class="btn-group" data-toggle="buttons-radio">
+                    <a href="#" class="btn btn-large btn-info" data-toggle="tab">Shipping Info</a>
+                    <a href="#" class="btn btn-large btn-info active" data-toggle="tab">Credit Card</a>
+                    <a href="#" class="btn btn-large btn-info" data-toggle="tab">Paypal</a>
+                </div>
+            </center>
+            <center class="col-xs-12 hidden visible-xs bhoechie-tab-menu-xs">
+                <div class="btn-group" data-toggle="buttons-radio">
+                    <a href="#" class="btn btn-large btn-info disabled" data-toggle="tab">Bank Deposit</a>
+                    <a href="#" class="btn btn-large btn-info disabled" data-toggle="tab">Cash on delivery</a>
+                </div>
+            </center>
+
+
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 bhoechie-tab">
+                <div class="bhoechie-tab-content">
+
+                    <div class="input-group">
+                        <div class="ship-address">
+                            <label>
+                                @Html.CheckBoxFor(m => m.ShipToDifferentAddress) Ship to different address
+                            </label>
+                        </div>
+                    </div>
+                    <hr />
+                    <form class="form-horizontal" role="form" id="shipping-address" style="display:none;">
                         <fieldset>
                             <!-- Text input-->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Full Name:</label>
                                 <div class="col-sm-8">
-                                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                                    @Html.TextBoxFor(m => m.ShipFullName, new { @class = "form-control" })
                                     <span class="help-block">
-                                        @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.ShipFullName, "", new { @class = "text-danger" })
                                     </span>
                                 </div>
                             </div>
@@ -195,9 +383,9 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Address</label>
                                 <div class="col-sm-8">
-                                    @Html.TextAreaFor(m => m.Address, new { @class = "form-control", style = "max-width:100%" })
+                                    @Html.TextAreaFor(m => m.ShipAddress, new { @class = "form-control", style = "max-width:100%" })
                                     <span class="help-block">
-                                        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.ShipAddress, "", new { @class = "text-danger" })
                                     </span>
                                 </div>
                             </div>
@@ -205,9 +393,9 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Municipality/City</label>
                                 <div class="col-sm-8">
-                                    @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                                    @Html.TextBoxFor(m => m.ShipCity, new { @class = "form-control" })
                                     <span class="help-block">
-                                        @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.ShipCity, "", new { @class = "text-danger" })
                                     </span>
                                 </div>
                             </div>
@@ -215,9 +403,9 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">State/Province</label>
                                 <div class="col-sm-8">
-                                    @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                                    @Html.TextBoxFor(m => m.ShipState, new { @class = "form-control" })
                                     <span class="help-block">
-                                        @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.ShipState, "", new { @class = "text-danger" })
                                     </span>
                                 </div>
                             </div>
@@ -225,10 +413,10 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label" for="Country">Country</label>
                                 <div class="col-sm-8">
-                                    @Html.HiddenFor(m => m.CountryCode, new { @class = "form-control", Value = "63" })
-                                    <input type="text" name="Country" id="Country" class="form-control" value="Philippines">
+                                    @Html.HiddenFor(m => m.ShipCountryCode, new { @class = "form-control", Value = "63" })
+                                    <input type="text" name="Country" id="Country2" class="form-control" value="Philippines">
                                     <span class="help-block">
-                                        @Html.ValidationMessageFor(m => m.CountryCode, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.ShipCountryCode, "", new { @class = "text-danger" })
                                     </span>
                                 </div>
                             </div>
@@ -236,16 +424,16 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Zip Code</label>
                                 <div class="col-sm-3">
-                                    @Html.TextBoxFor(m => m.PostalCode, new { @class = "form-control" })
+                                    @Html.TextBoxFor(m => m.ShipPostalCode, new { @class = "form-control" })
                                     <span class="help-block">
-                                        @Html.ValidationMessageFor(m => m.PostalCode, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.ShipPostalCode, "", new { @class = "text-danger" })
                                     </span>
                                 </div>
                                 <label class="col-sm-1 control-label">Phone</label>
                                 <div class="col-sm-4">
-                                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                                    @Html.TextBoxFor(m => m.ShipPhone, new { @class = "form-control" })
                                     <span class="help-block">
-                                        @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.ShipPhone, "", new { @class = "text-danger" })
                                     </span>
                                 </div>
                             </div>
@@ -253,153 +441,126 @@
                         </fieldset>
                     </form>
                 </div>
-            </div>
 
+                <!-- flight section -->
+                <div class="bhoechie-tab-content active">
+                    <center style="padding: 20px 0;">
+                        <img style="width:70%" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppppcmcvdam.png" alt="Credit Card Badges">
+                    </center>
 
-            <div class="col-xs-12 col-sm-11 col-md-4 pull-right bhoechie-tab-container">
-                <div class="col-md-12">
-                    <div>
-                        <h3>Order Summary <small>(@Model.ShoppingCart.CartItems.Count items)</small></h3>
-                        <hr />
-                    </div>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th style="text-align: center">#</th>
-                                <th class="text-right">Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach(var item in Model.ShoppingCart.CartItems)
-                            {
-                                <tr>
-                                    <td class="col-md-9"><em>@item.Item.Name</em></td>
-                                    <td class="col-md-1" style="text-align: center"> @item.Quantity </td>
-                                    <td class="col-md-1 text-right">@string.Format("{0:C}", item.Item.UnitPrice)</td>
-                                </tr>
-                            }
-                            <tr>
-                                <td>   </td>
-                                <td class="text-right">
-                                    <p>
-                                        <strong>Subtotal: </strong>
-                                    </p>
-                                    <p>
-                                        <strong>Tax: </strong>
-                                    </p>
-                                </td>
-                                <td class="text-right">
-                                    <p>
-                                        <strong></strong>
-                                    </p>
-                                    <p>
-                                        <strong></strong>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>   </td>
-                                <td class="text-right"><h4><strong>Total: </strong></h4></td>
-                                <td class="text-right text-danger"><h4><strong>@string.Format("{0:C}", Model.ShoppingCart.CartTotal)</strong></h4></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-7 bhoechie-tab-container">
-                <div class="hidden-xs col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item  text-center">
-                            <h4 class="fa fa-ship"></h4><br />Shipping Info
-                        </a>
-                        <a href="#" class="list-group-item active text-center">
-                            <h4 class="fa fa-credit-card"></h4><br />Credit Card
-                        </a>
-                        <a href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-paypal"></h4><br />Paypal
-                        </a>
-                        <a href="#" class="list-group-item text-center disabled">
-                            <h4 class="fa fa-bank"></h4><br />Bank Deposit
-                        </a>
-                        <a href="#" class="list-group-item text-center disabled">
-                            <h4 class="fa fa-money"></h4><br />Cash on delivery
-                        </a>
-                        <a href="#" class="list-group-item text-center disabled">
-                            <h4 class="fa fa-info-circle"></h4><br />Other methods
-                        </a>
-                    </div>
-                </div>
-
-                <center class="col-xs-12 hidden visible-xs bhoechie-tab-menu-xs">
-                    <h3>Payment options</h3>
-                    <div class="btn-group" data-toggle="buttons-radio">
-                        <a href="#" class="btn btn-large btn-info" data-toggle="tab">Shipping Info</a>
-                        <a href="#" class="btn btn-large btn-info active" data-toggle="tab">Credit Card</a>
-                        <a href="#" class="btn btn-large btn-info" data-toggle="tab">Paypal</a>
-                    </div>
-                </center>
-                <center class="col-xs-12 hidden visible-xs bhoechie-tab-menu-xs">
-                    <div class="btn-group" data-toggle="buttons-radio">
-                        <a href="#" class="btn btn-large btn-info disabled" data-toggle="tab">Bank Deposit</a>
-                        <a href="#" class="btn btn-large btn-info disabled" data-toggle="tab">Cash on delivery</a>
-                    </div>
-                </center>
-
-
-                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 bhoechie-tab">
-                    <div class="bhoechie-tab-content">
-                        <div class="panel panel-default" style="margin: 20px 0;">
-                            <div class="panel-heading" role="tab" id="headingTwo_reg">
-                                <h3 class="panel-title">Shipping Details</h3>
+                    <div class="panel-group" id="accordion_reg" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingOne_reg">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_reg" href="#collapseOne_reg" aria-expanded="true" aria-controls="collapseOne_reg">
+                                        Use credit or debit card ending 2345
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="panel-body">
-                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            <div id="collapseOne_reg" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_reg">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Card number</th>
+                                                <th>Name on card</th>
+                                                <th>Expires on</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="fa fa-cc-mastercard"></span> ending 2345</td>
+                                                <td>Bernard S Gabon</td>
+                                                <td>08/2021</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <ul class="nav nav-pills nav-stacked">
+                                        <li class="active">
+                                            <a href="#"><span class="badge pull-right"><span class="glyphicon glyphicon-usd"></span>@String.Format("{0:C}", Model.ShoppingCart.CartTotal)</span> Order Total</a>
+                                        </li>
+                                    </ul>
+                                    <br />
+                                    <button type="submit" class="btn btn-success btn-lg btn-block" form="frm-shopping-order">Pay</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingThree_reg">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_reg" href="#collapseThree_reg" aria-expanded="false" aria-controls="collapseThree_reg">
+                                        Use new credit card
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree_reg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree_reg">
+                                <div class="panel-body">
+                                    <form>
+                                        <style scoped>
+                                            .checkbox.pull-right {
+                                                margin: 0;
+                                            }
 
-                    <!-- flight section -->
-                    <div class="bhoechie-tab-content active">
-                        <center style="padding: 20px 0;">
-                            <img style="width:70%" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppppcmcvdam.png" alt="Credit Card Badges">
-                        </center>
+                                            .pl-ziro {
+                                                padding-left: 0px;
+                                            }
 
-                        <div class="panel-group" id="accordion_reg" role="tablist" aria-multiselectable="true">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading" role="tab" id="headingOne_reg">
-                                    <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion_reg" href="#collapseOne_reg" aria-expanded="true" aria-controls="collapseOne_reg">
-                                            Use credit or debit card ending 2345
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseOne_reg" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_reg">
-                                    <div class="panel-body">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Card number</th>
-                                                    <th>Name on card</th>
-                                                    <th>Expires on</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><span class="fa fa-cc-mastercard"></span> ending 2345</td>
-                                                    <td>Bernard S Gabon</td>
-                                                    <td>08/2021</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                            input {
+                                                max-width: none;
+                                            }
+
+                                            label {
+                                                display: block;
+                                                /*margin-top: 15px;*/
+                                            }
+                                        </style>
+
+                                        <p></p>
+                                        <div class="form-group">
+                                            <label for="cardNumber">
+                                                CARD NUMBER
+                                            </label>
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(m => m.CCNumber, new { @class = "form-control", form = "frm-shopping-order" })
+                                                <span class="input-group-addon" title="Use previous Credit Card detail from Paypal"><span class="glyphicon glyphicon-lock"></span></span>
+                                            </div>
+                                            <span class="help-block">
+                                                @Html.ValidationMessageFor(m => m.CCNumber, "", new { @class = "text-danger" })
+                                            </span>
+                                        </div>
+                                        <!-- Name -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="username">CARD HOLDER'S NAME</label>
+                                            <div class="controls">
+                                                @Html.TextBoxFor(m => m.CCHolderName, new { @class = "form-control", form = "frm-shopping-order" })
+                                                <span class="help-block">
+                                                    @Html.ValidationMessageFor(m => m.CCHolderName, "", new { @class = "text-danger" })
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-7 col-md-7">
+                                                <div class="form-group">
+                                                    <label for="expityMonth">
+                                                        EXPIRY DATE
+                                                    </label>
+                                                    <div class="col-xs-6 col-lg-6 pl-ziro">
+                                                        <input type="text" name="@nameof(Model.CCExpiryMonth)" class="form-control" id="expiryMonth" placeholder="MM" form="frm-shopping-order" />
+                                                    </div>
+                                                    <div class="col-xs-6 col-lg-6 pl-ziro">
+                                                        <input type="text" name="@nameof(Model.CCExpiryYear)" class="form-control" id="expiryYear" placeholder="YY" form="frm-shopping-order" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-5 col-md-5 pull-right">
+                                                <div class="form-group">
+                                                    <label for="cvCode">
+                                                        CVV2 CODE
+                                                    </label>
+                                                    <input type="password" name="@nameof(Model.CCV)" class="form-control" id="cvCode" placeholder="CVV2" form="frm-shopping-order" />
+                                                </div>
+                                            </div>
+                                        </div>
                                         <ul class="nav nav-pills nav-stacked">
                                             <li class="active">
                                                 <a href="#"><span class="badge pull-right"><span class="glyphicon glyphicon-usd"></span>@String.Format("{0:C}", Model.ShoppingCart.CartTotal)</span> Order Total</a>
@@ -407,130 +568,50 @@
                                         </ul>
                                         <br />
                                         <button type="submit" class="btn btn-success btn-lg btn-block" form="frm-shopping-order">Pay</button>
-                                    </div>
+
+                                    </form>
                                 </div>
                             </div>
-                            <div class="panel panel-primary">
-                                <div class="panel-heading" role="tab" id="headingThree_reg">
-                                    <h4 class="panel-title">
-                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_reg" href="#collapseThree_reg" aria-expanded="false" aria-controls="collapseThree_reg">
-                                            Use new credit card
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseThree_reg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree_reg">
-                                    <div class="panel-body">
-                                        <form>
-                                            <style scoped>
-                                                .checkbox.pull-right {
-                                                    margin: 0;
-                                                }
-
-                                                .pl-ziro {
-                                                    padding-left: 0px;
-                                                }
-
-                                                input {
-                                                    max-width: none;
-                                                }
-
-                                                label {
-                                                    display: block;
-                                                    /*margin-top: 15px;*/
-                                                }
-                                            </style>
-
-                                            <p></p>
-                                            <div class="form-group">
-                                                <label for="cardNumber">
-                                                    CARD NUMBER
-                                                </label>
-                                                <div class="input-group">
-                                                    <input type="text" name="@nameof(Model.CCNumber)" class="form-control" form="frm-shopping-order" />
-                                                    <span class="input-group-addon" title="Use previous Credit Card detail from Paypal"><span class="glyphicon glyphicon-lock"></span></span>
-                                                </div>
-                                            </div>
-                                            <!-- Name -->
-                                            <div class="control-group">
-                                                <label class="control-label" for="username">CARD HOLDER'S NAME</label>
-                                                <div class="controls">
-                                                    <input type="text" name="@nameof(Model.CCHolderName)" class="form-control" form="frm-shopping-order" />
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xs-7 col-md-7">
-                                                    <div class="form-group">
-                                                        <label for="expityMonth">
-                                                            EXPIRY DATE
-                                                        </label>
-                                                        <div class="col-xs-6 col-lg-6 pl-ziro">
-                                                            <input type="text" name="@nameof(Model.CCExpiryMonth)" class="form-control" id="expiryMonth" placeholder="MM" form="frm-shopping-order" />
-                                                        </div>
-                                                        <div class="col-xs-6 col-lg-6 pl-ziro">
-                                                            <input type="text" name="@nameof(Model.CCExpiryYear)" class="form-control" id="expiryYear" placeholder="YY" form="frm-shopping-order" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-5 col-md-5 pull-right">
-                                                    <div class="form-group">
-                                                        <label for="cvCode">
-                                                            CVV2 CODE
-                                                        </label>
-                                                        <input type="password" name="@nameof(Model.CCV)" class="form-control" id="cvCode" placeholder="CVV2" form="frm-shopping-order" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <ul class="nav nav-pills nav-stacked">
-                                                <li class="active">
-                                                    <a href="#"><span class="badge pull-right"><span class="glyphicon glyphicon-usd"></span>@String.Format("{0:C}", Model.ShoppingCart.CartTotal)</span> Order Total</a>
-                                                </li>
-                                            </ul>
-                                            <br />
-                                            <button type="submit" class="btn btn-success btn-lg btn-block" form="frm-shopping-order">Pay</button>
-
-                                        </form>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading" role="tab" id="headingPaypal_reg">
+                                <h4 class="panel-title">
+                                    <a id="panel-paypal" role="button" data-toggle="collapse" href="#" aria-expanded="true">
+                                        Pay with Paypal
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="panel panel-primary">
-                                <div class="panel-heading" role="tab"  id="headingPaypal_reg">
-                                    <h4 class="panel-title">
-                                        <a id="panel-paypal" role="button" data-toggle="collapse" href="#" aria-expanded="true">
-                                            Pay with Paypal
-                                        </a>
-                                    </h4>
-                                </div>
-                            </div>
-
                         </div>
 
                     </div>
-                    <!-- train section -->
-                    <div class="bhoechie-tab-content">
-                        <center style="padding: 70px 0;">
-                            <p>You will need to login to your Paypal account</p>
-                            <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="Check out with PayPal" />
-                        </center>
-                    </div>
 
-                    <!-- Disabled -->
-                    <div class="bhoechie-tab-content">
-                        <center>
-                        </center>
-                    </div>
-                    <div class="bhoechie-tab-content">
-                        <center>
-                        </center>
-                    </div>
-                    <div class="bhoechie-tab-content">
-                        <center>
-                        </center>
-                    </div>
+                </div>
+                <!-- train section -->
+                <div class="bhoechie-tab-content">
+                    <center style="padding: 70px 0;">
+                        <p>You will need to login to your Paypal account</p>
+                        <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="Check out with PayPal" />
+                    </center>
+                </div>
+
+                <!-- Disabled -->
+                <div class="bhoechie-tab-content">
+                    <center>
+                    </center>
+                </div>
+                <div class="bhoechie-tab-content">
+                    <center>
+                    </center>
+                </div>
+                <div class="bhoechie-tab-content">
+                    <center>
+                    </center>
                 </div>
             </div>
-
         </div>
+
     </div>
+</div>
 
 
 
@@ -582,6 +663,14 @@
             $("a#panel-paypal").bind("click", (function () {
                 $("div.bhoechie-tab-menu>div.list-group>a").trigger("click");
             }));
+
+            $('#@nameof(Model.ShipToDifferentAddress)').change(function () {
+                if (this.checked)
+                    $('#shipping-address').show();
+                else
+                    $('#shipping-address').hide();
+
+            });
         });
     </script>
 

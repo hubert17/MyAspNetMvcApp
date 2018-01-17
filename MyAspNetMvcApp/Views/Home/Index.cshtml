@@ -1,4 +1,15 @@
-﻿@{
+﻿@section RedirectIndexTo {
+    @if (Request.QueryString["redirectindexto"] != null && User.IsInRole("student"))
+    {
+        <script>
+            window.location.replace("/site/student");
+        </script>
+    }
+}
+
+
+
+@{
     ViewBag.Title = "Home Page";
 }
 

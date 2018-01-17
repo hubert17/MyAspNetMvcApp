@@ -1,0 +1,42 @@
+﻿@model MyAspNetMvcApp.Areas.Account.Models.UserProfile
+
+@{
+    ViewBag.Title = "Student";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {}
+
+<h1>Hello @Model.FirstName!</h1>
+
+
+@{ 
+    var mood = string.Empty;
+    if (Model.MetaData == "BSIT 3-M-01")
+    {
+        mood = "cTsJ_Irqc0aBG9FGCIRJ7A";
+    }
+    else if (Model.MetaData == "BSIT 3-P-01")
+    {
+        mood = "5f3XV8tqgEKgv45quzuEJA";
+    }
+    else if (Model.MetaData == "BSIT 3-P-02")
+    {
+        mood = "fX5QCiAbJ0aW0CHNmW4czQ";
+    }
+    else if (Model.MetaData == "BSIT 3-W-01")
+    {
+        mood = "rJxes04kXUqTNHMvcFDtfQ";
+    }
+    else if (Model.MetaData == "BSIT 3-W-02")
+    {
+        mood = "_oNWx-pn-E6nMmNtQinDMA";
+    }
+    else if (Model.MetaData == "BSIT-P 3-A-PUERTO")
+    {
+        mood = "1EYccQNkpkCrQpAIAJMmNw";
+    }
+
+}
+<a href="http://poordooytify.azurewebsites.net/songlib/create_coc?section=@Model.MetaData&studentName=@Model.FirstName @Model.LastName&encUsername=@Model.UserName&mood=@mood&redirect=www.bernardgabon.com/site/student" class="btn btn-primary btn-lg">Upload Final Recording</a>
+

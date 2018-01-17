@@ -79,7 +79,7 @@ namespace MyAspNetMvcApp.Areas.Account.Controllers
                     {
                         await SignInAsync(user, model.RememberMe);
                         if (string.IsNullOrEmpty(returnUrl))
-                            return RedirectToAction("index", "home", new { area = "" });
+                            return RedirectToAction("index", "home", new { area = "", redirectindexto = true });
                         else
                             return RedirectToLocal(returnUrl);
                     }

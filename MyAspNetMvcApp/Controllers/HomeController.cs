@@ -10,11 +10,15 @@ namespace MyAspNetMvcApp.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string strRedirect)
         {
             //ViewData[BSMessage.DIALOGBOX] = "Hello! Welcome to " + AppSettings.AppTitle + "!";
             ViewBag.ConAct = MyAspNetMvcApp.Areas.App.Models.AppControllerAction.GetExamples();
-            return View();
+
+            if (String.IsNullOrEmpty(strRedirect))
+                return View();
+            else
+                return RedirectToAction("Index", strRedirect, new { area = "BernardGabonDotCom" });
 
             // This is for www.bernardgabon.com. Kindly remove this and uncomment the code above.
             //return RedirectToAction("Index", "BernardGabonDotCom", new { area = "BernardGabonDotCom" });

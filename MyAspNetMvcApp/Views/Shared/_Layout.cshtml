@@ -1,4 +1,6 @@
-﻿@{ 
+﻿@RenderSection("RedirectIndexTo", required: false)
+
+@{
     string bootstrapTheme;
     var currentArea = ViewContext.RouteData.DataTokens["area"];
     if (currentArea != null && currentArea.ToString() == "OrderFramework")
@@ -157,14 +159,14 @@
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 @Html.Raw(TempData[BSMessage.PANEL])
             </div>
-        } 
+        }
         @if (ViewData[BSMessage.PANEL] != null)
         {
             <div class="alert alert-@msgtype alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 @Html.Raw(ViewData[BSMessage.PANEL])
             </div>
-        }        
+        }
 
         @RenderBody()
     </div>
@@ -174,51 +176,51 @@
     </footer>
 
 
-@if (HttpContext.Current.Request.IsLocal)
-{
-    <script src="@Url.Content("~/Scripts/jquery-3.1.1.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/bootstrap-dialog.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.min.js")"></script >
-    <script src="@Url.Content("~/Scripts/awesomplete.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/respond.min.js")"></script>
-}
-else
-{
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.4/js/bootstrap-dialog.min.js" integrity="sha256-IpgnbT7iaNM6j9WjtXKI8VMJ272WM9VvFYkZdu1umOA=" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js" integrity="sha256-5YmaxAwMjIpMrVlK84Y/+NjCpKnFYa8bWWBbUHSBGfU=" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js" integrity="sha256-xA+USAVmEnBnz1FiLRSG8xglJflQVHmQvbx5+u4bslk=" crossorigin="anonymous"></script>
-    <script src="//ajax.aspnetcdn.com/ajax/respond/1.4.2/respond.min.js"></script>   
-}
+    @if (HttpContext.Current.Request.IsLocal)
+    {
+        <script src="@Url.Content("~/Scripts/jquery-3.1.1.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/bootstrap-dialog.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/awesomplete.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/respond.min.js")"></script>
+    }
+    else
+    {
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.4/js/bootstrap-dialog.min.js" integrity="sha256-IpgnbT7iaNM6j9WjtXKI8VMJ272WM9VvFYkZdu1umOA=" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js" integrity="sha256-5YmaxAwMjIpMrVlK84Y/+NjCpKnFYa8bWWBbUHSBGfU=" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js" integrity="sha256-xA+USAVmEnBnz1FiLRSG8xglJflQVHmQvbx5+u4bslk=" crossorigin="anonymous"></script>
+        <script src="//ajax.aspnetcdn.com/ajax/respond/1.4.2/respond.min.js"></script>
+    }
 
-@if (ViewData[BSMessage.DIALOGBOX] != null)
-{
-    <script>
+    @if (ViewData[BSMessage.DIALOGBOX] != null)
+    {
+        <script>
         BootstrapDialog.show({
               @messageType
               title: '@MyAspNetMvcApp.AppSettings.AppTitle',
               message: '@Html.Raw(ViewData[BSMessage.DIALOGBOX])'
           });
-    </script>
-}
-@if (TempData[BSMessage.DIALOGBOX] != null)
-{
-    <script>
+        </script>
+    }
+    @if (TempData[BSMessage.DIALOGBOX] != null)
+    {
+        <script>
         BootstrapDialog.show({
               @messageType
               title: '@MyAspNetMvcApp.AppSettings.AppTitle',
               message: '@Html.Raw(TempData[BSMessage.DIALOGBOX])'
           });
-    </script>
-}
+        </script>
+    }
 
     <script src="@Url.Content("~/Scripts/Site.js")"></script>
 
-@RenderSection("scripts", required: false)
+    @RenderSection("scripts", required: false)
 
     @* This is to remove the overlay ad in Somee.com *@
     <script>

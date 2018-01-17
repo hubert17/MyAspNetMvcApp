@@ -8,6 +8,13 @@ using System.IO;
 using MyAspNetMvcApp.Areas.Examples.ViewModels;
 using MyAspNetMvcApp.Areas.Examples.Models;
 using System.Globalization;
+using MyAspNetMvcApp.Areas.Account.Models;
+using MyAspNetMvcApp.Areas.Account.ViewModels;
+using MyAspNetMvcApp.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
+using MyAspNetMvcApp.Areas.Account.Controllers;
 
 namespace MyAspNetMvcApp.Areas.Examples.Controllers
 {
@@ -54,21 +61,8 @@ namespace MyAspNetMvcApp.Areas.Examples.Controllers
                         Char[] separators = new Char[] { ',' }; // only the space character, in this case
                         var names = stud.FullName.Split(separators);
                         stud.FullName = names[0];
-                        stud.FirstName = names[1];
-                    }
-                }
-                else
-                {
-                    using (var db = new ExamplesDbContext())
-                    {
-                        output = db.Students.Select(s => new StudentExcelViewModel
-                        {
-                            IdNumber = s.IdNumber,
-                            FullName = s.LastName,
-                            FirstName = s.FirstName,
-                            YearSection = s.YearSection
-                        }).ToList();
-                        ViewBag.FromDb = true;
+                        separators = new Char[] { ' ' };
+                        stud.FirstName = names[1].Split(separators)[1];
                     }
                 }
             }
@@ -80,29 +74,52 @@ namespace MyAspNetMvcApp.Areas.Examples.Controllers
         }
 
         [HttpPost]
-        public ActionResult BatchSubmit(string[] IdNumber, string[] FullName, string[] FirstName, string[] YearSection)
+        public async Task<ActionResult> BatchSubmit(string[] IdNumber, string[] FullName, string[] FirstName, string[] YearSection)
         {
-            var students = new List<Student>();
+            var students = new List<Models.Student>();
 
             try
             {
                 TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
                 for (int i = 0; i < IdNumber.Length; i++)
                 {
-                    students.Add(new Student()
+                    var user = new ApplicationUser()
+                    {
+                        UserName = IdNumber[i],
+                        UserProfile = new UserProfile
+                        {
+                            UserName = IdNumber[i].Replace("-", string.Empty),
+                            RegistrationType = "student",
+                            LastName = textInfo.ToTitleCase(FullName[i].ToLower()),
+                            FirstName = textInfo.ToTitleCase(FirstName[i].ToLower()),
+                            RegistrationDate = DateTime.Now,
+                            IsActive = true,
+                            MetaData = Newtonsoft.Json.JsonConvert.SerializeObject(new { section = YearSection[i] })
+                        }
+                    };
+
+                    var account = new AccountController();
+                    var result = await account.UserManager.CreateAsync(user, FullName[i].ToLower());
+                    if (result.Succeeded)
+                    {
+                        if (!string.IsNullOrEmpty(user.UserProfile.RegistrationType))
+                        {
+                            RegisterViewModel.AddRole(user.UserName, user.UserProfile.RegistrationType);
+                        }
+                    }
+
+                    students.Add(new Models.Student()
                     {
                         IdNumber = IdNumber[i],
                         LastName = textInfo.ToTitleCase(FullName[i].ToLower()),
                         FirstName = textInfo.ToTitleCase(FirstName[i].ToLower()),
                         YearSection = YearSection[i]
                     });
+
+                    //else
+                    //message += user.UserName + " / " + user.UserProfile.LastName + ", " + user.UserProfile.FirstName + " was not added. <br>";
                 }
 
-                using (var db = new ExamplesDbContext())
-                {
-                    db.Students.AddRange(students);
-                    db.SaveChanges();
-                }
             }
             catch (Exception ex)
             {

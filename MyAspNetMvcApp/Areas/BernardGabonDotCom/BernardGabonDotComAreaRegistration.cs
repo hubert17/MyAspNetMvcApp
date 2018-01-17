@@ -17,7 +17,7 @@ namespace MyAspNetMvcApp.Areas.BernardGabonDotCom
 
             context.MapRoute(
                 "BernardGabonDotCom_default",
-                "BernardGabonDotCom/{controller}/{action}/{id}",
+                "site/{controller}/{action}/{id}",
                 new { controller = "BernardGabonDotCom", action = "Index", id = UrlParameter.Optional }
             );
         }

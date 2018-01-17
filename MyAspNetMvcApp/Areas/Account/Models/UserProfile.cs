@@ -18,6 +18,7 @@ namespace MyAspNetMvcApp.Areas.Account.Models
         public string RegistrationType { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public DateTime? LastLogin { get; set; }
+        public string MetaData { get; set; }
         public bool IsActive { get; set; }
     }
 
