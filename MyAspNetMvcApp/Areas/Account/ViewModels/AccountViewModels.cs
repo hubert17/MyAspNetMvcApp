@@ -91,7 +91,8 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
 
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "Please enter a valid email")]
+        [Required(ErrorMessage = "Please enter a valid login name")]
+        [RegularExpression(@"^[a-zA-Z0-9\._@]*$", ErrorMessage = "Invalid login name. No dashes please.")]
         [Display(Name = "Email")]
         public string UserName { get; set; }
 
