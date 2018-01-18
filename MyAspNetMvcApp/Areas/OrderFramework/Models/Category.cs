@@ -18,6 +18,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         [StringLength(160)]
         public string Name { get; set; }
 
+        public string MetaData { get; set; }
+
         public virtual ICollection<Product> Items { get; set; }
     }
 }

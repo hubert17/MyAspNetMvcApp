@@ -33,6 +33,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         [ScaffoldColumn(false)]
         public string PictureFilename { get; set; }
 
+        public string MetaData { get; set; }
+
         public virtual Category Category { get; set; }
         //public virtual List<OrderDetail> OrderDetails { get; set; }
 

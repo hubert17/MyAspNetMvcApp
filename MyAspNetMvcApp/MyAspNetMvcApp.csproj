@@ -249,6 +249,7 @@
     <Compile Include="Areas\BernardGabonDotCom\Controllers\GabsProjectController.cs" />
     <Compile Include="Areas\BernardGabonDotCom\Controllers\StudentController.cs" />
     <Compile Include="Areas\BernardGabonDotCom\Models\Project.cs" />
+    <Compile Include="Areas\BernardGabonDotCom\Models\StudentMetadata.cs" />
     <Compile Include="Areas\BernardGabonDotCom\Models\Submission.cs" />
     <Compile Include="Areas\BernardGabonDotCom\Models\_GabsDbContext.cs" />
     <Compile Include="Areas\BernardGabonDotCom\ViewModel\ProjectViewModel.cs" />

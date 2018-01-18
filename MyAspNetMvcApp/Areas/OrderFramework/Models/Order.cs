@@ -26,6 +26,8 @@ namespace MyAspNetMvcApp.Areas.OrderFramework.Models
         [ScaffoldColumn(false)]
         public decimal OrderTotal { get; set; }
 
+        public string MetaData { get; set; }
+
         public List<OrderDetail> OrderDetails { get; set; }
 
         public ShippingDetail ShippingDetail { get; set; }

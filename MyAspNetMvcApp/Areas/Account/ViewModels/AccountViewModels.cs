@@ -37,7 +37,7 @@ namespace MyAspNetMvcApp.Areas.Account.ViewModels
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Mobile phone")]
         [RegularExpression("([0-9]+)", ErrorMessage = "Please enter a valid phone number.")]
-        [System.Web.Mvc.Remote("CheckExistingPhoneNumber", "Account", ErrorMessage = "Phone number already exists")]
+        [System.Web.Mvc.Remote("CheckExistingPhoneNumber", "Account", ErrorMessage = "Phone number already in use.")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "You can't leave this empty.")]

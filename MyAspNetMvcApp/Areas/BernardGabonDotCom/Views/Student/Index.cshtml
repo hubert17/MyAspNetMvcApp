@@ -1,4 +1,5 @@
 ﻿@model MyAspNetMvcApp.Areas.Account.Models.UserProfile
+@using MyAspNetMvcApp.Areas.BernardGabonDotCom.Models;
 
 @{
     ViewBag.Title = "Student";
@@ -10,33 +11,52 @@
 <h1>Hello @Model.FirstName!</h1>
 
 
-@{ 
-    var mood = string.Empty;
-    if (Model.MetaData == "BSIT 3-M-01")
-    {
-        mood = "cTsJ_Irqc0aBG9FGCIRJ7A";
-    }
-    else if (Model.MetaData == "BSIT 3-P-01")
-    {
-        mood = "5f3XV8tqgEKgv45quzuEJA";
-    }
-    else if (Model.MetaData == "BSIT 3-P-02")
-    {
-        mood = "fX5QCiAbJ0aW0CHNmW4czQ";
-    }
-    else if (Model.MetaData == "BSIT 3-W-01")
-    {
-        mood = "rJxes04kXUqTNHMvcFDtfQ";
-    }
-    else if (Model.MetaData == "BSIT 3-W-02")
-    {
-        mood = "_oNWx-pn-E6nMmNtQinDMA";
-    }
-    else if (Model.MetaData == "BSIT-P 3-A-PUERTO")
-    {
-        mood = "1EYccQNkpkCrQpAIAJMmNw";
-    }
+@{
+    var moods = new Dictionary<string, string>();
+    moods.Add("BSIT 3-M-01", "cTsJ_Irqc0aBG9FGCIRJ7A");
+    moods.Add("BSIT 3-P-01", "5f3XV8tqgEKgv45quzuEJA");
+    moods.Add("BSIT 3-P-02", "fX5QCiAbJ0aW0CHNmW4czQ");
+    moods.Add("BSIT 3-W-01", "rJxes04kXUqTNHMvcFDtfQ");
+    moods.Add("BSIT 3-W-02", "_oNWx-pn-E6nMmNtQinDMA");
+    moods.Add("BSIT-P 3-A-PUERTO", "1EYccQNkpkCrQpAIAJMmNw");
 
+    var metadata = Newtonsoft.Json.JsonConvert.DeserializeObject<StudentMetadata>(Model.MetaData);
+    string mood = moods[metadata.section];
+
+    var UserNameBytes = System.Text.Encoding.UTF8.GetBytes(Model.UserName);
+    var encUsername = System.Convert.ToBase64String(UserNameBytes);
+
+    var studentNameBytes = System.Text.Encoding.UTF8.GetBytes(Model.FirstName + " " + Model.LastName);
+    var encStudentName = System.Convert.ToBase64String(studentNameBytes);
+
+    var sectionBytes = System.Text.Encoding.UTF8.GetBytes(metadata.section);
+    var encSection = System.Convert.ToBase64String(sectionBytes);
 }
-<a href="http://poordooytify.azurewebsites.net/songlib/create_coc?section=@Model.MetaData&studentName=@Model.FirstName @Model.LastName&encUsername=@Model.UserName&mood=@mood&redirect=www.bernardgabon.com/site/student" class="btn btn-primary btn-lg">Upload Final Recording</a>
+<a href="http://poordooytify.azurewebsites.net/songlib/create_coc?sec=@encSection&stu=@encStudentName&un=@encUsername&mood=@mood&redirect=www.bernardgabon.com/site/student" class="btn btn-primary btn-lg">Upload Final Recording</a>
+<hr />
+<h1>Listen to music upload by section</h1>
+<div class="col-md-12">
+    <ul>
+        @foreach (var m in moods)
+        {
+            <li>
+                <a href="http://poordooytify.azurewebsites.net/songlib?m=@m.Value" target="_blank">@m.Key</a>
+            </li>
+        }
+    </ul>
+</div>
+@if (metadata.songIds != null)
+{
+    <hr />
+    <h3>Delete uploads</h3>
+    <div class="col-md-12">
+        @foreach (var songId in metadata.songIds)
+        {
+            <p>
+                <a class="btn btn-danger btn-xs" href="http://poordooytify.azurewebsites.net/songlib/del?songKey=@songId&p=@encUsername&redirect=www.bernardgabon.com/site/student" onclick="return confirm('Are you sure?');">Upload (@songId)</a>
+            </p>
+        }
+
+    </div>
+}
 
