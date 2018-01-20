@@ -278,7 +278,6 @@
     <Compile Include="Areas\OrderFramework\Models\OrderDetail.cs" />
     <Compile Include="Areas\OrderFramework\Models\Product.cs" />
     <Compile Include="Areas\OrderFramework\Models\Review.cs" />
-    <Compile Include="Areas\OrderFramework\Models\ShippingDetail.cs" />
     <Compile Include="Areas\OrderFramework\OrderFrameworkAreaRegistration.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\AnalyticsViewModel.cs" />
     <Compile Include="Areas\OrderFramework\ViewModels\OrderDateGroup.cs" />
@@ -296,8 +295,10 @@
     <Compile Include="Helpers\BSMessage.cs" />
     <Compile Include="Helpers\Constant.cs" />
     <Compile Include="Helpers\EmailUtil.cs" />
+    <Compile Include="Helpers\Encryption.cs" />
     <Compile Include="Helpers\FileUploadExtension.cs" />
     <Compile Include="Helpers\Formatter.cs" />
+    <Compile Include="Helpers\FriendlyUrlHelper.cs" />
     <Compile Include="Helpers\ImageUploadExtension.cs" />
     <Compile Include="Helpers\SMSUtil.cs" />
     <Compile Include="Migrations\Configuration.cs" />

@@ -23,39 +23,46 @@
     var metadata = Newtonsoft.Json.JsonConvert.DeserializeObject<StudentMetadata>(Model.MetaData);
     string mood = moods[metadata.section];
 
-    var UserNameBytes = System.Text.Encoding.UTF8.GetBytes(Model.UserName);
-    var encUsername = System.Convert.ToBase64String(UserNameBytes);
+    var encUsername = Gabs.Helpers.EncryptionForUrl.Encrypt(Model.MetaData);
 
-    var studentNameBytes = System.Text.Encoding.UTF8.GetBytes(Model.FirstName + " " + Model.LastName);
-    var encStudentName = System.Convert.ToBase64String(studentNameBytes);
+    var encStudentName = Gabs.Helpers.EncryptionForUrl.Encrypt(Model.FirstName + " " + Model.LastName);
 
-    var sectionBytes = System.Text.Encoding.UTF8.GetBytes(metadata.section);
-    var encSection = System.Convert.ToBase64String(sectionBytes);
+    var encSection = Gabs.Helpers.EncryptionForUrl.Encrypt(metadata.section);
+
+    var encMood = Gabs.Helpers.EncryptionForUrl.Encrypt(mood);
+
+    var redirect = HttpUtility.UrlEncode("http://bernardgabon.com/site/student");
 }
-<a href="http://poordooytify.azurewebsites.net/songlib/create_coc?sec=@encSection&stu=@encStudentName&un=@encUsername&mood=@mood&redirect=www.bernardgabon.com/site/student" class="btn btn-primary btn-lg">Upload Final Recording</a>
-<hr />
-<h1>Listen to music upload by section</h1>
-<div class="col-md-12">
+
+
+<a href="http://poordooytify.azurewebsites.net/songlib/create_coc?sec=@encSection&stu=@encStudentName&un=@encUsername&mood=@encMood&redirect=@redirect" class="btn btn-primary btn-lg">Upload Final Recording</a>
+
+@if (metadata.songIds != null && metadata.songIds.Count() != 0)
+{
+    <hr />
+    <h1>Listen to music upload by section</h1>
+    <div class="col-md-12">
+        <ul>
+            @foreach (var m in moods)
+            {
+                <li>
+                    <a href="http://poordooytify.azurewebsites.net/songlib?m=@m.Value" target="_blank">@m.Key</a>
+                </li>
+            }
+        </ul>
+    </div>
+    <hr />
+    <h3>My Uploads</h3>
+    <div class="col-md-12">
     <ul>
-        @foreach (var m in moods)
+        @foreach (var songId in metadata.songIds)
         {
             <li>
-                <a href="http://poordooytify.azurewebsites.net/songlib?m=@m.Value" target="_blank">@m.Key</a>
+                <a href="http://poordooytify.azurewebsites.net/music/@songId">Upload ID: @songId</a> 
+                <a class="btn btn-danger btn-xs" href="http://poordooytify.azurewebsites.net/songlib/del?songKey=@songId&p=@encUsername&redirect=@redirect" title="Delete" onclick="return confirm('Are you sure?');"><span class="glyphicon glyphicon-trash"></span> </a>
             </li>
         }
     </ul>
-</div>
-@if (metadata.songIds != null)
-{
-    <hr />
-    <h3>Delete uploads</h3>
-    <div class="col-md-12">
-        @foreach (var songId in metadata.songIds)
-        {
-            <p>
-                <a class="btn btn-danger btn-xs" href="http://poordooytify.azurewebsites.net/songlib/del?songKey=@songId&p=@encUsername&redirect=www.bernardgabon.com/site/student" onclick="return confirm('Are you sure?');">Upload (@songId)</a>
-            </p>
-        }
 
     </div>
 }

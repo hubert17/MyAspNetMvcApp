@@ -39,7 +39,6 @@ namespace MyAspNetMvcApp.Models
         public DbSet<OrderDetail> OF_OrderDetails { get; set; }
         public DbSet<Product> OF_Products { get; set; }
         public DbSet<Review> OF_Reviews { get; set; }
-        public DbSet<ShippingDetail> OF_ShippingDetails { get; set; }
 
     }
 
